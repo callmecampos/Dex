@@ -14,17 +14,20 @@ public class Card {
     // MARK: Properties
     
     private var name: String?
+    private var origin: String?
     private var description: String?
     private var email: String?
     private var phones: [String] = []
     private var website: String?
     private var avi: UIImage?
     
-    // MARK: Methods
+    // MARK: Initialization
     
-    init(name: String, desc: String, emails: String, phones: String..., web: String, avi: UIImage) {
+    init(name: String, loc: String, desc: String, email: String, phones: String..., web: String, avi: UIImage) {
         self.name = name
+        self.origin = loc
         self.description = desc
+        self.email = email
         self.website = web
         self.avi = avi
         
@@ -32,6 +35,8 @@ public class Card {
             self.phones.append(phone)
         }
     }
+    
+    // MARK: Methods
     
     func getName() -> String? {
         return name
@@ -43,14 +48,32 @@ public class Card {
         return n != nil && n! == name
     }
     
+    func getOrigin() -> String? {
+        return origin
+    }
+    
+    func setOrigin(loc: String) -> Bool {
+        let o = getOrigin()
+        if o != nil {
+            self.origin = loc
+            return o! == loc
+        }
+        
+        return false
+    }
+    
     func getDescription() -> String? {
         return description
     }
     
     func setDescription(desc: String) -> Bool {
         let d = getDescription()
-        self.description = desc
-        return d != nil && d! == desc
+        if d != nil {
+            self.description = desc
+            return d! == desc
+        }
+        
+        return false
     }
     
     func getEmail() -> String? {
@@ -59,8 +82,12 @@ public class Card {
     
     func setEmail(email: String) -> Bool {
         let e = getEmail()
-        self.email = email
-        return e != nil && e! == email
+        if e != nil {
+            self.email = email
+            return e! == email
+        }
+        
+        return false
     }
     
     func getPhoneNumbers() -> [String] {

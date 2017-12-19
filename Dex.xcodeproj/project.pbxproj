@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		19C6EE871FE84F38001037DB /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C6EE861FE84F38001037DB /* Card.swift */; };
+		19C6EE8B1FE9AEF9001037DB /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C6EE8A1FE9AEF9001037DB /* CardView.swift */; };
+		19C6EE8D1FE9B871001037DB /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C6EE8C1FE9B871001037DB /* User.swift */; };
 		19F5783B1F3A70EF00542E25 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19F5783A1F3A70EF00542E25 /* AppDelegate.swift */; };
 		19F5783D1F3A70EF00542E25 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19F5783C1F3A70EF00542E25 /* ViewController.swift */; };
 		19F578401F3A70EF00542E25 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 19F5783E1F3A70EF00542E25 /* Main.storyboard */; };
@@ -17,6 +19,8 @@
 
 /* Begin PBXFileReference section */
 		19C6EE861FE84F38001037DB /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
+		19C6EE8A1FE9AEF9001037DB /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
+		19C6EE8C1FE9B871001037DB /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		19F578371F3A70EF00542E25 /* Dex.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Dex.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		19F5783A1F3A70EF00542E25 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		19F5783C1F3A70EF00542E25 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -63,6 +67,8 @@
 				19F578431F3A70EF00542E25 /* LaunchScreen.storyboard */,
 				19F578461F3A70EF00542E25 /* Info.plist */,
 				19C6EE861FE84F38001037DB /* Card.swift */,
+				19C6EE8A1FE9AEF9001037DB /* CardView.swift */,
+				19C6EE8C1FE9B871001037DB /* User.swift */,
 			);
 			path = Dex;
 			sourceTree = "<group>";
@@ -142,6 +148,8 @@
 			files = (
 				19F5783D1F3A70EF00542E25 /* ViewController.swift in Sources */,
 				19C6EE871FE84F38001037DB /* Card.swift in Sources */,
+				19C6EE8B1FE9AEF9001037DB /* CardView.swift in Sources */,
+				19C6EE8D1FE9B871001037DB /* User.swift in Sources */,
 				19F5783B1F3A70EF00542E25 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
