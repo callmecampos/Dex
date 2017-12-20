@@ -11,12 +11,30 @@ import UIKit
 @IBDesignable
 class CardView: UIView {
     
+    // MARK: Properties
+    
+    private var _card: Card
+    
     @IBInspectable var cornerRadius: CGFloat = 2
     
     @IBInspectable var shadowOffsetWidth: Int = 0
     @IBInspectable var shadowOffsetHeight: Int = 3
     @IBInspectable var shadowColor: UIColor? = UIColor.black
     @IBInspectable var shadowOpacity: Float = 0.5
+    
+    // MARK: Initialization
+    
+    init(card: Card) {
+        super.init()
+    }
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+    }
+    
+    required init(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func layoutSubviews() {
         layer.cornerRadius = cornerRadius
