@@ -12,26 +12,6 @@ import CoreLocation
 
 internal class User: Equatable, Comparable, Hashable {
     
-    // MARK: Protocols
-    
-    public static func ==(lhs: User, rhs: User) -> Bool {
-        return lhs.influence() == rhs.influence() &&
-            lhs.location() == rhs.location() &&
-            lhs.card() == rhs.card()
-    }
-    
-    public static func <(lhs: User, rhs: User) -> Bool {
-        return lhs.influence() < rhs.influence()
-    }
-    
-    /** Combines the hash value of each property multiplied by a prime constant. */
-    public var hashValue: Int {
-        return card().hashValue
-            ^ location().hashValue
-            ^ influence().hashValue &* 16777619
-    }
-    
-    
     // MARK: Properties
     
     private var _influence: Double = 0.0
@@ -85,11 +65,25 @@ internal class User: Equatable, Comparable, Hashable {
     
     /** Returns the users connected to this user. */
     func connectedUsers() -> [User] {
-        var result: [User] = []
-        for connection in connections() {
-            result.append(connection.getConnection(this: self)!)
-        }
-        
-        return result
+        return _connectedUsers
+    }
+    
+    // MARK: Protocols
+    
+    public static func ==(lhs: User, rhs: User) -> Bool {
+        return lhs.influence() == rhs.influence() &&
+            lhs.location() == rhs.location() &&
+            lhs.card() == rhs.card()
+    }
+    
+    public static func <(lhs: User, rhs: User) -> Bool {
+        return lhs.influence() < rhs.influence()
+    }
+    
+    /** Combines the hash value of each property multiplied by a prime constant. */
+    public var hashValue: Int {
+        return card().hashValue
+            ^ location().hashValue
+            ^ influence().hashValue &* 16777619
     }
 }

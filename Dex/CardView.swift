@@ -24,11 +24,8 @@ class CardView: UIView {
     
     // MARK: Initialization
     
-    init(card: Card) {
-        super.init()
-    }
-    
-    override init(frame: CGRect) {
+    init(card: Card, frame: CGRect) {
+        _card = card
         super.init(frame: frame)
     }
     
@@ -45,6 +42,10 @@ class CardView: UIView {
         layer.shadowOffset = CGSize(width: shadowOffsetWidth, height: shadowOffsetHeight);
         layer.shadowOpacity = shadowOpacity
         layer.shadowPath = shadowPath.cgPath
+    }
+    
+    func card() -> Card {
+        return _card
     }
 
     /*

@@ -11,63 +11,6 @@ import UIKit
 
 internal class Card: Equatable, Hashable {
     
-    // MARK: Protocols
-    
-    public static func ==(lhs: Card, rhs: Card) -> Bool {
-        if lhs.getPhoneNumbers().count != rhs.getPhoneNumbers().count {
-            return false
-        }
-        
-        for phone in lhs.getPhoneNumbers() {
-            if !rhs.getPhoneNumbers().contains(phone) {
-                return false
-            }
-        }
-        
-        return lhs.getName() == rhs.getName() &&
-            lhs.getDescription() == rhs.getDescription() &&
-            lhs.getEmail() == rhs.getEmail() &&
-            lhs.getWebsite() == rhs.getWebsite() &&
-            lhs.getProfilePicture() == rhs.getProfilePicture()
-    }
-    
-    /** Combines the hash value of each non-nil property
-        multiplied by a prime constant.
-     */
-    public var hashValue: Int {
-        var hash = name.hashValue
-        var count: Double = 0
-        
-        if let d = getDescription() {
-            hash ^= d.hashValue
-            count += 1
-        }
-        
-        if let e = getEmail() {
-            hash ^= e.hashValue
-            count += 1
-        }
-        
-        if phones.count > 0 {
-            for phone in phones {
-                hash ^= phone.hashValue
-                count += 1
-            }
-        }
-        
-        if let w = getWebsite() {
-            hash ^= w.hashValue
-            count += 1
-        }
-        
-        if let a = getProfilePicture() {
-            hash ^= a.hashValue
-            count += 1
-        }
-        
-        return hash &* 16777619
-    }
-    
     // MARK: Properties
     
     private var name: String
@@ -204,5 +147,62 @@ internal class Card: Equatable, Hashable {
         let a = getProfilePicture()
         self.avi = new
         return a == nil || a! == new
+    }
+    
+    // MARK: Protocols
+    
+    public static func ==(lhs: Card, rhs: Card) -> Bool {
+        if lhs.getPhoneNumbers().count != rhs.getPhoneNumbers().count {
+            return false
+        }
+        
+        for phone in lhs.getPhoneNumbers() {
+            if !rhs.getPhoneNumbers().contains(phone) {
+                return false
+            }
+        }
+        
+        return lhs.getName() == rhs.getName() &&
+            lhs.getDescription() == rhs.getDescription() &&
+            lhs.getEmail() == rhs.getEmail() &&
+            lhs.getWebsite() == rhs.getWebsite() &&
+            lhs.getProfilePicture() == rhs.getProfilePicture()
+    }
+    
+    /** Combines the hash value of each non-nil property
+     multiplied by a prime constant.
+     */
+    public var hashValue: Int {
+        var hash = name.hashValue
+        var count: Double = 0
+        
+        if let d = getDescription() {
+            hash ^= d.hashValue
+            count += 1
+        }
+        
+        if let e = getEmail() {
+            hash ^= e.hashValue
+            count += 1
+        }
+        
+        if phones.count > 0 {
+            for phone in phones {
+                hash ^= phone.hashValue
+                count += 1
+            }
+        }
+        
+        if let w = getWebsite() {
+            hash ^= w.hashValue
+            count += 1
+        }
+        
+        if let a = getProfilePicture() {
+            hash ^= a.hashValue
+            count += 1
+        }
+        
+        return hash &* 16777619
     }
 }

@@ -8,12 +8,13 @@
 
 import Foundation
 
-enum ConnectionType {
+enum ConnectionType { // TODO: run through cases with Brenton and Chris
     case personal
     case mutual
+    case weak
 }
 
-internal class Connection {
+internal class Connection: Equatable, Comparable, Hashable {
     
     // MARK: Properties
     
@@ -63,5 +64,27 @@ internal class Connection {
     
     func distance() -> Double {
         return _distance
+    }
+    
+    // MARK: Protocols
+    
+    static func ==(lhs: Connection, rhs: Connection) -> Bool {
+        return lhs.type() == rhs.type() && lhs.distance() == rhs.distance() &&
+                lhs.users() == rhs.users()
+    }
+    
+    static func <(lhs: Connection, rhs: Connection) -> Bool {
+        return lhs.distance() < rhs.distance()
+    }
+    
+    /** Combines the hash value of each property multiplied by a prime constant. */
+    var hashValue: Int {
+        var hash: Int = distance().hashValue
+        hash ^= type().hashValue
+        for user in users() {
+            hash ^= user.value.hashValue
+        }
+        
+        return hash &* 16777619
     }
 }
