@@ -7,5 +7,5 @@ target 'Dex' do
 
   # Pods for Dex
   pod 'CVCalendar', '~> 1.6.0'
-  pod 'ReSwift'
+  pod 'Shiny'
 end

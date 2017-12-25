@@ -11,6 +11,7 @@
 		19C6EE8D1FE9B871001037DB /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C6EE8C1FE9B871001037DB /* User.swift */; };
 		19C6EE8F1FE9F992001037DB /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C6EE8E1FE9F992001037DB /* CardView.swift */; };
 		19C6EE911FEAF59E001037DB /* Connection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C6EE901FEAF59E001037DB /* Connection.swift */; };
+		19C6EE9B1FEF10E8001037DB /* Interest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C6EE9A1FEF10E8001037DB /* Interest.swift */; };
 		19F5783B1F3A70EF00542E25 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19F5783A1F3A70EF00542E25 /* AppDelegate.swift */; };
 		19F5783D1F3A70EF00542E25 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19F5783C1F3A70EF00542E25 /* ViewController.swift */; };
 		19F578401F3A70EF00542E25 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 19F5783E1F3A70EF00542E25 /* Main.storyboard */; };
@@ -24,6 +25,7 @@
 		19C6EE8C1FE9B871001037DB /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		19C6EE8E1FE9F992001037DB /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		19C6EE901FEAF59E001037DB /* Connection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Connection.swift; sourceTree = "<group>"; };
+		19C6EE9A1FEF10E8001037DB /* Interest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interest.swift; sourceTree = "<group>"; };
 		19F578371F3A70EF00542E25 /* Dex.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Dex.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		19F5783A1F3A70EF00542E25 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		19F5783C1F3A70EF00542E25 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -48,6 +50,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		198FF4741FF17A18001D3988 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				19C6EE861FE84F38001037DB /* Card.swift */,
+				19C6EE8C1FE9B871001037DB /* User.swift */,
+				19C6EE901FEAF59E001037DB /* Connection.swift */,
+				19C6EE9A1FEF10E8001037DB /* Interest.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		198FF4751FF17A48001D3988 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				19C6EE8E1FE9F992001037DB /* CardView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		19F5782E1F3A70EF00542E25 = {
 			isa = PBXGroup;
 			children = (
@@ -75,10 +96,8 @@
 				19F578411F3A70EF00542E25 /* Assets.xcassets */,
 				19F578431F3A70EF00542E25 /* LaunchScreen.storyboard */,
 				19F578461F3A70EF00542E25 /* Info.plist */,
-				19C6EE861FE84F38001037DB /* Card.swift */,
-				19C6EE8C1FE9B871001037DB /* User.swift */,
-				19C6EE8E1FE9F992001037DB /* CardView.swift */,
-				19C6EE901FEAF59E001037DB /* Connection.swift */,
+				198FF4741FF17A18001D3988 /* Models */,
+				198FF4751FF17A48001D3988 /* Views */,
 			);
 			path = Dex;
 			sourceTree = "<group>";
@@ -180,12 +199,12 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Dex/Pods-Dex-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/CVCalendar/CVCalendar.framework",
-				"${BUILT_PRODUCTS_DIR}/ReSwift/ReSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/Shiny/Shiny.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CVCalendar.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Shiny.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -234,6 +253,7 @@
 			files = (
 				19F5783D1F3A70EF00542E25 /* ViewController.swift in Sources */,
 				19C6EE911FEAF59E001037DB /* Connection.swift in Sources */,
+				19C6EE9B1FEF10E8001037DB /* Interest.swift in Sources */,
 				19C6EE871FE84F38001037DB /* Card.swift in Sources */,
 				19C6EE8D1FE9B871001037DB /* User.swift in Sources */,
 				19F5783B1F3A70EF00542E25 /* AppDelegate.swift in Sources */,

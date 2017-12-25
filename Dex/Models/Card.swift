@@ -13,74 +13,89 @@ internal class Card: Equatable, Hashable {
     
     // MARK: Properties
     
-    private var name: String
-    private var description: String?
-    private var email: String?
-    private var phones: [String] = []
-    private var website: String?
-    private var avi: UIImage?
+    private var _name: String
+    private var _description: String?
+    private var _email: String?
+    private var _phones: [String] = []
+    private var _website: String?
+    private var _avi: CGImage?
     
     // MARK: Initialization
     
-    init(name: String, loc: String, desc: String, email: String, phones: String..., web: String, avi: UIImage) {
-        self.name = name
-        self.description = desc
-        self.email = email
-        self.website = web
-        self.avi = avi
+    init(name: String, loc: String, desc: String, email: String, phones: String..., web: String, avi: CGImage) {
+        _name = name
+        _description = desc
+        _email = email
+        _website = web
+        _avi = avi
         
         for phone in phones {
-            self.phones.append(phone)
+            _phones.append(phone)
         }
     }
     
     // MARK: Methods
     
     /** Returns the name associated with this card. */
-    func getName() -> String {
-        return name
+    func name() -> String {
+        return _name
     }
     
     /** Sets the name for this card as NAME.
         Returns whether the contents were modified.
      */
     func setName(name: String) -> Bool {
-        let n = self.getName()
-        self.name = name
+        let n = _name
+        _name = name
         return n != name
     }
     
+    /** Returns whether the card has a description. */
+    func hasDescription() -> Bool {
+        return _description != nil
+    }
+    
     /** Returns the optional description associated with this card. */
-    func getDescription() -> String? {
-        return description
+    func description() -> String {
+        return _description!
     }
     
     /** Sets the description for this card as DESC.
         Returns whether the contents were modified.
      */
     func setDescription(desc: String) -> Bool {
-        let d = getDescription()
-        self.description = desc
+        let d = _description
+        _description = desc
         return d == nil || d! != desc
     }
     
+    /** Returns whether the card has an email. */
+    func hasEmail() -> Bool {
+        return _email != nil
+    }
+    
     /** Returns the optional email associated with this card. */
-    func getEmail() -> String? {
-        return email
+    func email() -> String {
+        return _email!
     }
     
     /** Sets the email for this card as EMAIL.
         Returns whether the contents were modified.
      */
     func setEmail(email: String) -> Bool {
-        let e = getEmail()
-        self.email = email
+        let e = _email
+        _email = email
         return e == nil || e! == email
     }
     
+    /** Returns whether the card has a website. */
+    func hasWebsite() -> Bool {
+        return _website != nil
+    }
+    
     /** Returns the optional website associated with this card. */
-    func getWebsite() -> String? {
-        return website
+    func website() -> String {
+        return _website!
     }
     
     /** Sets the website for this card, if valid.
@@ -88,7 +103,7 @@ internal class Card: Equatable, Hashable {
      */
     func setWebsite(site: String) -> Bool {
         if validWebsite(site: site) {
-            self.website = site
+            _website = site
             return true
         }
         
@@ -100,17 +115,22 @@ internal class Card: Equatable, Hashable {
         return true // FIXME: implement
     }
     
+    /** Returns whether the card has any phone numbers. */
+    func hasPhoneNumbers() -> Bool {
+        return _phones.count > 0
+    }
+    
     /** Returns an array of the phone numbers associated with this card. */
-    func getPhoneNumbers() -> [String] {
-        return phones
+    func phoneNumbers() -> [String] {
+        return _phones
     }
     
     /** Adds PHONE to the phones associated with this card, if valid.
         Returns whether the phone was successfully added
      */
     func addPhone(phone: String) -> Bool {
-        if !phones.contains(phone) && validPhone(phone: phone) {
-            phones.append(phone)
+        if !_phones.contains(phone) && validPhone(phone: phone) {
+            _phones.append(phone)
             return true
         }
         
@@ -121,9 +141,9 @@ internal class Card: Equatable, Hashable {
         Returns whether the phone was successfully removed.
      */
     func removePhone(phone: String) -> Bool {
-        if phones.contains(phone) {
-            let ind = phones.index(of: phone)
-            phones.remove(at: ind!)
+        if _phones.contains(phone) {
+            let ind = _phones.index(of: phone)
+            _phones.remove(at: ind!)
             return true
         }
         
@@ -135,70 +155,75 @@ internal class Card: Equatable, Hashable {
         return true // FIXME: implement
     }
     
-    /** Returns the optional profile picture associated with this card. */
-    func getProfilePicture() -> UIImage? {
-        return avi
+    /** Returns whether the card has a profile picture. */
+    func hasProfilePicture() -> Bool {
+        return _avi != nil
     }
     
-    /** Sets the profile picture for this card.
+    /** Returns the optional profile picture associated with this card. */
+    func profilePicture() -> CGImage {
+        return _avi!
+    }
+    
+    /** Sets the profile picture as NEW for this card.
         Returns whether the image contents changed.
      */
-    func setProfilePicture(new: UIImage) -> Bool{
-        let a = getProfilePicture()
-        self.avi = new
+    func setProfilePicture(new: CGImage) -> Bool {
+        let a = _avi
+        _avi = new
         return a == nil || a! == new
     }
     
     // MARK: Protocols
     
     public static func ==(lhs: Card, rhs: Card) -> Bool {
-        if lhs.getPhoneNumbers().count != rhs.getPhoneNumbers().count {
+        if lhs.phoneNumbers().count != rhs.phoneNumbers().count {
             return false
         }
         
-        for phone in lhs.getPhoneNumbers() {
-            if !rhs.getPhoneNumbers().contains(phone) {
+        for phone in lhs.phoneNumbers() {
+            if !rhs.phoneNumbers().contains(phone) {
                 return false
             }
         }
         
-        return lhs.getName() == rhs.getName() &&
-            lhs.getDescription() == rhs.getDescription() &&
-            lhs.getEmail() == rhs.getEmail() &&
-            lhs.getWebsite() == rhs.getWebsite() &&
-            lhs.getProfilePicture() == rhs.getProfilePicture()
+        return lhs.name() == rhs.name() &&
+            lhs.description() == rhs.description() &&
+            lhs.email() == rhs.email() &&
+            lhs.website() == rhs.website() &&
+            lhs.profilePicture() == rhs.profilePicture()
     }
     
     /** Combines the hash value of each non-nil property
      multiplied by a prime constant.
      */
     public var hashValue: Int {
-        var hash = name.hashValue
+        var hash = _name.hashValue
         var count: Double = 0
         
-        if let d = getDescription() {
+        if let d = _description {
             hash ^= d.hashValue
             count += 1
         }
         
-        if let e = getEmail() {
+        if let e = _email {
             hash ^= e.hashValue
             count += 1
         }
         
-        if phones.count > 0 {
-            for phone in phones {
+        if _phones.count > 0 {
+            for phone in _phones {
                 hash ^= phone.hashValue
                 count += 1
             }
         }
         
-        if let w = getWebsite() {
+        if let w = _website {
             hash ^= w.hashValue
             count += 1
         }
         
-        if let a = getProfilePicture() {
+        if let a = _avi {
             hash ^= a.hashValue
             count += 1
         }

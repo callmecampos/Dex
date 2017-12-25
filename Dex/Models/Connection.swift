@@ -8,18 +8,18 @@
 
 import Foundation
 
-enum ConnectionType { // TODO: run through cases with Brenton and Chris
-    case personal
-    case mutual
-    case weak
-}
-
 internal class Connection: Equatable, Comparable, Hashable {
+    
+    enum Form {
+        case personal
+        case mutual
+        case weak
+    }
     
     // MARK: Properties
     
     private var _users: [String : User] = [:]
-    private var _type: ConnectionType
+    private var _type: Form
     private var _distance: Double = -1
     
     private static let first = "USER1"
@@ -32,7 +32,13 @@ internal class Connection: Equatable, Comparable, Hashable {
         _users.updateValue(user2, forKey: Connection.second)
         _distance = distance
         
-        _type = (distance <= 1) ? ConnectionType.personal : ConnectionType.mutual
+        if distance <= 1 {
+            _type = .personal
+        } else if distance <= 5 {
+            _type = .mutual
+        } else {
+            _type = .weak
+        }
     }
     
     // MARK: Methods
@@ -58,7 +64,7 @@ internal class Connection: Equatable, Comparable, Hashable {
         return users()[id]
     }
     
-    func type() -> ConnectionType {
+    func type() -> Form {
         return _type
     }
     

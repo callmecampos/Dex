@@ -17,6 +17,7 @@ internal class User: Equatable, Comparable, Hashable {
     private var _influence: Double = 0.0
     private var _card: Card
     private var _location: CLLocation
+    private var _interests: [Interest] = []
     private var _connections: [Connection] = []
     private lazy var _connectedUsers: [User] = {
         var result: [User] = []
@@ -29,13 +30,17 @@ internal class User: Equatable, Comparable, Hashable {
     
     // MARK: Initialization
     
-    init(card: Card, inf: Double, initPos: CLLocation, connections: Connection...) {
+    init(card: Card, inf: Double, initPos: CLLocation, connections: [Connection], interests: Interest...) {
         _card = card
         _influence = inf
         _location = initPos // TODO: have method that updates this every 10-20 min
         
         for connection in connections {
             _connections.append(connection)
+        }
+        
+        for interest in interests {
+            _interests.append(interest)
         }
         
         // TODO: other initializers, fetch from server or cache for most part
@@ -56,6 +61,11 @@ internal class User: Equatable, Comparable, Hashable {
     /** Returns the user's location. */
     func location() -> CLLocation {
         return _location
+    }
+    
+    /** Returns the user's interests. */
+    func interests() -> [Interest] {
+        return _interests
     }
     
     /** Returns the connection objects associated with this user. */

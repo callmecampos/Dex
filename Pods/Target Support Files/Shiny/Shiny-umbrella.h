@@ -11,6 +11,6 @@
 #endif
 
 
-FOUNDATION_EXPORT double ReSwiftVersionNumber;
-FOUNDATION_EXPORT const unsigned char ReSwiftVersionString[];
+FOUNDATION_EXPORT double ShinyVersionNumber;
+FOUNDATION_EXPORT const unsigned char ShinyVersionString[];
 
