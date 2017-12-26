@@ -7,18 +7,28 @@
 //
 
 import Foundation
-import UIKit
 import CoreLocation
 
 internal class User: Equatable, Comparable, Hashable {
     
     // MARK: Properties
     
+    /** The user's influence. */
     private var _influence: Double = 0.0
+    
+    /** The user's card. */
     private var _card: Card
+    
+    /** The user's location. */
     private var _location: CLLocation
+    
+    /** The user's interests. */
     private var _interests: [Interest] = []
+    
+    /** The user's connections. */
     private var _connections: [Connection] = []
+    
+    /** The user's connected users. */
     private lazy var _connectedUsers: [User] = {
         var result: [User] = []
         for connection in self.connections() {
@@ -90,10 +100,11 @@ internal class User: Equatable, Comparable, Hashable {
         return lhs.influence() < rhs.influence()
     }
     
-    /** Combines the hash value of each property multiplied by a prime constant. */
+    /** Combines the hash value of each property
+     multiplied by a prime constant. */
     public var hashValue: Int {
         return card().hashValue
             ^ location().hashValue
-            ^ influence().hashValue &* 16777619
+            ^ influence().hashValue &* Utils.HASH_PRIME
     }
 }

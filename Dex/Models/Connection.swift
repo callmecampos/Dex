@@ -12,33 +12,42 @@ internal class Connection: Equatable, Comparable, Hashable {
     
     enum Form {
         case personal
-        case mutual
+        case recommended
         case weak
+        case other
     }
     
     // MARK: Properties
     
     private var _users: [String : User] = [:]
     private var _type: Form
-    private var _distance: Double = -1
+    private var _distance: Double = -1.0
     
     private static let first = "USER1"
     private static let second = "USER2"
  
     // MARK: Initialization
     
-    init(user1: User, user2: User, distance: Double) {
+    init(user1: User, user2: User, form: Connection.Form) {
         _users.updateValue(user1, forKey: Connection.first)
         _users.updateValue(user2, forKey: Connection.second)
-        _distance = distance
         
-        if distance <= 1 {
-            _type = .personal
-        } else if distance <= 5 {
-            _type = .mutual
-        } else {
-            _type = .weak
+        switch form {
+        case .personal:
+            _distance = 1
+            break
+        case .recommended:
+            _distance = 2
+            break
+        case .weak:
+            _distance = 3
+            break
+        default:
+            _distance = Double.infinity
+            break
         }
+        
+        _type = form
     }
     
     // MARK: Methods
@@ -85,12 +94,12 @@ internal class Connection: Equatable, Comparable, Hashable {
     
     /** Combines the hash value of each property multiplied by a prime constant. */
     var hashValue: Int {
-        var hash: Int = distance().hashValue
+        var hash = distance().hashValue
         hash ^= type().hashValue
         for user in users() {
             hash ^= user.value.hashValue
         }
         
-        return hash &* 16777619
+        return hash &* Utils.HASH_PRIME
     }
 }

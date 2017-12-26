@@ -20,6 +20,9 @@ class CardView: UIView {
     private var _phones: UILabel?
     private var _website: UILabel?
     private var _profilePicture: UIImage?
+    private var _imageView: UIImageView = UIImageView()
+    
+    private var _editButton: UIButton = UIButton()
     
     @IBInspectable var cornerRadius: CGFloat = 2
     @IBInspectable var shadowOffsetWidth: Int = 0
@@ -32,7 +35,7 @@ class CardView: UIView {
     init(card: Card, frame: CGRect) {
         _card = card
         super.init(frame: frame)
-        makeView(card: card)
+        makeView(card: card, frame: frame)
     }
     
     required init(coder aDecoder: NSCoder) {
@@ -58,8 +61,9 @@ class CardView: UIView {
     }
     
     /** Makes the CardView given CARD. */
-    func makeView(card: Card) {
+    func makeView(card: Card, frame: CGRect) {
         _name.text = card.name()
+        // TODO: other UI setup
         
         if card.hasDescription() {
             _description = UILabel()
@@ -76,8 +80,8 @@ class CardView: UIView {
         if card.hasPhoneNumbers() {
             _phones = UILabel()
             var text: String = ""
-            for phone in card.phoneNumbers() {
-                text.append(phone + "\n")
+            for phone in card.phones() {
+                text.append(phone.number() + "(\(phone.type()))\n")
             }
             text.remove(at: text.endIndex)
             _phones!.text = text

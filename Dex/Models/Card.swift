@@ -13,16 +13,32 @@ internal class Card: Equatable, Hashable {
     
     // MARK: Properties
     
+    /** The card's user. */
+    private var _user: User
+    
+    /** The card's name. */
     private var _name: String
+    
+    /** The card's description. */
     private var _description: String?
+    
+    /** The card's email. */
     private var _email: String?
-    private var _phones: [String] = []
+    
+    /** The card's phones. */
+    private var _phones: [Phone] = []
+    
+    /** The card's website. */
     private var _website: String?
+    
+    /** The card's avi. */
     private var _avi: CGImage?
     
     // MARK: Initialization
     
-    init(name: String, loc: String, desc: String, email: String, phones: String..., web: String, avi: CGImage) {
+    init(user: User, name: String, loc: String, desc: String,
+         email: String, phones: Phone..., web: String, avi: CGImage) {
+        _user = user
         _name = name
         _description = desc
         _email = email
@@ -80,12 +96,20 @@ internal class Card: Equatable, Hashable {
     }
     
     /** Sets the email for this card as EMAIL.
-        Returns whether the contents were modified.
+        Returns whether the email is valid.
      */
     func setEmail(email: String) -> Bool {
-        let e = _email
-        _email = email
-        return e == nil || e! == email
+        if validEmail(email: email) {
+            _email = email
+            return true
+        }
+        
+        return false
+    }
+    
+    /** Returns whether EMAIL is a valid email. */
+    func validEmail(email: String) -> Bool {
+        return Utils.regex(pattern: Utils.EMAIL_REGEX, object: email)
     }
     
     /** Returns whether the card has a website. */
@@ -112,7 +136,7 @@ internal class Card: Equatable, Hashable {
     
     /** Returns whether SITE is a valid url. */
     func validWebsite(site: String) -> Bool {
-        return true // FIXME: implement
+        return Utils.regex(pattern: Utils.WEB_REGEX, object: site)
     }
     
     /** Returns whether the card has any phone numbers. */
@@ -121,15 +145,20 @@ internal class Card: Equatable, Hashable {
     }
     
     /** Returns an array of the phone numbers associated with this card. */
-    func phoneNumbers() -> [String] {
+    func phones() -> [Phone] {
         return _phones
+    }
+    
+    /** Returns this card's primary phone. */
+    func primaryPhone() -> Phone {
+        return _phones[0]
     }
     
     /** Adds PHONE to the phones associated with this card, if valid.
         Returns whether the phone was successfully added
      */
-    func addPhone(phone: String) -> Bool {
-        if !_phones.contains(phone) && validPhone(phone: phone) {
+    func addPhone(phone: Phone) -> Bool {
+        if phone.isValid() && !_phones.contains(phone) {
             _phones.append(phone)
             return true
         }
@@ -140,7 +169,7 @@ internal class Card: Equatable, Hashable {
     /** Removes PHONE from the phones associated with this card.
         Returns whether the phone was successfully removed.
      */
-    func removePhone(phone: String) -> Bool {
+    func removePhone(phone: Phone) -> Bool {
         if _phones.contains(phone) {
             let ind = _phones.index(of: phone)
             _phones.remove(at: ind!)
@@ -148,11 +177,6 @@ internal class Card: Equatable, Hashable {
         }
         
         return false
-    }
-    
-    /** Returns whether PHONE is a valid number. */
-    func validPhone(phone: String) -> Bool {
-        return true // FIXME: implement
     }
     
     /** Returns whether the card has a profile picture. */
@@ -177,12 +201,12 @@ internal class Card: Equatable, Hashable {
     // MARK: Protocols
     
     public static func ==(lhs: Card, rhs: Card) -> Bool {
-        if lhs.phoneNumbers().count != rhs.phoneNumbers().count {
+        if lhs.phones().count != rhs.phones().count {
             return false
         }
         
-        for phone in lhs.phoneNumbers() {
-            if !rhs.phoneNumbers().contains(phone) {
+        for phone in lhs.phones() {
+            if !rhs.phones().contains(phone) {
                 return false
             }
         }
@@ -195,39 +219,32 @@ internal class Card: Equatable, Hashable {
     }
     
     /** Combines the hash value of each non-nil property
-     multiplied by a prime constant.
-     */
+     multiplied by a prime constant. */
     public var hashValue: Int {
         var hash = _name.hashValue
-        var count: Double = 0
         
         if let d = _description {
             hash ^= d.hashValue
-            count += 1
         }
         
         if let e = _email {
             hash ^= e.hashValue
-            count += 1
         }
         
         if _phones.count > 0 {
             for phone in _phones {
                 hash ^= phone.hashValue
-                count += 1
             }
         }
         
         if let w = _website {
             hash ^= w.hashValue
-            count += 1
         }
         
         if let a = _avi {
             hash ^= a.hashValue
-            count += 1
         }
         
-        return hash &* 16777619
+        return hash &* Utils.HASH_PRIME
     }
 }

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		198FF4771FF1CD5B001D3988 /* Phone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 198FF4761FF1CD5B001D3988 /* Phone.swift */; };
+		198FF4791FF20124001D3988 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 198FF4781FF20124001D3988 /* Utils.swift */; };
 		19C6EE871FE84F38001037DB /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C6EE861FE84F38001037DB /* Card.swift */; };
 		19C6EE8D1FE9B871001037DB /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C6EE8C1FE9B871001037DB /* User.swift */; };
 		19C6EE8F1FE9F992001037DB /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C6EE8E1FE9F992001037DB /* CardView.swift */; };
@@ -21,6 +23,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		198FF4761FF1CD5B001D3988 /* Phone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Phone.swift; sourceTree = "<group>"; };
+		198FF4781FF20124001D3988 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		19C6EE861FE84F38001037DB /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
 		19C6EE8C1FE9B871001037DB /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		19C6EE8E1FE9F992001037DB /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
@@ -57,6 +61,7 @@
 				19C6EE8C1FE9B871001037DB /* User.swift */,
 				19C6EE901FEAF59E001037DB /* Connection.swift */,
 				19C6EE9A1FEF10E8001037DB /* Interest.swift */,
+				198FF4761FF1CD5B001D3988 /* Phone.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -98,6 +103,7 @@
 				19F578461F3A70EF00542E25 /* Info.plist */,
 				198FF4741FF17A18001D3988 /* Models */,
 				198FF4751FF17A48001D3988 /* Views */,
+				198FF4781FF20124001D3988 /* Utils.swift */,
 			);
 			path = Dex;
 			sourceTree = "<group>";
@@ -251,7 +257,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				198FF4771FF1CD5B001D3988 /* Phone.swift in Sources */,
 				19F5783D1F3A70EF00542E25 /* ViewController.swift in Sources */,
+				198FF4791FF20124001D3988 /* Utils.swift in Sources */,
 				19C6EE911FEAF59E001037DB /* Connection.swift in Sources */,
 				19C6EE9B1FEF10E8001037DB /* Interest.swift in Sources */,
 				19C6EE871FE84F38001037DB /* Card.swift in Sources */,
