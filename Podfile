@@ -6,6 +6,7 @@ target 'Dex' do
   use_frameworks!
 
   # Pods for Dex
+  pod 'SnapKit', '~> 3.0.0'
   pod 'CVCalendar', '~> 1.6.0'
   pod 'Shiny'
 end

@@ -13,17 +13,25 @@ internal class Connection: Equatable, Comparable, Hashable {
     enum Form {
         case personal
         case recommended
-        case weak
+        case mutual
         case other
     }
     
     // MARK: Properties
     
+    /** A dictionary of the users making up this connection. */
     private var _users: [String : User] = [:]
-    private var _type: Form
-    private var _distance: Double = -1.0
     
+    /** The connection's type. */
+    private var _type: Form
+    
+    /** The connection's weight. */
+    private var _weight: Double = -1.0
+    
+    /** A string ID indicating one of the users in this connection. */
     private static let first = "USER1"
+    
+    /** A string ID indicating one of the users in this connection. */
     private static let second = "USER2"
  
     // MARK: Initialization
@@ -34,16 +42,16 @@ internal class Connection: Equatable, Comparable, Hashable {
         
         switch form {
         case .personal:
-            _distance = 1
+            _weight = 2
             break
         case .recommended:
-            _distance = 2
+            _weight = 1
             break
-        case .weak:
-            _distance = 3
+        case .mutual:
+            _weight = 0.25
             break
         default:
-            _distance = Double.infinity
+            _weight = 0.0
             break
         }
         
@@ -52,12 +60,14 @@ internal class Connection: Equatable, Comparable, Hashable {
     
     // MARK: Methods
     
+    /** Gets the user associated with this connection
+     that is not THIS user. */
     func getConnection(this: User) -> User? {
-        if !users().values.contains(this) {
+        if !_users.values.contains(this) {
             return nil
         }
         
-        let key = (users() as NSDictionary).allKeys(for: this) as! [String]
+        let key = (_users as NSDictionary).allKeys(for: this) as! [String]
         if key[0] == Connection.first {
             return getUser(id: Connection.second)
         } else {
@@ -65,39 +75,43 @@ internal class Connection: Equatable, Comparable, Hashable {
         }
     }
     
-    func users() -> [String : User] {
-        return _users
+    /** Returns the users associated with this */
+    func users() -> [User] {
+        return [_users[Connection.first]!, _users[Connection.second]!]
     }
     
-    func getUser(id: String) -> User? {
-        return users()[id]
+    /** Returns the user given by ID. */
+    private func getUser(id: String) -> User? {
+        return _users[id]
     }
     
+    /** Returns the connection type. */
     func type() -> Form {
         return _type
     }
     
-    func distance() -> Double {
-        return _distance
+    /** Returns the connection weight. */
+    func weight() -> Double {
+        return _weight
     }
     
     // MARK: Protocols
     
     static func ==(lhs: Connection, rhs: Connection) -> Bool {
-        return lhs.type() == rhs.type() && lhs.distance() == rhs.distance() &&
+        return lhs.type() == rhs.type() && lhs.weight() == rhs.weight() &&
                 lhs.users() == rhs.users()
     }
     
     static func <(lhs: Connection, rhs: Connection) -> Bool {
-        return lhs.distance() < rhs.distance()
+        return lhs.weight() < rhs.weight()
     }
     
     /** Combines the hash value of each property multiplied by a prime constant. */
     var hashValue: Int {
-        var hash = distance().hashValue
+        var hash: Int = weight().hashValue
         hash ^= type().hashValue
         for user in users() {
-            hash ^= user.value.hashValue
+            hash ^= user.hashValue
         }
         
         return hash &* Utils.HASH_PRIME

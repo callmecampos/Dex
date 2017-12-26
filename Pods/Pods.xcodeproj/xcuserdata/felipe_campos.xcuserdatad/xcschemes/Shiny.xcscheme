@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '808B3AB0875352F2045EB674EB30661A'
+               BlueprintIdentifier = 'D30D7C07BEE07591496A1C1C1420C273'
                BlueprintName = 'Shiny'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'Shiny.framework'>

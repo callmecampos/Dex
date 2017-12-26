@@ -85,6 +85,6 @@ internal class Phone: Equatable, Hashable {
     /** Combines the hash value of each non-nil property
      multiplied by a prime constant. */
     var hashValue: Int {
-        return _number.hashValue ^ _type.hashValue ^ _valid.hashValue &* 16777619
+        return _number.hashValue ^ _type.hashValue ^ _valid.hashValue &* Utils.HASH_PRIME
     }
 }
