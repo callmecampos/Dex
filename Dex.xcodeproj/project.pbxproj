@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		198FF4771FF1CD5B001D3988 /* Phone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 198FF4761FF1CD5B001D3988 /* Phone.swift */; };
 		198FF4791FF20124001D3988 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 198FF4781FF20124001D3988 /* Utils.swift */; };
+		198FF47B1FF42C27001D3988 /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 198FF47A1FF42C27001D3988 /* NotificationView.swift */; };
 		19C6EE871FE84F38001037DB /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C6EE861FE84F38001037DB /* Card.swift */; };
 		19C6EE8D1FE9B871001037DB /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C6EE8C1FE9B871001037DB /* User.swift */; };
 		19C6EE8F1FE9F992001037DB /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C6EE8E1FE9F992001037DB /* CardView.swift */; };
@@ -25,6 +26,7 @@
 /* Begin PBXFileReference section */
 		198FF4761FF1CD5B001D3988 /* Phone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Phone.swift; sourceTree = "<group>"; };
 		198FF4781FF20124001D3988 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		198FF47A1FF42C27001D3988 /* NotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
 		19C6EE861FE84F38001037DB /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
 		19C6EE8C1FE9B871001037DB /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		19C6EE8E1FE9F992001037DB /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
@@ -70,6 +72,7 @@
 			isa = PBXGroup;
 			children = (
 				19C6EE8E1FE9F992001037DB /* CardView.swift */,
+				198FF47A1FF42C27001D3988 /* NotificationView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -268,6 +271,7 @@
 				19C6EE8D1FE9B871001037DB /* User.swift in Sources */,
 				19F5783B1F3A70EF00542E25 /* AppDelegate.swift in Sources */,
 				19C6EE8F1FE9F992001037DB /* CardView.swift in Sources */,
+				198FF47B1FF42C27001D3988 /* NotificationView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

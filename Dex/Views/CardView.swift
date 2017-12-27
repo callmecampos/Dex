@@ -34,6 +34,10 @@ class CardView: UIView {
     
     // MARK: Initialization
     
+    convenience init(card: Card) {
+        self.init(card: card, frame: CGRect.zero)
+    }
+    
     init(card: Card, frame: CGRect) {
         _card = card
         super.init(frame: frame)
@@ -50,7 +54,7 @@ class CardView: UIView {
         
         layer.masksToBounds = false
         layer.shadowColor = shadowColor?.cgColor
-        layer.shadowOffset = CGSize(width: shadowOffsetWidth, height: shadowOffsetHeight);
+        layer.shadowOffset = CGSize(width: shadowOffsetWidth, height: shadowOffsetHeight)
         layer.shadowOpacity = shadowOpacity
         layer.shadowPath = shadowPath.cgPath
     }
@@ -62,9 +66,8 @@ class CardView: UIView {
         return _card
     }
     
-    /** Makes the CardView given CARD. */
+    /** Makes the CardView given CARD and FRAME. */
     func makeView(card: Card, frame: CGRect) {
-        
         _name.text = card.name()
         self.addSubview(_name)
         
@@ -81,6 +84,7 @@ class CardView: UIView {
         _occupation.snp.makeConstraints { (make) -> Void in
             make.top.equalTo(topTarget).offset(10)
             make.left.equalTo(self).offset(5)
+            // TODO: width and height
         }
         
         topTarget = _occupation.snp.bottom
@@ -92,6 +96,7 @@ class CardView: UIView {
             _phone!.snp.makeConstraints { (make) -> Void in
                 make.top.equalTo(topTarget).offset(10)
                 make.left.equalTo(self).offset(5)
+                // TODO: width and height
             }
             
             topTarget = _phone!.snp.bottom
@@ -113,6 +118,7 @@ class CardView: UIView {
             _email!.snp.makeConstraints { (make) -> Void in
                 make.top.equalTo(topTarget).offset(5)
                 make.left.equalTo(self).offset(5)
+                // TODO: width and height
             }
             
             topTarget = _email!.snp.bottom
@@ -125,6 +131,7 @@ class CardView: UIView {
             _website!.snp.makeConstraints { (make) -> Void in
                 make.top.equalTo(topTarget).offset(5)
                 make.left.equalTo(self).offset(5)
+                // TODO: width and height
             }
             
             topTarget = _website!.snp.bottom
@@ -141,15 +148,19 @@ class CardView: UIView {
         _imageView.snp.makeConstraints { (make) -> Void in
             make.top.equalTo(self).offset(5)
             make.right.equalTo(self).offset(5)
+            make.left.greaterThanOrEqualTo(_name.snp.right)
+            // TODO: width and height??
         }
         
-        // make shiny
+        /*
         
         let shinyView = ShinyView(frame: CGRect(x: 0, y: 0, width: 320, height: 200))
         shinyView.colors = [UIColor.red, UIColor.green, UIColor.blue, UIColor.gray]
-        shinyView.locations = [0, 0.1, 0.2, 0.3, 1]
+        shinyView.locations = [0, 0.1, 0.2, 0.3, 1] // FIXME: test locations
         shinyView.startUpdates() // necessary
-        self.addSubview(shinyView)
+        self.addSubview(shinyView) // make shiny
+        
+        */
     }
 
     /*
