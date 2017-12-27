@@ -8,6 +8,7 @@
 
 import Foundation
 
+/** A connection class defining a relationship between two users. */
 internal class Connection: Equatable, Comparable, Hashable {
     
     enum Form {

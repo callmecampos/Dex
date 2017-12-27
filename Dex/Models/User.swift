@@ -9,6 +9,7 @@
 import Foundation
 import CoreLocation
 
+/** A user class. */
 internal class User: Equatable, Comparable, Hashable {
     
     // MARK: Properties

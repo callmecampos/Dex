@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 
+/** A card class denoting a user's information. */
 internal class Card: Equatable, Hashable {
     
     // MARK: Properties
@@ -19,8 +20,8 @@ internal class Card: Equatable, Hashable {
     /** The card's name. */
     private var _name: String
     
-    /** The card's description. */
-    private var _description: String?
+    /** The card's occupation. */
+    private var _occupation: String
     
     /** The card's email. */
     private var _email: String?
@@ -40,7 +41,7 @@ internal class Card: Equatable, Hashable {
          email: String, phones: Phone..., web: String, avi: CGImage) {
         _user = user
         _name = name
-        _description = desc
+        _occupation = desc
         _email = email
         _website = web
         _avi = avi
@@ -66,23 +67,18 @@ internal class Card: Equatable, Hashable {
         return n != name
     }
     
-    /** Returns whether the card has a description. */
-    func hasDescription() -> Bool {
-        return _description != nil
+    /** Returns the optional occupation associated with this card. */
+    func occupation() -> String {
+        return _occupation
     }
     
-    /** Returns the optional description associated with this card. */
-    func description() -> String {
-        return _description!
-    }
-    
-    /** Sets the description for this card as DESC.
+    /** Sets the occupation for this card as DESC.
         Returns whether the contents were modified.
      */
-    func setDescription(desc: String) -> Bool {
-        let d = _description
-        _description = desc
-        return d == nil || d! != desc
+    func setOccupation(desc: String) -> Bool {
+        let d = _occupation
+        _occupation = desc
+        return d != desc
     }
     
     /** Returns whether the card has an email. */
@@ -212,7 +208,7 @@ internal class Card: Equatable, Hashable {
         }
         
         return lhs.name() == rhs.name() &&
-            lhs.description() == rhs.description() &&
+            lhs.occupation() == rhs.occupation() &&
             lhs.email() == rhs.email() &&
             lhs.website() == rhs.website() &&
             lhs.profilePicture() == rhs.profilePicture()
@@ -221,11 +217,7 @@ internal class Card: Equatable, Hashable {
     /** Combines the hash value of each non-nil property
      multiplied by a prime constant. */
     public var hashValue: Int {
-        var hash = _name.hashValue
-        
-        if let d = _description {
-            hash ^= d.hashValue
-        }
+        var hash = _name.hashValue ^ _occupation.hashValue
         
         if let e = _email {
             hash ^= e.hashValue

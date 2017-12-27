@@ -8,6 +8,7 @@
 
 import Foundation
 
+/** A utility class. */
 public class Utils {
     /** A regex pattern checking function.
      Returns whether OBJECT matches PATTERN. */

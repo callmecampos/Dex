@@ -8,6 +8,7 @@
 
 import Foundation
 
+/** A phone class. */
 internal class Phone: Equatable, Hashable {
     
     enum Kind {
@@ -79,7 +80,7 @@ internal class Phone: Equatable, Hashable {
     // MARK: Protocols
     
     static func ==(lhs: Phone, rhs: Phone) -> Bool {
-        return false
+        return lhs.number() == rhs.number() && lhs.type() == rhs.type()
     }
     
     /** Combines the hash value of each non-nil property

@@ -8,6 +8,7 @@
 
 import Foundation
 
+/** An interest class defining an instance of a user's interest or skill. */
 internal class Interest: Equatable, Hashable {
     
     enum Variety {
