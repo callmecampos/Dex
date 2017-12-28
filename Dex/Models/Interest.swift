@@ -13,12 +13,14 @@ internal class Interest: Equatable, Hashable {
     
     enum Variety {
         case any
-        case athletics
         case business
         case consulting
+        case design
+        case engineering
         case entrepreneurship
         case software
-        // TODO: ask Brenton and Chris for all interest varieties
+        case sports
+        // TODO: refine and add cases
     }
     
     // MARK: Properties

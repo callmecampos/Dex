@@ -10,6 +10,7 @@ import UIKit
 import SnapKit
 import Shiny
 
+/** A card view class. */
 @IBDesignable
 class CardView: UIView {
     
@@ -84,7 +85,6 @@ class CardView: UIView {
         _occupation.snp.makeConstraints { (make) -> Void in
             make.top.equalTo(topTarget).offset(10)
             make.left.equalTo(self).offset(5)
-            // TODO: width and height
         }
         
         topTarget = _occupation.snp.bottom
@@ -96,7 +96,6 @@ class CardView: UIView {
             _phone!.snp.makeConstraints { (make) -> Void in
                 make.top.equalTo(topTarget).offset(10)
                 make.left.equalTo(self).offset(5)
-                // TODO: width and height
             }
             
             topTarget = _phone!.snp.bottom
@@ -104,7 +103,7 @@ class CardView: UIView {
             /*
              var text: String = ""
              for phone in card.phones() {
-             text.append(phone.number() + "(\(phone.type()))\n")
+                text.append(phone.number() + "(\(phone.type()))\n")
              }
              text.remove(at: text.endIndex)
              _phones!.text = text
@@ -118,7 +117,6 @@ class CardView: UIView {
             _email!.snp.makeConstraints { (make) -> Void in
                 make.top.equalTo(topTarget).offset(5)
                 make.left.equalTo(self).offset(5)
-                // TODO: width and height
             }
             
             topTarget = _email!.snp.bottom
@@ -131,7 +129,6 @@ class CardView: UIView {
             _website!.snp.makeConstraints { (make) -> Void in
                 make.top.equalTo(topTarget).offset(5)
                 make.left.equalTo(self).offset(5)
-                // TODO: width and height
             }
             
             topTarget = _website!.snp.bottom
@@ -149,7 +146,17 @@ class CardView: UIView {
             make.top.equalTo(self).offset(5)
             make.right.equalTo(self).offset(5)
             make.left.greaterThanOrEqualTo(_name.snp.right)
-            // TODO: width and height??
+        }
+        
+        _editButton.backgroundColor = UIColor.clear
+        _editButton.tintColor = UIColor.blue
+        _editButton.setTitle("Edit", for: .normal)
+        _editButton.addTarget(self, action: #selector(editAction), for: .touchUpInside)
+        self.addSubview(_editButton)
+        
+        _editButton.snp.makeConstraints { (make) -> Void in
+            make.bottom.equalTo(self).offset(5)
+            make.right.equalTo(self).offset(5)
         }
         
         /*
@@ -161,6 +168,11 @@ class CardView: UIView {
         self.addSubview(shinyView) // make shiny
         
         */
+    }
+    
+    func editAction(sender: UIButton!) {
+        // TODO: show pop-up view that edits card properties
+        print("Editing")
     }
 
     /*
