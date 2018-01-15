@@ -21,6 +21,7 @@ class NotificationCardView: UIView {
     
     private var _title: UILabel = UILabel()
     private var _note: UILabel = UILabel()
+    private var _time: UILabel?
     private var _imageView: UIImageView?
     
     @IBInspectable var cornerRadius: CGFloat = 2
@@ -31,13 +32,31 @@ class NotificationCardView: UIView {
     
     // MARK: Initialization
     
-    init(title: String, note: String, img: CGImage?, frame: CGRect) {
+    convenience init(title: String, note: String, time: String) {
+        self.init(title: title, note: note, frame: CGRect.zero)
+        _time = UILabel()
+        _time!.text = time
+    }
+    
+    convenience init(title: String, note: String, time: String, img: UIImage) {
+        self.init(title: title, note: note, img: img, frame: CGRect.zero)
+        _time = UILabel()
+        _time!.text = time
+    }
+    
+    convenience init(title: String, note: String) {
+        self.init(title: title, note: note, frame: CGRect.zero)
+    }
+    
+    init(title: String, note: String, frame: CGRect) {
         super.init(frame: frame)
-        if img != nil {
-            makeView(title: title, note: note, img: img!, frame: frame)
-        } else {
-            makeView(title: title, note: note, frame: frame)
-        }
+        makeView(title: title, note: note, frame: frame)
+        makeShiny()
+    }
+    
+    init(title: String, note: String, img: UIImage, frame: CGRect) {
+        super.init(frame: frame)
+        makeView(title: title, note: note, img: img, frame: frame)
         makeShiny()
     }
     
@@ -58,10 +77,10 @@ class NotificationCardView: UIView {
     
     // MARK: Methods
     
-    func makeView(title: String, note: String, img: CGImage, frame: CGRect) {
+    func makeView(title: String, note: String, img: UIImage, frame: CGRect) {
         makeView(title: title, note: note, frame: frame)
         
-        _imageView = UIImageView(image: UIImage(cgImage: img))
+        _imageView = UIImageView(image: img)
         _imageView!.layer.cornerRadius = _imageView!.frame.size.width / 2
         _imageView!.layer.masksToBounds = true
         self.addSubview(_imageView!)

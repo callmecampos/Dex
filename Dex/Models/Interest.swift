@@ -12,14 +12,12 @@ import Foundation
 internal class Interest: Equatable, Hashable {
     
     enum Variety {
-        case any
-        case business
-        case consulting
-        case design
-        case engineering
-        case entrepreneurship
-        case software
-        case sports
+        case reading
+        case tennis
+        case golf
+        case hunting
+        case fishing
+        case other
         // TODO: refine and add cases
     }
     
@@ -31,22 +29,26 @@ internal class Interest: Equatable, Hashable {
     /** The interest description. */
     private var _description: String
     
-    /** The interest weight. */
-    private var _weight: Double
-    
     /** The interest type. */
     private var _type: Interest.Variety
     
     // MARK: Initialization
     
-    init(name: String, desc: String, weight: Double, type: Interest.Variety) {
-        _name = name
-        _description = desc
-        _weight = weight
+    init(type: Interest.Variety) {
         _type = type
+        let variety = Interest.Variety.self
+        
+        switch type {
+        case variety.reading:
+            _name = "Reading"
+            _description = "n/a"
+        default:
+            _name = "Other"
+            _description = "n/a"
+        }
     }
     
-    // MARK: Methods
+    // MARK: - Methods
     
     /** Returns the interest name. */
     func name() -> String {
@@ -58,11 +60,6 @@ internal class Interest: Equatable, Hashable {
         return _description
     }
     
-    /** Return's the interest weight. */
-    func weight() -> Double {
-        return _weight
-    }
-    
     /** Return's the interest type (business, software, entrepreneurship, etc.). */
     func type() -> Interest.Variety {
         return _type
@@ -72,13 +69,12 @@ internal class Interest: Equatable, Hashable {
     
     static func ==(lhs: Interest, rhs: Interest) -> Bool {
         return lhs.name() == rhs.name() && lhs.description() == rhs.description()
-        && lhs.weight() == rhs.weight() && lhs.type() == rhs.type()
+        && lhs.type() == rhs.type()
     }
     
     /** Combines the hash value of each property
      multiplied by a prime constant. */
     var hashValue: Int {
-        return _name.hashValue ^ _description.hashValue ^
-            _weight.hashValue ^ _type.hashValue &* Utils.HASH_PRIME
+        return _name.hashValue ^ _description.hashValue ^ _type.hashValue &* Utils.HASH_PRIME
     }
 }

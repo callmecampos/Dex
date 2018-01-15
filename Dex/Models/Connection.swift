@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CoreLocation
 
 /** A connection class defining a relationship between two users. */
 internal class Connection: Equatable, Comparable, Hashable {
@@ -14,7 +15,7 @@ internal class Connection: Equatable, Comparable, Hashable {
     enum Form {
         case personal
         case recommended
-        case mutual
+        case online
         case other
     }
     
@@ -29,6 +30,9 @@ internal class Connection: Equatable, Comparable, Hashable {
     /** The connection's weight. */
     private var _weight: Double = -1.0
     
+    /** The place in which the connection was made. */
+    private var _location: CLLocation
+    
     /** A string ID indicating one of the users in this connection. */
     private static let first = "USER1"
     
@@ -37,9 +41,11 @@ internal class Connection: Equatable, Comparable, Hashable {
  
     // MARK: Initialization
     
-    init(user1: User, user2: User, form: Connection.Form) {
+    init(user1: User, user2: User, location: CLLocation, form: Connection.Form) {
         _users.updateValue(user1, forKey: Connection.first)
         _users.updateValue(user2, forKey: Connection.second)
+        
+        _location = location
         
         switch form {
         case .personal:
@@ -48,7 +54,7 @@ internal class Connection: Equatable, Comparable, Hashable {
         case .recommended:
             _weight = 1
             break
-        case .mutual:
+        case .online:
             _weight = 0.25
             break
         default:
@@ -59,7 +65,7 @@ internal class Connection: Equatable, Comparable, Hashable {
         _type = form
     }
     
-    // MARK: Methods
+    // MARK: - Methods
     
     /** Gets the user associated with this connection
      that is not THIS user. */
@@ -76,7 +82,7 @@ internal class Connection: Equatable, Comparable, Hashable {
         }
     }
     
-    /** Returns the users associated with this */
+    /** Returns the users associated with this connection. */
     func users() -> [User] {
         return [_users[Connection.first]!, _users[Connection.second]!]
     }
@@ -89,6 +95,11 @@ internal class Connection: Equatable, Comparable, Hashable {
     /** Returns the connection type. */
     func type() -> Form {
         return _type
+    }
+    
+    /** Returns the place the connection was made. */
+    func place() -> CLLocation {
+        return _location
     }
     
     /** Returns the connection weight. */

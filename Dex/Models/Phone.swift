@@ -43,7 +43,7 @@ internal class Phone: Equatable, Hashable {
         _type = kind
     }
     
-    // MARK: Methods
+    // MARK: - Methods
     
     /** Returns the phone number. */
     func number() -> String {

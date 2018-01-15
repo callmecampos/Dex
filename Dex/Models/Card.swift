@@ -10,40 +10,52 @@ import Foundation
 import UIKit
 
 /** A card class denoting a user's information. */
-internal class Card: Equatable, Hashable {
+internal class Card: Equatable, Comparable, Hashable {
     
     // MARK: Properties
     
     /** The card's user. */
     private var _user: User
     
-    /** The card's name. */
-    private var _name: String
+    /** The card's location. */
+    private var _location: String?
     
     /** The card's occupation. */
     private var _occupation: String
     
     /** The card's email. */
-    private var _email: String?
+    private var _email: String = ""
     
     /** The card's phones. */
     private var _phones: [Phone] = []
     
     /** The card's website. */
-    private var _website: String?
+    private var _website: String = ""
     
     /** The card's avi. */
-    private var _avi: CGImage?
+    private var _avi: UIImage
+    
+    /** The card's priority. */
+    private var _priority: Int = 0
     
     // MARK: Initialization
     
-    init(user: User, name: String, loc: String, desc: String,
-         email: String, phones: Phone..., web: String, avi: CGImage) {
-        _user = user
-        _name = name
-        _occupation = desc
-        _email = email
+    convenience init(user: User, location: String, occupation: String,
+                     email: String, phones: [Phone], web: String, avi: UIImage) {
+        self.init(user: user, occupation: occupation,
+                  email: email, phones: phones, web: web, avi: avi)
+        _location = location
+    }
+    
+    convenience init(user: User, occupation: String, email: String, phones: [Phone], web: String, avi: UIImage) {
+        self.init(user: user, occupation: occupation, email: email, phones: phones, avi: avi)
         _website = web
+    }
+    
+    init(user: User, occupation: String, email: String, phones: [Phone], avi: UIImage) {
+        _user = user
+        _occupation = occupation
+        _email = email
         _avi = avi
         
         for phone in phones {
@@ -51,44 +63,54 @@ internal class Card: Equatable, Hashable {
         }
     }
     
-    // MARK: Methods
+    // MARK: - Methods
     
-    /** Returns the name associated with this card. */
-    func name() -> String {
-        return _name
+    /** Returns the user associated with this card. */
+    func user() -> User {
+        return _user
     }
     
-    /** Sets the name for this card as NAME.
-        Returns whether the contents were modified.
-     */
-    func setName(name: String) -> Bool {
-        let n = _name
-        _name = name
-        return n != name
-    }
-    
-    /** Returns the optional occupation associated with this card. */
+    /** Returns the occupation associated with this card. */
     func occupation() -> String {
         return _occupation
     }
     
-    /** Sets the occupation for this card as DESC.
+    /** Sets the occupation for this card as OCC.
         Returns whether the contents were modified.
      */
-    func setOccupation(desc: String) -> Bool {
-        let d = _occupation
-        _occupation = desc
-        return d != desc
+    func setOccupation(occ: String) -> Bool {
+        let o = _occupation
+        _occupation = occ
+        return o != occ
+    }
+    
+    /** Returns whether the card contains a non-nil location. */
+    func hasLocation() -> Bool {
+        return _location != nil
+    }
+    
+    /** Returns the location associated with this card. */
+    func location() -> String {
+        return _location!
+    }
+    
+    /** Sets the location for this card as LOC.
+     Returns whether the contents were modified.
+     */
+    func setLocation(loc: String) -> Bool {
+        let l = _location
+        _location = loc
+        return l != nil && l != loc
     }
     
     /** Returns whether the card has an email. */
     func hasEmail() -> Bool {
-        return _email != nil
+        return _email != ""
     }
     
     /** Returns the optional email associated with this card. */
     func email() -> String {
-        return _email!
+        return _email
     }
     
     /** Sets the email for this card as EMAIL.
@@ -110,12 +132,12 @@ internal class Card: Equatable, Hashable {
     
     /** Returns whether the card has a website. */
     func hasWebsite() -> Bool {
-        return _website != nil
+        return _website != ""
     }
     
     /** Returns the optional website associated with this card. */
     func website() -> String {
-        return _website!
+        return _website
     }
     
     /** Sets the website for this card, if valid.
@@ -177,21 +199,34 @@ internal class Card: Equatable, Hashable {
     
     /** Returns whether the card has a profile picture. */
     func hasProfilePicture() -> Bool {
-        return _avi != nil
+        return _avi != Utils.defaultImage
     }
     
     /** Returns the optional profile picture associated with this card. */
-    func profilePicture() -> CGImage {
-        return _avi!
+    func profilePicture() -> UIImage {
+        return _avi
     }
     
     /** Sets the profile picture as NEW for this card.
         Returns whether the image contents changed.
      */
-    func setProfilePicture(new: CGImage) -> Bool {
+    func setProfilePicture(new: UIImage) -> Bool {
         let a = _avi
         _avi = new
-        return a == nil || a! == new
+        return a != new
+    }
+    
+    /** Returns the card's priority integer value. */
+    func priority() -> Int {
+        return _priority
+    }
+    
+    /** Sets the card's priority to NEW.
+     Returns whether the priority was changed. */
+    func setPriority(new: Int) -> Bool {
+        let p = _priority
+        _priority = new
+        return p != new
     }
     
     // MARK: Protocols
@@ -207,20 +242,24 @@ internal class Card: Equatable, Hashable {
             }
         }
         
-        return lhs.name() == rhs.name() &&
+        return lhs.user() == rhs.user() &&
             lhs.occupation() == rhs.occupation() &&
             lhs.email() == rhs.email() &&
             lhs.website() == rhs.website() &&
             lhs.profilePicture() == rhs.profilePicture()
     }
     
+    public static func <(lhs: Card, rhs: Card) -> Bool {
+        return lhs.priority() < rhs.priority()
+    }
+    
     /** Combines the hash value of each non-nil property
      multiplied by a prime constant. */
     public var hashValue: Int {
-        var hash = _name.hashValue ^ _occupation.hashValue
+        var hash = _user.hashValue ^ _occupation.hashValue ^ _email.hashValue
         
-        if let e = _email {
-            hash ^= e.hashValue
+        if self.hasLocation() {
+            hash ^= _location!.hashValue
         }
         
         if _phones.count > 0 {
@@ -229,13 +268,8 @@ internal class Card: Equatable, Hashable {
             }
         }
         
-        if let w = _website {
-            hash ^= w.hashValue
-        }
-        
-        if let a = _avi {
-            hash ^= a.hashValue
-        }
+        hash ^= _website.hashValue
+        hash ^= _avi.hashValue
         
         return hash &* Utils.HASH_PRIME
     }

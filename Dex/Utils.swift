@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 /** A utility class. */
 public class Utils {
@@ -31,4 +32,9 @@ public class Utils {
     
     /** A prime constant used for calculating hash values. */
     static let HASH_PRIME = 16777619
+    
+    /** A default image. */
+    static let defaultImage = UIImage()
+    
+    // reference images in assets as vars here (e.g. let chicken = "Assets/chicken.png")
 }

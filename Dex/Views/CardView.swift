@@ -42,7 +42,16 @@ class CardView: UIView {
     init(card: Card, frame: CGRect) {
         _card = card
         super.init(frame: frame)
-        makeView(card: card, frame: frame)
+        
+        let swipeUp = UISwipeGestureRecognizer(target: self, action: #selector(self.respondToSwipeGesture))
+        swipeUp.direction = UISwipeGestureRecognizerDirection.up
+        self.addGestureRecognizer(swipeUp)
+        
+        let swipeDown = UISwipeGestureRecognizer(target: self, action: #selector(self.respondToSwipeGesture))
+        swipeDown.direction = UISwipeGestureRecognizerDirection.down
+        self.addGestureRecognizer(swipeDown)
+        
+        makeView(card: card)
     }
     
     required init(coder aDecoder: NSCoder) {
@@ -60,6 +69,25 @@ class CardView: UIView {
         layer.shadowPath = shadowPath.cgPath
     }
     
+    // MARK: Actions
+    
+    func respondToSwipeGesture(gesture: UIGestureRecognizer) { // FIXME:
+        if let swipeGesture = gesture as? UISwipeGestureRecognizer {
+            switch swipeGesture.direction {
+            case UISwipeGestureRecognizerDirection.right:
+                print("Swiped right.")
+            case UISwipeGestureRecognizerDirection.down:
+                print("Swiped down, showing card statistics.")
+            case UISwipeGestureRecognizerDirection.left:
+                print("Swiped left.")
+            case UISwipeGestureRecognizerDirection.up:
+                print("Swiped up, preparing card for sharing.")
+            default:
+                break
+            }
+        }
+    }
+    
     // MARK: Methods
     
     /** Returns this view's card. */
@@ -67,9 +95,15 @@ class CardView: UIView {
         return _card
     }
     
-    /** Makes the CardView given CARD and FRAME. */
-    func makeView(card: Card, frame: CGRect) {
-        _name.text = card.name()
+    /** Sets the view's card to CARD and remakes the view. */
+    func setCard(card: Card) {
+        _card = card
+        makeView(card: card)
+    }
+    
+    /** Makes the CardView given CARD. */
+    func makeView(card: Card) {
+        _name.text = card.user().name()
         self.addSubview(_name)
         
         _name.snp.makeConstraints { (make) -> Void in
@@ -135,7 +169,7 @@ class CardView: UIView {
         }
         
         if card.hasProfilePicture() {
-            _profilePicture = UIImage(cgImage: card.profilePicture())
+            _profilePicture = card.profilePicture()
             _imageView.image = _profilePicture!
         }
         _imageView.layer.cornerRadius = _imageView.frame.size.width / 2
@@ -170,7 +204,7 @@ class CardView: UIView {
         */
     }
     
-    func editAction(sender: UIButton!) {
+    func editAction(sender: UIButton!) { // FIXME:
         // TODO: show pop-up view that edits card properties
         print("Editing")
     }
