@@ -33,6 +33,8 @@ class ViewController: UIViewController, UIScrollViewDelegate {
         // Do any additional setup after loading the view, typically from a nib.
         
         cardView = CardView(card: cards[cardIndex])
+        self.view.addSubview(cardView)
+        
         leftButton.isHidden = true
         if cards.count == 1 {
             rightButton.isHidden = true
@@ -77,16 +79,18 @@ class ViewController: UIViewController, UIScrollViewDelegate {
     
     func makeView() {
         swipeLabel.snp.makeConstraints { (make) -> Void in
+            make.top.equalToSuperview().offset(30)
             make.centerX.equalToSuperview()
-            make.top.equalToSuperview().offset(20)
-            make.bottom.equalTo(cardView.snp.top).offset(5)
         }
         
         cardView.snp.makeConstraints { (make) -> Void in
-            make.centerX.equalToSuperview()
-            make.left.greaterThanOrEqualTo(leftButton.snp.right).offset(5)
-            make.right.lessThanOrEqualTo(rightButton.snp.left).offset(5)
+            make.top.equalTo(swipeLabel.snp.bottom).offset(20)
+            make.left.equalToSuperview().offset(20)
+            make.right.equalToSuperview().inset(20)
+            make.bottom.equalToSuperview().inset(40)
         }
+        
+        cardView.makeView()
         
         leftButton.addTarget(self, action: #selector(self.leftButtonTapped(_:)), for: .touchUpInside)
         leftButton.snp.makeConstraints { (make) -> Void in

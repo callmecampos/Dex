@@ -36,5 +36,17 @@ public class Utils {
     /** A default image. */
     static let defaultImage = UIImage()
     
+    /** A constant denoting a small offset for constraints. */
+    static let smallOffset = 5
+    
+    /** A constant denoting a medium offset for constraints. */
+    static let mediumOffset = 10
+    
+    /** A constant denoting a large offset for constraints. */
+    static let largeOffset = 20
+    
+    /** A constant denoting a huge offset for constraints. */
+    static let hugeOffset = 40
+    
     // reference images in assets as vars here (e.g. let chicken = "Assets/chicken.png")
 }

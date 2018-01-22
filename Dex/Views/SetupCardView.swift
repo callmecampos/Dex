@@ -22,10 +22,8 @@ class SetupCardView: UIView, UITextFieldDelegate {
     private var _imageView: UIImageView = UIImageView()
     private var _occupationFieldTitle: UILabel = UILabel()
     private var _occupationField: UITextField = UITextField()
-    private var _savedOccupation: String = ""
     private var _websiteFieldTitle: UILabel = UILabel()
     private var _websiteField: UITextField = UITextField()
-    private var _savedWebsite: String = ""
     
     private var _phoneGiven: Bool = false
     private var _givenPhone: Phone?
@@ -36,10 +34,8 @@ class SetupCardView: UIView, UITextFieldDelegate {
     
     private var _emailFieldTitle: UILabel?
     private var _emailField: UITextField?
-    private var _savedEmail: String = ""
     private var _phoneFieldTitle: UILabel?
     private var _phoneField: UITextField?
-    private var _savedPhone: String = ""
     
     private var _saveButton: UIButton = UIButton(frame: CGRect(x: 0, y: 0, width: 100, height: 50))
     
@@ -168,27 +164,12 @@ class SetupCardView: UIView, UITextFieldDelegate {
     
     // MARK: Methods
     
-    func changedSinceLastSave() -> Bool {
-        var changed: Bool = false
-        if _phoneGiven {
-            changed = email() == _savedEmail
-        } else {
-            changed = phone().number() == _savedPhone
-        }
-        
-        return changed || occupation() != _savedOccupation || website() == _savedWebsite
-    }
-    
     func hasOccupation() -> Bool {
         return _occupationField.hasText
     }
     
     func occupation() -> String {
         return _occupationField.text!
-    }
-    
-    func setSavedOccupation(new: String) {
-        _savedOccupation = new
     }
     
     func hasWebsite() -> Bool {
@@ -199,10 +180,6 @@ class SetupCardView: UIView, UITextFieldDelegate {
         return _websiteField.text!
     }
     
-    func setSavedWebsite(new: String) {
-        _savedWebsite = new
-    }
-    
     func hasEmail() -> Bool {
         return _emailField!.hasText // FIXME: regex for validity
     }
@@ -211,20 +188,12 @@ class SetupCardView: UIView, UITextFieldDelegate {
         return _emailField!.text!
     }
     
-    func setSavedEmail(new: String) {
-        _savedEmail = new
-    }
-    
     func hasPhone() -> Bool {
         return _phoneField!.hasText // FIXME: regex for validity
     }
     
     func phone() -> Phone {
         return Phone(number: _phoneField!.text!, kind: .other)
-    }
-    
-    func setSavedPhone(new: String) {
-        _savedPhone = new
     }
     
     func makeView() {
@@ -247,9 +216,9 @@ class SetupCardView: UIView, UITextFieldDelegate {
         // TODO: setup for multiple lines
         
         _name.snp.makeConstraints { (make) -> Void in
-            make.top.equalTo(self).offset(SetupCardView.mediumOffset)
-            make.left.equalTo(self).offset(SetupCardView.mediumOffset)
-            make.right.lessThanOrEqualTo(_imageView.snp.left).inset(SetupCardView.smallOffset)
+            make.top.equalTo(self).offset(Utils.mediumOffset)
+            make.left.equalTo(self).offset(Utils.mediumOffset)
+            make.right.lessThanOrEqualTo(_imageView.snp.left).inset(Utils.smallOffset)
             make.height.equalTo(_name.font.lineHeight)
         }
         
@@ -259,18 +228,18 @@ class SetupCardView: UIView, UITextFieldDelegate {
         var contactLabelHeight: CGFloat
         if phone != nil {
             _phoneLabel!.snp.makeConstraints { (make) -> Void in
-                make.top.equalTo(_name.snp.bottom).offset(SetupCardView.mediumOffset)
-                make.left.equalTo(self).offset(SetupCardView.mediumOffset)
-                make.right.equalTo(self).inset(SetupCardView.mediumOffset)
+                make.top.equalTo(_name.snp.bottom).offset(Utils.mediumOffset)
+                make.left.equalTo(self).offset(Utils.mediumOffset)
+                make.right.equalTo(self).inset(Utils.mediumOffset)
                 make.height.equalTo(_phoneLabel!.font.lineHeight)
             }
             topConstraint = _phoneLabel!.snp.bottom
             contactLabelHeight = _phoneLabel!.font.lineHeight
         } else {
             _emailLabel!.snp.makeConstraints { (make) -> Void in
-                make.top.equalTo(_name.snp.bottom).offset(SetupCardView.mediumOffset)
-                make.left.equalTo(self).offset(SetupCardView.mediumOffset)
-                make.right.equalTo(self).inset(SetupCardView.mediumOffset)
+                make.top.equalTo(_name.snp.bottom).offset(Utils.mediumOffset)
+                make.left.equalTo(self).offset(Utils.mediumOffset)
+                make.right.equalTo(self).inset(Utils.mediumOffset)
                 make.height.equalTo(_emailLabel!.font.lineHeight)
             }
             topConstraint = _emailLabel!.snp.bottom
@@ -278,73 +247,73 @@ class SetupCardView: UIView, UITextFieldDelegate {
         }
         
         _imageView.snp.makeConstraints { (make) -> Void in
-            make.top.equalTo(self).offset(SetupCardView.mediumOffset)
-            make.left.greaterThanOrEqualTo(_name.snp.right).offset(SetupCardView.smallOffset)
-            make.width.equalTo(_name.font.lineHeight + CGFloat(SetupCardView.mediumOffset) + contactLabelHeight)
-            make.right.equalTo(self).inset(SetupCardView.mediumOffset)
+            make.top.equalTo(self).offset(Utils.mediumOffset)
+            make.left.greaterThanOrEqualTo(_name.snp.right).offset(Utils.smallOffset)
+            make.width.equalTo(_name.font.lineHeight + CGFloat(Utils.mediumOffset) + contactLabelHeight)
+            make.right.equalTo(self).inset(Utils.mediumOffset)
             make.bottom.equalTo(topConstraint)
         }
         
         _occupationFieldTitle.snp.makeConstraints { (make) -> Void in
-            make.top.equalTo(topConstraint).offset(SetupCardView.largeOffset)
-            make.left.equalTo(self).offset(SetupCardView.mediumOffset)
-            make.right.equalTo(self).inset(SetupCardView.mediumOffset)
+            make.top.equalTo(topConstraint).offset(Utils.largeOffset)
+            make.left.equalTo(self).offset(Utils.mediumOffset)
+            make.right.equalTo(self).inset(Utils.mediumOffset)
             make.height.equalTo(_occupationFieldTitle.font.lineHeight)
         }
         _occupationField.snp.makeConstraints { (make) -> Void in
-            make.top.equalTo(_occupationFieldTitle.snp.bottom).offset(SetupCardView.smallOffset)
-            make.left.equalTo(self).offset(SetupCardView.mediumOffset)
-            make.right.equalTo(self).inset(SetupCardView.mediumOffset)
+            make.top.equalTo(_occupationFieldTitle.snp.bottom).offset(Utils.smallOffset)
+            make.left.equalTo(self).offset(Utils.mediumOffset)
+            make.right.equalTo(self).inset(Utils.mediumOffset)
             make.height.equalTo(_occupationField.font!.lineHeight)
         }
         
         if phone == nil {
             _phoneFieldTitle!.snp.makeConstraints { (make) -> Void in
-                make.top.equalTo(_occupationField.snp.bottom).offset(SetupCardView.mediumOffset)
-                make.left.equalTo(self).offset(SetupCardView.mediumOffset)
-                make.right.equalTo(self).inset(SetupCardView.mediumOffset)
+                make.top.equalTo(_occupationField.snp.bottom).offset(Utils.mediumOffset)
+                make.left.equalTo(self).offset(Utils.mediumOffset)
+                make.right.equalTo(self).inset(Utils.mediumOffset)
                 make.height.equalTo(_phoneFieldTitle!.font.lineHeight)
             }
             _phoneField!.snp.makeConstraints { (make) -> Void in
-                make.top.equalTo(_phoneFieldTitle!.snp.bottom).offset(SetupCardView.smallOffset)
-                make.left.equalTo(self).offset(SetupCardView.mediumOffset)
-                make.right.equalTo(self).inset(SetupCardView.mediumOffset)
+                make.top.equalTo(_phoneFieldTitle!.snp.bottom).offset(Utils.smallOffset)
+                make.left.equalTo(self).offset(Utils.mediumOffset)
+                make.right.equalTo(self).inset(Utils.mediumOffset)
                 make.height.equalTo(_phoneField!.font!.lineHeight)
             }
             topConstraint = _phoneField!.snp.bottom
         } else {
             _emailFieldTitle!.snp.makeConstraints { (make) -> Void in
-                make.top.equalTo(_occupationField.snp.bottom).offset(SetupCardView.mediumOffset)
-                make.left.equalTo(self).offset(SetupCardView.mediumOffset)
-                make.right.equalTo(self).inset(SetupCardView.mediumOffset)
+                make.top.equalTo(_occupationField.snp.bottom).offset(Utils.mediumOffset)
+                make.left.equalTo(self).offset(Utils.mediumOffset)
+                make.right.equalTo(self).inset(Utils.mediumOffset)
                 make.height.equalTo(_emailFieldTitle!.font.lineHeight)
             }
             _emailField!.snp.makeConstraints { (make) -> Void in
-                make.top.equalTo(_emailFieldTitle!.snp.bottom).offset(SetupCardView.smallOffset)
-                make.left.equalTo(self).offset(SetupCardView.mediumOffset)
-                make.right.equalTo(self).inset(SetupCardView.mediumOffset)
+                make.top.equalTo(_emailFieldTitle!.snp.bottom).offset(Utils.smallOffset)
+                make.left.equalTo(self).offset(Utils.mediumOffset)
+                make.right.equalTo(self).inset(Utils.mediumOffset)
                 make.height.equalTo(_emailField!.font!.lineHeight)
             }
             topConstraint = _emailField!.snp.bottom
         }
         
         _websiteFieldTitle.snp.makeConstraints { (make) -> Void in
-            make.top.equalTo(topConstraint).offset(SetupCardView.mediumOffset)
-            make.left.equalTo(self).offset(SetupCardView.mediumOffset)
-            make.right.equalTo(self).inset(SetupCardView.mediumOffset)
+            make.top.equalTo(topConstraint).offset(Utils.mediumOffset)
+            make.left.equalTo(self).offset(Utils.mediumOffset)
+            make.right.equalTo(self).inset(Utils.mediumOffset)
             make.height.equalTo(_websiteFieldTitle.font.lineHeight)
         }
         _websiteField.snp.makeConstraints { (make) -> Void in
-            make.top.equalTo(_websiteFieldTitle.snp.bottom).offset(SetupCardView.smallOffset)
-            make.left.equalTo(self).offset(SetupCardView.mediumOffset)
-            make.right.equalTo(self).inset(SetupCardView.mediumOffset)
+            make.top.equalTo(_websiteFieldTitle.snp.bottom).offset(Utils.smallOffset)
+            make.left.equalTo(self).offset(Utils.mediumOffset)
+            make.right.equalTo(self).inset(Utils.mediumOffset)
             make.height.equalTo(_websiteField.font!.lineHeight)
         }
         
         _saveButton.snp.makeConstraints { (make) -> Void in
-            make.top.greaterThanOrEqualTo(_websiteField.snp.bottom).offset(SetupCardView.largeOffset)
+            make.top.greaterThanOrEqualTo(_websiteField.snp.bottom).offset(Utils.largeOffset)
             make.centerX.equalTo(self)
-            make.bottom.equalTo(self).inset(SetupCardView.largeOffset)
+            make.bottom.equalTo(self).inset(Utils.largeOffset)
         }
         
         makeOccupationField(example: "Developer, Photographer, etc.")

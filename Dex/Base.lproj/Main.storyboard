@@ -210,7 +210,7 @@
                         <outlet property="lastNameField" destination="81H-8R-31F" id="BiF-0i-oTK"/>
                         <outlet property="nextButton" destination="O48-Xd-lOT" id="Olc-Vx-oEq"/>
                         <outlet property="profilePicView" destination="Piu-9D-V8j" id="Mlp-pP-PES"/>
-                        <segue destination="o8d-lY-sVe" kind="presentation" identifier="initSignUpComplete" id="0XS-Mh-fhG"/>
+                        <segue destination="o8d-lY-sVe" kind="showDetail" identifier="initSignUpComplete" id="0XS-Mh-fhG"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="da0-zL-oP2" userLabel="First Responder" sceneMemberID="firstResponder"/>

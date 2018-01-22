@@ -8,7 +8,7 @@
 
 import UIKit
 import SnapKit
-import Shiny
+// import Shiny
 
 /** A card view class. */
 @IBDesignable
@@ -46,6 +46,46 @@ class CardView: UIView {
     init(card: Card, frame: CGRect) {
         _card = card
         super.init(frame: frame)
+        
+        self.backgroundColor = .white
+        
+        _name.text = card.user().name()
+        self.addSubview(_name)
+        
+        _occupation.text = card.occupation()
+        self.addSubview(_occupation)
+        
+        if card.hasPhoneNumbers() {
+            _phone = UILabel()
+            _phone!.text = card.primaryPhone().number()
+            self.addSubview(_phone!)
+        }
+        
+        if card.hasEmail() {
+            _email = UILabel()
+            _email!.text = card.email()
+            self.addSubview(_email!)
+        }
+        
+        if card.hasWebsite() {
+            _website = UILabel()
+            _website!.text = card.website()
+            self.addSubview(_website!)
+        }
+        
+        if card.hasProfilePicture() {
+            _profilePicture = card.profilePicture()
+            _imageView.image = _profilePicture!
+        }
+        _imageView.layer.cornerRadius = _imageView.frame.size.width / 2
+        _imageView.layer.masksToBounds = true
+        self.addSubview(_imageView)
+        
+        _editButton.backgroundColor = UIColor.clear
+        _editButton.tintColor = UIColor.blue
+        _editButton.setTitle("Edit", for: .normal)
+        _editButton.addTarget(self, action: #selector(editAction), for: .touchUpInside)
+        self.addSubview(_editButton)
         
         let swipeUp = UISwipeGestureRecognizer(target: self, action: #selector(self.respondToSwipeGesture))
         swipeUp.direction = UISwipeGestureRecognizerDirection.up
@@ -110,33 +150,38 @@ class CardView: UIView {
     
     /** Makes the CardView given CARD. */
     private func makeView(card: Card) { // FIXME: make bottom and right INSETS
-        _name.text = card.user().name()
-        self.addSubview(_name)
-        
         _name.snp.makeConstraints { (make) -> Void in
-            make.top.equalTo(self).offset(10)
-            make.left.equalTo(self).offset(5)
+            make.top.equalTo(self).offset(Utils.mediumOffset)
+            make.left.equalTo(self).offset(Utils.mediumOffset)
+            make.right.lessThanOrEqualTo(_imageView.snp.left).inset(Utils.smallOffset)
+            make.height.equalTo(_name.font.lineHeight)
+        }
+        
+        _imageView.snp.makeConstraints { (make) -> Void in
+            make.top.equalTo(self).offset(Utils.mediumOffset)
+            make.left.greaterThanOrEqualTo(_name.snp.right).offset(Utils.smallOffset)
+            make.width.equalTo(_name.font.lineHeight + CGFloat(Utils.largeOffset))
+            make.right.equalTo(self).inset(Utils.mediumOffset)
+            make.bottom.equalTo(_name.snp.bottom).offset(Utils.largeOffset)
         }
         
         var topTarget: ConstraintItem = _name.snp.bottom
         
-        _occupation.text = card.occupation()
-        self.addSubview(_occupation)
-        
         _occupation.snp.makeConstraints { (make) -> Void in
-            make.top.equalTo(topTarget).offset(10)
-            make.left.equalTo(self).offset(5)
+            make.top.equalTo(topTarget).offset(Utils.largeOffset)
+            make.left.equalTo(self).offset(Utils.mediumOffset)
+            make.right.equalTo(self).inset(Utils.mediumOffset)
+            make.height.equalTo(_occupation.font.lineHeight)
         }
         
         topTarget = _occupation.snp.bottom
         
         if card.hasPhoneNumbers() {
-            _phone = UILabel()
-            _phone!.text = card.primaryPhone().number()
-            
             _phone!.snp.makeConstraints { (make) -> Void in
-                make.top.equalTo(topTarget).offset(10)
-                make.left.equalTo(self).offset(5)
+                make.top.equalTo(topTarget).offset(Utils.mediumOffset)
+                make.left.equalTo(self).offset(Utils.mediumOffset)
+                make.right.equalTo(self).inset(Utils.mediumOffset)
+                make.height.equalTo(_phone!.font!.lineHeight)
             }
             
             topTarget = _phone!.snp.bottom
@@ -152,52 +197,32 @@ class CardView: UIView {
         }
         
         if card.hasEmail() {
-            _email = UILabel()
-            _email!.text = card.email()
-            
             _email!.snp.makeConstraints { (make) -> Void in
-                make.top.equalTo(topTarget).offset(5)
-                make.left.equalTo(self).offset(5)
+                make.top.equalTo(topTarget).offset(Utils.mediumOffset)
+                make.left.equalTo(self).offset(Utils.mediumOffset)
+                make.right.equalTo(self).inset(Utils.mediumOffset)
+                make.height.equalTo(_email!.font!.lineHeight)
             }
             
             topTarget = _email!.snp.bottom
         }
         
         if card.hasWebsite() {
-            _website = UILabel()
-            _website!.text = card.website()
-            
             _website!.snp.makeConstraints { (make) -> Void in
-                make.top.equalTo(topTarget).offset(5)
-                make.left.equalTo(self).offset(5)
+                make.top.equalTo(topTarget).offset(Utils.mediumOffset)
+                make.left.equalTo(self).offset(Utils.mediumOffset)
+                make.right.equalTo(self).inset(Utils.mediumOffset)
+                make.height.equalTo(_website!.font!.lineHeight)
             }
             
             topTarget = _website!.snp.bottom
         }
         
-        if card.hasProfilePicture() {
-            _profilePicture = card.profilePicture()
-            _imageView.image = _profilePicture!
-        }
-        _imageView.layer.cornerRadius = _imageView.frame.size.width / 2
-        _imageView.layer.masksToBounds = true
-        self.addSubview(_imageView)
-        
-        _imageView.snp.makeConstraints { (make) -> Void in
-            make.top.equalTo(self).offset(5)
-            make.right.equalTo(self).offset(5)
-            make.left.greaterThanOrEqualTo(_name.snp.right)
-        }
-        
-        _editButton.backgroundColor = UIColor.clear
-        _editButton.tintColor = UIColor.blue
-        _editButton.setTitle("Edit", for: .normal)
-        _editButton.addTarget(self, action: #selector(editAction), for: .touchUpInside)
-        self.addSubview(_editButton)
-        
         _editButton.snp.makeConstraints { (make) -> Void in
-            make.bottom.equalTo(self).offset(5)
-            make.right.equalTo(self).offset(5)
+            make.bottom.equalTo(self).inset(Utils.smallOffset)
+            make.right.equalTo(self).offset(Utils.smallOffset)
+            make.width.equalTo(50)
+            make.height.equalTo(25)
         }
         
         /*
