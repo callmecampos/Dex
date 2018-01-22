@@ -19,10 +19,16 @@ class NotificationCardView: UIView {
     
     // MARK: Properties
     
-    private var _title: UILabel = UILabel()
-    private var _note: UILabel = UILabel()
-    private var _time: UILabel?
+    private var _titleLabel: UILabel = UILabel()
+    private var _title: String = ""
+    private var _noteLabel: UILabel = UILabel()
+    private var _note: String = ""
+    private var _timeLabel: UILabel?
+    private var _time: String?
     private var _imageView: UIImageView?
+    private var _image: UIImage = UIImage()
+    
+    private var _frame: CGRect = CGRect.zero
     
     @IBInspectable var cornerRadius: CGFloat = 2
     @IBInspectable var shadowOffsetWidth: Int = 0
@@ -32,31 +38,36 @@ class NotificationCardView: UIView {
     
     // MARK: Initialization
     
+    override var intrinsicContentSize: CGSize {
+        return CGSize(width: 250, height: 50)
+    }
+    
     convenience init(title: String, note: String, time: String) {
         self.init(title: title, note: note, frame: CGRect.zero)
-        _time = UILabel()
-        _time!.text = time
+        _timeLabel = UILabel()
+        _timeLabel!.text = time
     }
     
     convenience init(title: String, note: String, time: String, img: UIImage) {
         self.init(title: title, note: note, img: img, frame: CGRect.zero)
-        _time = UILabel()
-        _time!.text = time
+        _timeLabel = UILabel()
+        _timeLabel!.text = time
     }
     
     convenience init(title: String, note: String) {
         self.init(title: title, note: note, frame: CGRect.zero)
     }
     
-    init(title: String, note: String, frame: CGRect) {
-        super.init(frame: frame)
-        makeView(title: title, note: note, frame: frame)
-        makeShiny()
+    convenience init(title: String, note: String, img: UIImage, frame: CGRect) {
+        self.init(title: title, note: note, frame: frame)
+        _image = img
     }
     
-    init(title: String, note: String, img: UIImage, frame: CGRect) {
+    init(title: String, note: String, frame: CGRect) {
         super.init(frame: frame)
-        makeView(title: title, note: note, img: img, frame: frame)
+        _title = title
+        _note = note
+        _frame = frame
         makeShiny()
     }
     
@@ -77,7 +88,15 @@ class NotificationCardView: UIView {
     
     // MARK: Methods
     
-    func makeView(title: String, note: String, img: UIImage, frame: CGRect) {
+    func makeView(hasImage: Bool) {
+        if hasImage {
+            makeView(title: _title, note: _note, img: _image, frame: _frame)
+        } else {
+            makeView(title: _title, note: _note, frame: _frame)
+        }
+    }
+    
+    private func makeView(title: String, note: String, img: UIImage, frame: CGRect) { // FIXME: insets/offsets
         makeView(title: title, note: note, frame: frame)
         
         _imageView = UIImageView(image: img)
@@ -86,30 +105,30 @@ class NotificationCardView: UIView {
         self.addSubview(_imageView!)
         
         _imageView!.snp.makeConstraints { (make) -> Void in
-            make.top.equalTo(_title.snp.bottom).offset(5)
-            make.right.equalTo(self).offset(5)
-            make.left.equalTo(self).offset(-5)
-            make.bottom.equalTo(self).offset(-5)
+            make.top.equalTo(_titleLabel.snp.bottom).offset(5)
+            make.right.equalToSuperview().offset(5)
+            make.left.equalToSuperview().inset(5)
+            make.bottom.equalToSuperview().inset(5)
         }
     }
     
-    func makeView(title: String, note: String, frame: CGRect) {
-        _title.text = title
-        self.addSubview(_title)
+    private func makeView(title: String, note: String, frame: CGRect) {
+        _titleLabel.text = title
+        self.addSubview(_titleLabel)
         
-        _title.snp.makeConstraints { (make) -> Void in
-            make.top.equalTo(self).offset(5)
-            make.left.equalTo(self).offset(5)
+        _titleLabel.snp.makeConstraints { (make) -> Void in
+            make.top.equalToSuperview().offset(5)
+            make.left.equalToSuperview().offset(5)
         }
         
-        _note.text = note
-        self.addSubview(_note)
+        _noteLabel.text = note
+        self.addSubview(_noteLabel)
         
-        _note.snp.makeConstraints { (make) -> Void in
-            make.top.equalTo(_title.snp.bottom).offset(5)
+        _noteLabel.snp.makeConstraints { (make) -> Void in
+            make.top.equalTo(_titleLabel.snp.bottom).offset(5)
             make.right.equalTo(self.snp.left).offset(-5)
-            make.left.equalTo(self).offset(5 + _imageView!.frame.size.width + 5)
-            make.bottom.equalTo(self).offset(-5)
+            make.left.equalToSuperview().offset(5 + _imageView!.frame.size.width + 5)
+            make.bottom.equalToSuperview().offset(-5)
         }
     }
     

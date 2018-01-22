@@ -35,6 +35,10 @@ class CardView: UIView {
     
     // MARK: Initialization
     
+    override var intrinsicContentSize: CGSize {
+        return CGSize(width: 250, height: 150)
+    }
+    
     convenience init(card: Card) {
         self.init(card: card, frame: CGRect.zero)
     }
@@ -50,8 +54,6 @@ class CardView: UIView {
         let swipeDown = UISwipeGestureRecognizer(target: self, action: #selector(self.respondToSwipeGesture))
         swipeDown.direction = UISwipeGestureRecognizerDirection.down
         self.addGestureRecognizer(swipeDown)
-        
-        makeView(card: card)
     }
     
     required init(coder aDecoder: NSCoder) {
@@ -101,8 +103,13 @@ class CardView: UIView {
         makeView(card: card)
     }
     
+    /** Makes the CardView with constraints. */
+    func makeView() {
+        makeView(card: _card)
+    }
+    
     /** Makes the CardView given CARD. */
-    func makeView(card: Card) {
+    private func makeView(card: Card) { // FIXME: make bottom and right INSETS
         _name.text = card.user().name()
         self.addSubview(_name)
         

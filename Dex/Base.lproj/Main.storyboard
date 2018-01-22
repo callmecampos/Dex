@@ -134,7 +134,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="words"/>
                                 <connections>
                                     <action selector="firstNameEdited:" destination="4tI-lZ-suD" eventType="editingDidEnd" id="ikX-kl-5HP"/>
                                 </connections>
@@ -151,7 +151,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="words"/>
                                 <connections>
                                     <action selector="lastNameEdited:" destination="4tI-lZ-suD" eventType="editingDidEnd" id="9pu-u9-K5Z"/>
                                 </connections>
@@ -187,7 +187,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no"/>
                                 <connections>
                                     <action selector="contactFieldEdited:" destination="4tI-lZ-suD" eventType="editingDidEnd" id="RtN-fp-BUC"/>
                                 </connections>
@@ -196,6 +196,9 @@
                                 <rect key="frame" x="171" y="617" width="32" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Next"/>
+                                <connections>
+                                    <action selector="nextPressed:" destination="4tI-lZ-suD" eventType="touchUpInside" id="dZh-aq-F2E"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -207,7 +210,7 @@
                         <outlet property="lastNameField" destination="81H-8R-31F" id="BiF-0i-oTK"/>
                         <outlet property="nextButton" destination="O48-Xd-lOT" id="Olc-Vx-oEq"/>
                         <outlet property="profilePicView" destination="Piu-9D-V8j" id="Mlp-pP-PES"/>
-                        <segue destination="o8d-lY-sVe" kind="show" id="B6d-0q-Qje"/>
+                        <segue destination="o8d-lY-sVe" kind="presentation" identifier="initSignUpComplete" id="0XS-Mh-fhG"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="da0-zL-oP2" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -233,20 +236,11 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4Lq-Dk-85l">
-                                <rect key="frame" x="171" y="617" width="32" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Next"/>
-                                <connections>
-                                    <action selector="nextPressed:" destination="o8d-lY-sVe" eventType="touchUpInside" id="Q2j-hI-IRl"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <connections>
                         <outlet property="completeProfileLabel" destination="X58-e1-vpO" id="uIs-Xn-HNb"/>
-                        <outlet property="nextButton" destination="4Lq-Dk-85l" id="q5S-yI-bkk"/>
                         <segue destination="BYZ-38-t0r" kind="show" identifier="profileComplete" id="1h0-Xg-URk"/>
                     </connections>
                 </viewController>

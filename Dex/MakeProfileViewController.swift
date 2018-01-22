@@ -8,12 +8,11 @@
 
 import UIKit
 
-class MakeProfileViewController: UIViewController, SaveDelegate {
+class MakeProfileViewController: UIViewController, UITextFieldDelegate, SaveDelegate {
     
     // MARK: Properties
     
     @IBOutlet var completeProfileLabel: UILabel!
-    @IBOutlet var nextButton: UIButton!
     var setupCardView: SetupCardView!
     var name: String = ""
     var profilePic: UIImage = UIImage()
@@ -27,9 +26,7 @@ class MakeProfileViewController: UIViewController, SaveDelegate {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
-        // FIXME: maybe perform in viewWillLayoutSubviews()
-        
-        nextButton.isHidden = true
+        hideKeyboardWhenTappedAround()
         
         if isPhone {
             setupCardView = SetupCardView(name: name, phone: phone!, profilePic: profilePic)
@@ -38,34 +35,31 @@ class MakeProfileViewController: UIViewController, SaveDelegate {
         }
         
         setupCardView.delegate = self
+        setupCardView.textFieldDelegate = self
+        setupCardView.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(setupCardView)
         
         makeView()
     }
     
     // MARK: Actions
     
-    @IBAction func nextPressed(_ sender: Any) {
-        self.performSegue(withIdentifier: "profileComplete", sender: self)
-    }
-    
-    
     // MARK: Methods
     
     func makeView() {
         completeProfileLabel.snp.makeConstraints { (make) in
-            make.top.equalToSuperview().offset(30) // offset from logo
+            make.top.equalToSuperview().offset(30) // TODO: offset from logo
             make.centerX.equalTo(self.view.snp.centerX)
         }
         
         setupCardView.snp.makeConstraints { (make) in
-            make.top.equalTo(completeProfileLabel.snp.bottom).offset(10)
-            make.centerX.equalTo(self.view.snp.centerX)
-            make.bottom.equalTo(nextButton.snp.top)
+            make.top.equalTo(completeProfileLabel.snp.bottom).offset(20)
+            make.left.equalToSuperview().offset(20)
+            make.right.equalToSuperview().inset(20)
+            make.bottom.equalToSuperview().inset(40)
         }
         
-        nextButton.snp.makeConstraints { (make) in
-            make.centerX.equalTo(self.view.snp.centerX)
-        }
+        setupCardView.makeView()
     }
     
     // MARK: Protocols
@@ -102,26 +96,8 @@ class MakeProfileViewController: UIViewController, SaveDelegate {
             DispatchQueue.main.async {
                 self.present(occupationFieldAlert, animated: true, completion:  nil)
             }
-        }
-        
-        if isPhone {
-            if setupCardView.hasPhone() {
-                setupCardView.setSavedPhone(new: setupCardView.phone().number())
-            } else {
-                setupCardView.setSavedPhone(new: "")
-            }
         } else {
-            if setupCardView.hasEmail() {
-                setupCardView.setSavedEmail(new: setupCardView.email())
-            } else {
-                setupCardView.setSavedEmail(new: "")
-            }
-        }
-        
-        if setupCardView.hasWebsite() {
-            setupCardView.setSavedWebsite(new: setupCardView.website())
-        } else {
-            setupCardView.setSavedWebsite(new: "")
+            self.performSegue(withIdentifier: "profileComplete", sender: self)
         }
     }
 
