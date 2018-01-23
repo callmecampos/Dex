@@ -9,7 +9,7 @@
 import UIKit
 import SnapKit
 
-protocol SaveDelegate: class {
+protocol SetupDelegate: class {
     func saveButtonTapped()
 }
 
@@ -36,10 +36,11 @@ class SetupCardView: UIView, UITextFieldDelegate {
     private var _emailField: UITextField?
     private var _phoneFieldTitle: UILabel?
     private var _phoneField: UITextField?
+    private var _savedPhone: Phone?
     
     private var _saveButton: UIButton = UIButton(frame: CGRect(x: 0, y: 0, width: 100, height: 50))
     
-    weak var delegate: SaveDelegate?
+    weak var delegate: SetupDelegate?
     weak var textFieldDelegate: UITextFieldDelegate?
     
     private static let smallOffset = 5
@@ -86,6 +87,7 @@ class SetupCardView: UIView, UITextFieldDelegate {
         _phoneFieldTitle = UILabel()
         _phoneField = UITextField()
         _phoneFieldTitle!.text = "Phone #"
+        _phoneField!.addTarget(self, action: #selector(phoneNumberEdited(_:)), for: .editingDidEnd)
         self.addSubview(_phoneFieldTitle!)
         self.addSubview(_phoneField!)
     }
@@ -142,6 +144,10 @@ class SetupCardView: UIView, UITextFieldDelegate {
         self.delegate?.saveButtonTapped()
     }
     
+    func phoneNumberEdited(_ sender: UITextField) {
+        self.savePhone()
+    }
+    
     func occupationEdited(_ sender: UITextField) {
         if hasOccupation() {
             _saveButton.isHidden = false
@@ -192,8 +198,16 @@ class SetupCardView: UIView, UITextFieldDelegate {
         return _phoneField!.hasText // FIXME: regex for validity
     }
     
+    func savePhone() {
+        let phoneNumber = _phoneField!.text!
+        _savedPhone = Phone(number: phoneNumber, kind: .other)
+        if let formatted = Utils.format(phoneNumber: phoneNumber) {
+            _phoneField!.text = formatted
+        }
+    }
+    
     func phone() -> Phone {
-        return Phone(number: _phoneField!.text!, kind: .other)
+        return _savedPhone!
     }
     
     func makeView() {

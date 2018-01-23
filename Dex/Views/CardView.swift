@@ -174,7 +174,8 @@ class CardView: UIView {
             make.height.equalTo(_occupation.font.lineHeight)
         }
         
-        topTarget = _occupation.snp.bottom
+        var bottomItem: ConstraintViewDSL = _occupation.snp
+        topTarget = bottomItem.bottom
         
         if card.hasPhoneNumbers() {
             _phone!.snp.makeConstraints { (make) -> Void in
@@ -184,7 +185,8 @@ class CardView: UIView {
                 make.height.equalTo(_phone!.font!.lineHeight)
             }
             
-            topTarget = _phone!.snp.bottom
+            bottomItem = _phone!.snp
+            topTarget = bottomItem.bottom
             
             /*
              var text: String = ""
@@ -204,7 +206,8 @@ class CardView: UIView {
                 make.height.equalTo(_email!.font!.lineHeight)
             }
             
-            topTarget = _email!.snp.bottom
+            bottomItem = _email!.snp
+            topTarget = bottomItem.bottom
         }
         
         if card.hasWebsite() {
@@ -215,7 +218,8 @@ class CardView: UIView {
                 make.height.equalTo(_website!.font!.lineHeight)
             }
             
-            topTarget = _website!.snp.bottom
+            bottomItem = _website!.snp
+            topTarget = bottomItem.bottom
         }
         
         _editButton.snp.makeConstraints { (make) -> Void in
@@ -223,6 +227,10 @@ class CardView: UIView {
             make.right.equalTo(self).offset(Utils.smallOffset)
             make.width.equalTo(50)
             make.height.equalTo(25)
+        }
+        
+        bottomItem.makeConstraints { (make) in
+            make.bottom.equalTo(self).inset(Utils.mediumOffset)
         }
         
         /*

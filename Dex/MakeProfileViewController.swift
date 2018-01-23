@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MakeProfileViewController: UIViewController, UITextFieldDelegate, SaveDelegate {
+class MakeProfileViewController: UIViewController, UITextFieldDelegate, SetupDelegate {
     
     // MARK: Properties
     

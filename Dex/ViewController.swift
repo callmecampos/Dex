@@ -19,6 +19,8 @@ class ViewController: UIViewController, UIScrollViewDelegate {
     @IBOutlet var rightButton: UIButton!
     @IBOutlet var swipeLabel: UILabel!
     @IBOutlet var newContactsLabel: UILabel!
+    var popUpSendView: UIView! // FIXME: make this functional or at least look good (see below)
+    var editView: UIView! // FIXME: maybe make into custom view class? idk
     var cardView: CardView!
     var cards: [Card] = []
     var cardIndex = 0
@@ -31,6 +33,8 @@ class ViewController: UIViewController, UIScrollViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        
+        popUpSendView.isHidden = true
         
         cardView = CardView(card: cards[cardIndex])
         self.view.addSubview(cardView)
@@ -77,17 +81,65 @@ class ViewController: UIViewController, UIScrollViewDelegate {
     
     // MARK: Methods
     
+    private func loadSendView() { // FIXME:
+        let frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height - 200)
+        popUpSendView = UIView(frame: frame)
+        
+        view.addSubview(popUpSendView)
+        
+        popUpSendView.isHidden = false
+        
+        // TODO: should probably make this a custom class of some sort, with delegates allowing this VC to dictate logic
+        
+        let buttonFrame = CGRect(x: 40, y: 100, width: 50, height: 50)
+        let okayButton = UIButton(frame: buttonFrame)
+        
+        // here we are adding the button its superView
+        popUpSendView.addSubview(okayButton)
+        
+        okayButton.addTarget(self, action: #selector(sendViewCompletion(_:)), for: .touchUpInside)
+    }
+    
+    func sendViewCompletion(_ sender: UIButton) {
+        // do whatever you want
+        // make view disappear again or remove from its superview
+    }
+    
+    private func loadEditingView(card: Card) { // FIXME:
+        let frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height - 200)
+        editView = UIView(frame: frame)
+        
+        view.addSubview(editView)
+        
+        editView.isHidden = false
+        
+        // TODO: should probably make this a custom class of some sort, with delegates allowing this VC to dictate logic
+        
+        let buttonFrame = CGRect(x: 40, y: 100, width: 50, height: 50)
+        let okayButton = UIButton(frame: buttonFrame)
+        
+        // here we are adding the button its superView
+        editView.addSubview(okayButton)
+        
+        okayButton.addTarget(self, action: #selector(editingViewCompletion(_:)), for: .touchUpInside)
+    }
+    
+    func editingViewCompletion(_ sender: UIButton) {
+        // do whatever you want
+    }
+    
     func makeView() {
         swipeLabel.snp.makeConstraints { (make) -> Void in
             make.top.equalToSuperview().offset(30)
             make.centerX.equalToSuperview()
+            make.height.equalTo(swipeLabel.font.lineHeight)
         }
         
         cardView.snp.makeConstraints { (make) -> Void in
-            make.top.equalTo(swipeLabel.snp.bottom).offset(20)
-            make.left.equalToSuperview().offset(20)
-            make.right.equalToSuperview().inset(20)
-            make.bottom.equalToSuperview().inset(40)
+            make.top.equalTo(swipeLabel.snp.bottom).offset(Utils.largeOffset)
+            make.left.equalToSuperview().offset(Utils.largeOffset)
+            make.right.equalToSuperview().inset(Utils.largeOffset)
+            make.bottom.equalTo(newContactsLabel.snp.top).inset(Utils.largeOffset)
         }
         
         cardView.makeView()
@@ -108,31 +160,9 @@ class ViewController: UIViewController, UIScrollViewDelegate {
         
         newContactsLabel.snp.makeConstraints { (make) -> Void in
             make.centerX.equalToSuperview()
-            make.top.equalTo(cardView.snp.bottom).offset(10)
+            make.top.equalTo(cardView.snp.bottom).offset(Utils.largeOffset)
+            make.height.equalTo(newContactsLabel.font.lineHeight)
         }
     }
-    
-    /* static func initTestCards() -> [Card] {
-        let latitude: CLLocationDegrees = 37.2
-        let longitude: CLLocationDegrees = 22.9
-        
-        let location: CLLocation = CLLocation(latitude: latitude, longitude: longitude)
-        
-        let interest1 = Interest(type: .software)
-        let interest2 = Interest(type: .entrepreneurship)
-        
-        let interests = [interest1, interest2]
-        
-        let u: User = User(name: "Chris", inf: 0, initPos: location, connections: [], interests: interests)
-        
-        let phone: Phone = Phone(number: "(804) 305-0733", kind: .mobile)
-        
-        let img = UIImage(contentsOfFile: "Dex60pt")
-        
-        let businessCard = Card(user: u, location: "Richmond, VA", occupation: "Photographer", email: "crhvpi@gmail.com", phones: [phone], web: "www.ChrisRossHarris.com", avi: img!, priority: 1)
-        let personalCard = Card(user: u, location: "Virginia Beach", occupation: "Surfer", email: "chris@me.com", phones: [phone], web: "me.com", avi: img!)
-        
-        return [businessCard, personalCard]
-    } */
 }
 
