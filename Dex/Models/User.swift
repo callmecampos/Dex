@@ -14,6 +14,9 @@ internal class User: Equatable, Comparable, Hashable {
     
     // MARK: Properties
     
+    /** The user's unique identifier. */
+    private var _identifier: String = ""
+    
     /** The user's name. */
     private var _name: String
     
@@ -78,6 +81,11 @@ internal class User: Equatable, Comparable, Hashable {
     }
     
     // MARK: - Methods
+    
+    /** Returns the user's unique ID. */
+    func id() -> String {
+        return _identifier
+    }
     
     /** Returns the user's name. */
     func name() -> String {
@@ -144,7 +152,7 @@ internal class User: Equatable, Comparable, Hashable {
     }
     
     func connectWith(user: User) {
-        // make connection
+        // FIXME: make connection
     }
     
     /** Returns the connection objects associated with this user. */
@@ -172,7 +180,7 @@ internal class User: Equatable, Comparable, Hashable {
     /** Combines the hash value of each property
      multiplied by a prime constant. */
     public var hashValue: Int {
-        var hash = location().hashValue ^ influence().hashValue
+        var hash = location().hashValue ^ influence().hashValue ^ id().hashValue
         for card in cards() {
             hash ^= card.hashValue
         }

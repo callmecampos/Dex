@@ -12,6 +12,7 @@ class MakeProfileViewController: UIViewController, UITextFieldDelegate, SetupDel
     
     // MARK: Properties
     
+    @IBOutlet var logoView: UIImageView!
     @IBOutlet var completeProfileLabel: UILabel!
     var setupCardView: SetupCardView!
     var name: String = ""
@@ -47,8 +48,14 @@ class MakeProfileViewController: UIViewController, UITextFieldDelegate, SetupDel
     // MARK: Methods
     
     func makeView() {
+        logoView.snp.makeConstraints { (make) in
+            make.centerX.equalToSuperview()
+            make.height.equalTo(Utils.largeOffset)
+            make.width.equalTo(Utils.largeOffset)
+        }
+        
         completeProfileLabel.snp.makeConstraints { (make) in
-            make.top.equalToSuperview().offset(30) // TODO: offset from logo
+            make.top.equalTo(logoView).offset(30) // TODO: offset from logo
             make.centerX.equalTo(self.view.snp.centerX)
         }
         

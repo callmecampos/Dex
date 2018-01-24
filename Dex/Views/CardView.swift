@@ -10,6 +10,11 @@ import UIKit
 import SnapKit
 // import Shiny
 
+protocol CardViewDelegate: class {
+    func sendCard(card: Card)
+    func showStatistics(card: Card)
+}
+
 /** A card view class. */
 @IBDesignable
 class CardView: UIView {
@@ -26,6 +31,8 @@ class CardView: UIView {
     private var _imageView: UIImageView = UIImageView()
     
     private var _editButton: UIButton = UIButton()
+    
+    var delegate: CardViewDelegate?
     
     @IBInspectable var cornerRadius: CGFloat = 2
     @IBInspectable var shadowOffsetWidth: Int = 0
@@ -120,10 +127,12 @@ class CardView: UIView {
                 print("Swiped right.")
             case UISwipeGestureRecognizerDirection.down:
                 print("Swiped down, showing card statistics.")
+                self.delegate?.showStatistics(card: card())
             case UISwipeGestureRecognizerDirection.left:
                 print("Swiped left.")
             case UISwipeGestureRecognizerDirection.up:
                 print("Swiped up, preparing card for sharing.")
+                self.delegate?.sendCard(card: card())
             default:
                 break
             }

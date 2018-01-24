@@ -65,6 +65,16 @@ internal class Card: Equatable, Comparable, Hashable {
     
     // MARK: - Methods
     
+    /** Returns the decoded card from DECODEABLE. Returns nil if unparseable. */
+    static func decode(decodeable: String) -> Card? {
+        return nil
+    }
+    
+    /** Returns a unique decodeable string for this card. */
+    func decodeable() -> String {
+        return "" // FIXME: make parseable
+    }
+    
     /** Returns the user associated with this card. */
     func user() -> User {
         return _user

@@ -11,7 +11,7 @@ import SnapKit
 import Contacts
 import CoreLocation
 
-class ViewController: UIViewController, UIScrollViewDelegate {
+class ViewController: UIViewController, UIScrollViewDelegate, MultipeerManagerDelegate, CardViewDelegate {
     
     // MARK: Properties
     
@@ -28,13 +28,18 @@ class ViewController: UIViewController, UIScrollViewDelegate {
     // TODO: have some sort of mini page controller for cards
     // TODO: implement swipe upward to constrast sideways mechanism (maybe lock card?) idk
     
+    let multipeerService = MultipeerManager()
+    
     // MARK: Initialization
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
+        multipeerService.delegate = self
+        
         popUpSendView.isHidden = true
+        editView.isHidden = true
         
         cardView = CardView(card: cards[cardIndex])
         self.view.addSubview(cardView)
@@ -163,6 +168,24 @@ class ViewController: UIViewController, UIScrollViewDelegate {
             make.top.equalTo(cardView.snp.bottom).offset(Utils.largeOffset)
             make.height.equalTo(newContactsLabel.font.lineHeight)
         }
+    }
+    
+    // MARK: Protocols
+    
+    func connectedDevicesChanged(manager: MultipeerManager, connectedDevices: [String]) {
+        // FIXME: implement
+    }
+    
+    func cardReceived(manager: MultipeerManager, card: Card) {
+        // FIXME: implement
+    }
+    
+    func sendCard(card: Card) {
+        // FIXME: implement
+    }
+    
+    func showStatistics(card: Card) {
+        // FIXME: implement
     }
 }
 
