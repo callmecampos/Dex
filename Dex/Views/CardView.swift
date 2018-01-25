@@ -34,9 +34,9 @@ class CardView: UIView {
     
     var delegate: CardViewDelegate?
     
-    @IBInspectable var cornerRadius: CGFloat = 2
-    @IBInspectable var shadowOffsetWidth: Int = 0
-    @IBInspectable var shadowOffsetHeight: Int = 3
+    @IBInspectable var cornerRadius: CGFloat = 8
+    @IBInspectable var shadowOffsetWidth: Int = 3
+    @IBInspectable var shadowOffsetHeight: Int = 5
     @IBInspectable var shadowColor: UIColor? = UIColor.black
     @IBInspectable var shadowOpacity: Float = 0.5
     
@@ -160,17 +160,17 @@ class CardView: UIView {
     /** Makes the CardView given CARD. */
     private func makeView(card: Card) { // FIXME: make bottom and right INSETS
         _name.snp.makeConstraints { (make) -> Void in
-            make.top.equalTo(self).offset(Utils.mediumOffset)
-            make.left.equalTo(self).offset(Utils.mediumOffset)
+            make.top.equalToSuperview().offset(Utils.mediumOffset)
+            make.left.equalToSuperview().offset(Utils.mediumOffset)
             make.right.lessThanOrEqualTo(_imageView.snp.left).inset(Utils.smallOffset)
             make.height.equalTo(_name.font.lineHeight)
         }
         
         _imageView.snp.makeConstraints { (make) -> Void in
-            make.top.equalTo(self).offset(Utils.mediumOffset)
+            make.top.equalToSuperview().offset(Utils.mediumOffset)
             make.left.greaterThanOrEqualTo(_name.snp.right).offset(Utils.smallOffset)
             make.width.equalTo(_name.font.lineHeight + CGFloat(Utils.largeOffset))
-            make.right.equalTo(self).inset(Utils.mediumOffset)
+            make.right.equalToSuperview().inset(Utils.mediumOffset)
             make.bottom.equalTo(_name.snp.bottom).offset(Utils.largeOffset)
         }
         
@@ -178,8 +178,8 @@ class CardView: UIView {
         
         _occupation.snp.makeConstraints { (make) -> Void in
             make.top.equalTo(topTarget).offset(Utils.largeOffset)
-            make.left.equalTo(self).offset(Utils.mediumOffset)
-            make.right.equalTo(self).inset(Utils.mediumOffset)
+            make.left.equalToSuperview().offset(Utils.mediumOffset)
+            make.right.equalToSuperview().inset(Utils.mediumOffset)
             make.height.equalTo(_occupation.font.lineHeight)
         }
         
@@ -189,8 +189,8 @@ class CardView: UIView {
         if card.hasPhoneNumbers() {
             _phone!.snp.makeConstraints { (make) -> Void in
                 make.top.equalTo(topTarget).offset(Utils.mediumOffset)
-                make.left.equalTo(self).offset(Utils.mediumOffset)
-                make.right.equalTo(self).inset(Utils.mediumOffset)
+                make.left.equalToSuperview().offset(Utils.mediumOffset)
+                make.right.equalToSuperview().inset(Utils.mediumOffset)
                 make.height.equalTo(_phone!.font!.lineHeight)
             }
             
@@ -210,8 +210,8 @@ class CardView: UIView {
         if card.hasEmail() {
             _email!.snp.makeConstraints { (make) -> Void in
                 make.top.equalTo(topTarget).offset(Utils.mediumOffset)
-                make.left.equalTo(self).offset(Utils.mediumOffset)
-                make.right.equalTo(self).inset(Utils.mediumOffset)
+                make.left.equalToSuperview().offset(Utils.mediumOffset)
+                make.right.equalToSuperview().inset(Utils.mediumOffset)
                 make.height.equalTo(_email!.font!.lineHeight)
             }
             
@@ -222,8 +222,8 @@ class CardView: UIView {
         if card.hasWebsite() {
             _website!.snp.makeConstraints { (make) -> Void in
                 make.top.equalTo(topTarget).offset(Utils.mediumOffset)
-                make.left.equalTo(self).offset(Utils.mediumOffset)
-                make.right.equalTo(self).inset(Utils.mediumOffset)
+                make.left.equalToSuperview().offset(Utils.mediumOffset)
+                make.right.equalToSuperview().inset(Utils.mediumOffset)
                 make.height.equalTo(_website!.font!.lineHeight)
             }
             
@@ -232,14 +232,10 @@ class CardView: UIView {
         }
         
         _editButton.snp.makeConstraints { (make) -> Void in
-            make.bottom.equalTo(self).inset(Utils.smallOffset)
-            make.right.equalTo(self).offset(Utils.smallOffset)
+            make.bottom.equalToSuperview().inset(Utils.smallOffset)
+            make.right.equalToSuperview().offset(Utils.smallOffset)
             make.width.equalTo(50)
             make.height.equalTo(25)
-        }
-        
-        bottomItem.makeConstraints { (make) in
-            make.bottom.equalTo(self).inset(Utils.mediumOffset)
         }
         
         /*

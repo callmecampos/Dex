@@ -45,18 +45,23 @@ class MakeProfileViewController: UIViewController, UITextFieldDelegate, SetupDel
     
     // MARK: Actions
     
+    @IBAction func backSignUp(_ sender: Any) {
+        self.dismiss(animated: true, completion: nil)
+    }
+    
     // MARK: Methods
     
     func makeView() {
         logoView.snp.makeConstraints { (make) in
+            make.top.equalToSuperview().offset(Utils.largeOffset)
             make.centerX.equalToSuperview()
-            make.height.equalTo(Utils.largeOffset)
-            make.width.equalTo(Utils.largeOffset)
+            make.height.equalTo(Utils.hugeOffset)
+            make.width.equalTo(logoView.snp.height).multipliedBy(1.0 / 1.0)
         }
         
         completeProfileLabel.snp.makeConstraints { (make) in
-            make.top.equalTo(logoView).offset(30) // TODO: offset from logo
-            make.centerX.equalTo(self.view.snp.centerX)
+            make.top.greaterThanOrEqualTo(logoView.snp.bottom).offset(Utils.largeOffset) // TODO: offset from logo
+            make.centerX.equalToSuperview()
         }
         
         setupCardView.snp.makeConstraints { (make) in
@@ -107,6 +112,13 @@ class MakeProfileViewController: UIViewController, UITextFieldDelegate, SetupDel
             self.performSegue(withIdentifier: "profileComplete", sender: self)
         }
     }
+    
+    // MARK: Protocols
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
 
     // MARK: - Navigation
 
@@ -114,7 +126,7 @@ class MakeProfileViewController: UIViewController, UITextFieldDelegate, SetupDel
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
-        let vc = segue.destination as! ViewController
+        let vc = segue.destination as! SecurityViewController
         let user = User(name: name, interests: [])
         var card: Card
         if isPhone {

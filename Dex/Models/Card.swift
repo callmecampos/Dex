@@ -47,6 +47,12 @@ internal class Card: Equatable, Comparable, Hashable {
         _location = location
     }
     
+    convenience init(user: User, location: String, occupation: String,
+                     email: String, phones: [Phone], avi: UIImage) {
+        self.init(user: user, occupation: occupation, email: email, phones: phones, avi: avi)
+        _location = location
+    }
+    
     convenience init(user: User, occupation: String, email: String, phones: [Phone], web: String, avi: UIImage) {
         self.init(user: user, occupation: occupation, email: email, phones: phones, avi: avi)
         _website = web
@@ -67,12 +73,79 @@ internal class Card: Equatable, Comparable, Hashable {
     
     /** Returns the decoded card from DECODEABLE. Returns nil if unparseable. */
     static func decode(decodeable: String) -> Card? {
-        return nil
+        let components = decodeable.components(separatedBy: Utils.separator)
+        var user: User
+        if let tmp = Utils.getUser(id: components[0]) {
+            user = tmp
+        } else {
+            user = User(name: components[1], influence: Double(components[2])!, id: components[0])
+        }
+        let occupation = components[3]
+        let location = components[4]
+        let email = components[5]
+        let numPhones = Int(components[6])!
+        var phones: [Phone] = []
+        for i in 0..<numPhones {
+            phones.append(Phone(number: components[7+i], kind: .other))
+        }
+        let website = components[8]
+        let profilePictureData = components[9].data(using: .utf8)!
+        
+        let img = UIImage(data: profilePictureData)!
+        
+        var card: Card
+        if website == "" && location == "" {
+            card = Card(user: user, occupation: occupation, email: email, phones: phones, avi: img)
+        } else if location == "" {
+            card = Card(user: user, occupation: occupation, email: email, phones: phones, web: website, avi: img)
+        } else if website == "" {
+            card = Card(user: user, location: location, occupation: occupation, email: email, phones: phones, avi: img)
+        } else {
+            card = Card(user: user, location: location, occupation: occupation, email: email, phones: phones, web: website, avi: img)
+        }
+        
+        return card
     }
     
     /** Returns a unique decodeable string for this card. */
-    func decodeable() -> String {
-        return "" // FIXME: make parseable
+    func encode() -> String {
+        let sep = Utils.separator
+        var str = user().identification() + sep + user().name() + sep + String(user().influence()) + sep + occupation() + sep
+        
+        if hasLocation() {
+            str += location() + sep
+        } else {
+            str += Utils.nullField
+        }
+        
+        if hasEmail() {
+            str += email() + sep
+        } else {
+            str += Utils.nullField
+        }
+        
+        if _phones.count > 0 {
+            str += String(_phones.count) + sep
+            for phone in _phones {
+                str += phone.number() + sep // TODO: include phone type
+            }
+        } else {
+            str += Utils.nullField
+        }
+        
+        if hasWebsite() {
+            str += website() + sep
+        } else {
+            str += Utils.nullField
+        }
+        
+        if hasProfilePicture() {
+            str += profilePictureData() + sep
+        } else {
+            str += Utils.nullField
+        }
+        
+        return str
     }
     
     /** Returns the user associated with this card. */
@@ -215,6 +288,13 @@ internal class Card: Equatable, Comparable, Hashable {
     /** Returns the optional profile picture associated with this card. */
     func profilePicture() -> UIImage {
         return _avi
+    }
+    
+    /** Returns a string of formatted data representing the profile picture
+     associated with this card. */
+    func profilePictureData() -> String {
+        let imgData = UIImagePNGRepresentation(profilePicture())!
+        return NSString(data: imgData, encoding: String.Encoding.utf8.rawValue) as String!
     }
     
     /** Sets the profile picture as NEW for this card.

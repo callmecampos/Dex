@@ -15,12 +15,14 @@ class ViewController: UIViewController, UIScrollViewDelegate, MultipeerManagerDe
     
     // MARK: Properties
     
+    @IBOutlet var welcomeLabel: UILabel!
     @IBOutlet var leftButton: UIButton!
     @IBOutlet var rightButton: UIButton!
     @IBOutlet var swipeLabel: UILabel!
-    @IBOutlet var newContactsLabel: UILabel!
-    var popUpSendView: UIView! // FIXME: make this functional or at least look good (see below)
-    var editView: UIView! // FIXME: maybe make into custom view class? idk
+    @IBOutlet var embeddedTableView: UIView!
+    @IBOutlet var exchangeButton: UIButton!
+    @IBOutlet var dexLogo: UIImageView!
+    
     var cardView: CardView!
     var cards: [Card] = []
     var cardIndex = 0
@@ -36,13 +38,20 @@ class ViewController: UIViewController, UIScrollViewDelegate, MultipeerManagerDe
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
+        if cards.count == 0 {
+            // FIXME: get cards from user defaults
+        }
+        
         multipeerService.delegate = self
         
-        popUpSendView.isHidden = true
-        editView.isHidden = true
+        embeddedTableView.isHidden = true
+        exchangeButton.isHidden = true
+        embeddedTableView.alpha = 0
         
         cardView = CardView(card: cards[cardIndex])
         self.view.addSubview(cardView)
+        
+        cardView.delegate = self
         
         leftButton.isHidden = true
         if cards.count == 1 {
@@ -84,49 +93,21 @@ class ViewController: UIViewController, UIScrollViewDelegate, MultipeerManagerDe
         cardView.setCard(card: cards[cardIndex])
     }
     
-    // MARK: Methods
     
-    private func loadSendView() { // FIXME:
-        let frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height - 200)
-        popUpSendView = UIView(frame: frame)
-        
-        view.addSubview(popUpSendView)
-        
-        popUpSendView.isHidden = false
-        
-        // TODO: should probably make this a custom class of some sort, with delegates allowing this VC to dictate logic
-        
-        let buttonFrame = CGRect(x: 40, y: 100, width: 50, height: 50)
-        let okayButton = UIButton(frame: buttonFrame)
-        
-        // here we are adding the button its superView
-        popUpSendView.addSubview(okayButton)
-        
-        okayButton.addTarget(self, action: #selector(sendViewCompletion(_:)), for: .touchUpInside)
+    @IBAction func exchangeAction(_ sender: Any) {
+        print("Hiding embedded views.")
+        UIView.animate(withDuration: 5.0, delay: 0.0, options: UIViewAnimationOptions.curveEaseInOut, animations: { () -> Void in
+            self.embeddedTableView.alpha = 0.0
+        }, completion: nil)
+        embeddedTableView.isHidden = true
+        exchangeButton.isHidden = true
     }
+    
+    // MARK: Methods
     
     func sendViewCompletion(_ sender: UIButton) {
         // do whatever you want
         // make view disappear again or remove from its superview
-    }
-    
-    private func loadEditingView(card: Card) { // FIXME:
-        let frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height - 200)
-        editView = UIView(frame: frame)
-        
-        view.addSubview(editView)
-        
-        editView.isHidden = false
-        
-        // TODO: should probably make this a custom class of some sort, with delegates allowing this VC to dictate logic
-        
-        let buttonFrame = CGRect(x: 40, y: 100, width: 50, height: 50)
-        let okayButton = UIButton(frame: buttonFrame)
-        
-        // here we are adding the button its superView
-        editView.addSubview(okayButton)
-        
-        okayButton.addTarget(self, action: #selector(editingViewCompletion(_:)), for: .touchUpInside)
     }
     
     func editingViewCompletion(_ sender: UIButton) {
@@ -134,18 +115,25 @@ class ViewController: UIViewController, UIScrollViewDelegate, MultipeerManagerDe
     }
     
     func makeView() {
-        swipeLabel.snp.makeConstraints { (make) -> Void in
-            make.top.equalToSuperview().offset(30)
+        dexLogo.snp.makeConstraints { (make) in
+            make.top.equalToSuperview().offset(Utils.hugeOffset * 2)
             make.centerX.equalToSuperview()
-            make.height.equalTo(swipeLabel.font.lineHeight)
+            make.height.equalTo(Utils.hugeOffset)
+            make.width.equalTo(dexLogo.snp.height).multipliedBy(2.1 / 1.0)
+        }
+        
+        welcomeLabel.snp.makeConstraints { (make) -> Void in
+            make.top.equalTo(dexLogo.snp.bottom).offset(Utils.hugeOffset * 2)
+            make.centerX.equalToSuperview()
+            make.height.equalTo(welcomeLabel.font.lineHeight)
         }
         
         cardView.snp.makeConstraints { (make) -> Void in
-            make.top.equalTo(swipeLabel.snp.bottom).offset(Utils.largeOffset)
+            make.top.equalTo(welcomeLabel.snp.bottom).offset(Utils.largeOffset)
             make.left.equalToSuperview().offset(Utils.largeOffset)
             make.right.equalToSuperview().inset(Utils.largeOffset)
-            make.bottom.equalTo(newContactsLabel.snp.top).inset(Utils.largeOffset)
-        }
+            make.height.equalTo(cardView.snp.width).multipliedBy(1.0 / 2.0)
+        } // TODO: make fixed height??
         
         cardView.makeView()
         
@@ -163,10 +151,23 @@ class ViewController: UIViewController, UIScrollViewDelegate, MultipeerManagerDe
             make.left.greaterThanOrEqualTo(cardView.snp.right).offset(5)
         }
         
-        newContactsLabel.snp.makeConstraints { (make) -> Void in
-            make.centerX.equalToSuperview()
+        swipeLabel.snp.makeConstraints { (make) in
             make.top.equalTo(cardView.snp.bottom).offset(Utils.largeOffset)
-            make.height.equalTo(newContactsLabel.font.lineHeight)
+            make.centerX.equalToSuperview()
+            make.height.equalTo(swipeLabel.font.lineHeight)
+        }
+        
+        embeddedTableView.snp.makeConstraints { (make) in
+            make.left.equalToSuperview().offset(Utils.mediumOffset)
+            make.right.equalToSuperview().offset(Utils.mediumOffset)
+            make.height.equalTo(self.view.snp.height).inset(150)
+            make.top.equalTo(dexLogo.snp.bottom).offset(Utils.largeOffset)
+        }
+        
+        exchangeButton.snp.makeConstraints { (make) in
+            make.top.equalTo(embeddedTableView.snp.bottom).offset(Utils.smallOffset)
+            make.centerX.equalToSuperview()
+            // TODO: aspect ratio??
         }
     }
     
@@ -182,6 +183,14 @@ class ViewController: UIViewController, UIScrollViewDelegate, MultipeerManagerDe
     
     func sendCard(card: Card) {
         // FIXME: implement
+        print("Showing embedded views.")
+        self.view.bringSubview(toFront: embeddedTableView)
+        self.view.bringSubview(toFront: exchangeButton)
+        embeddedTableView.isHidden = false
+        UIView.animate(withDuration: 0.5, delay: 0.0, options: UIViewAnimationOptions.curveEaseInOut, animations: { () -> Void in
+            self.embeddedTableView.alpha = 1.0
+        }, completion: nil)
+        exchangeButton.isHidden = false
     }
     
     func showStatistics(card: Card) {

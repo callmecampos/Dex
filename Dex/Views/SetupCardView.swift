@@ -47,15 +47,15 @@ class SetupCardView: UIView, UITextFieldDelegate {
     private static let mediumOffset = 10
     private static let largeOffset = 20
     
-    @IBInspectable var cornerRadius: CGFloat = 2
-    @IBInspectable var shadowOffsetWidth: Int = 0
-    @IBInspectable var shadowOffsetHeight: Int = 3
+    @IBInspectable var cornerRadius: CGFloat = 8
+    @IBInspectable var shadowOffsetWidth: Int = 3
+    @IBInspectable var shadowOffsetHeight: Int = 5
     @IBInspectable var shadowColor: UIColor? = UIColor.black
     @IBInspectable var shadowOpacity: Float = 0.5
     
     // MARK: Initialization
     
-    // TODO: makeView for email / phone sign up
+    // TODO: Security section for required password / touch id / PIN
     
     override var intrinsicContentSize: CGSize {
         return CGSize(width: 250, height: 500)
@@ -66,7 +66,11 @@ class SetupCardView: UIView, UITextFieldDelegate {
         _givenPhone = phone
         _phoneGiven = true
         _phoneLabel = UILabel()
-        _phoneLabel!.text = phone.number()
+        if let num = Utils.format(phoneNumber: phone.number()) {
+            _phoneLabel!.text = num
+        } else {
+            _phoneLabel!.text = phone.number()
+        }
         self.addSubview(_phoneLabel!)
         
         _emailFieldTitle = UILabel()
@@ -88,6 +92,7 @@ class SetupCardView: UIView, UITextFieldDelegate {
         _phoneField = UITextField()
         _phoneFieldTitle!.text = "Phone #"
         _phoneField!.addTarget(self, action: #selector(phoneNumberEdited(_:)), for: .editingDidEnd)
+        _phoneField!.addTarget(self, action: #selector(phoneNumberStartedEditing(_:)), for: .editingDidBegin)
         self.addSubview(_phoneFieldTitle!)
         self.addSubview(_phoneField!)
     }
@@ -146,6 +151,12 @@ class SetupCardView: UIView, UITextFieldDelegate {
     
     func phoneNumberEdited(_ sender: UITextField) {
         self.savePhone()
+    }
+    
+    func phoneNumberStartedEditing(_ sender: UITextField) {
+        if let phone = _savedPhone {
+            _phoneField!.text = phone.number()
+        }
     }
     
     func occupationEdited(_ sender: UITextField) {

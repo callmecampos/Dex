@@ -9,16 +9,18 @@
 import UIKit // TODO: use Firebase to upload user information
 import Photos
 
-class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
     
     // MARK: Properties
     
+    @IBOutlet var dexLogo: UIImageView!
     @IBOutlet var firstNameField: UITextField!
     @IBOutlet var lastNameField: UITextField!
     @IBOutlet var contactPrompt: UILabel!
     @IBOutlet var contactField: UITextField!
     @IBOutlet var nextButton: UIButton!
     @IBOutlet var profilePicView: UIImageView!
+    var savedPhone: Phone?
     var isPhone: Bool = true
     let picker = UIImagePickerController()
     var cameraAuthorized: Bool = false
@@ -30,6 +32,9 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
         
         picker.delegate = self
         nextButton.isEnabled = false
+        firstNameField.delegate = self
+        lastNameField.delegate = self
+        contactField.delegate = self
         
         hideKeyboardWhenTappedAround()
 
@@ -45,6 +50,13 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
             contactField.keyboardType = .emailAddress
         }
         
+        dexLogo.snp.makeConstraints { (make) in
+            make.top.equalToSuperview().offset(Utils.largeOffset)
+            make.centerX.equalToSuperview()
+            make.height.equalTo(Utils.hugeOffset)
+            make.width.equalTo(dexLogo.snp.height).multipliedBy(1.0 / 1.0)
+        }
+        
         checkCameraAuthorization()
     }
     
@@ -53,6 +65,10 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
     @IBAction func nextPressed(_ sender: Any) {
         print("Pressed.")
         super.performSegue(withIdentifier: "initSignUpComplete", sender: self)
+    }
+    
+    @IBAction func cancelSignUp(_ sender: Any) {
+        self.dismiss(animated: true, completion: nil)
     }
     
     @IBAction func selectAvi(_ sender: Any) {
@@ -118,6 +134,21 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
     
     @IBAction func contactFieldEdited(_ sender: Any) {
         reviewNext()
+        if isPhone {
+            let phoneNumber = contactField.text!
+            savedPhone = Phone(number: phoneNumber, kind: .other)
+            if let formatted = Utils.format(phoneNumber: phoneNumber) {
+                contactField.text = formatted
+            }
+        }
+    }
+    
+    @IBAction func contactFieldEditingBegan(_ sender: Any) {
+        if isPhone {
+            if let phone = savedPhone {
+                contactField.text = phone.number()
+            }
+        }
     }
     
     // MARK: Methods
@@ -155,6 +186,13 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
         }
     }
     
+    // MARK: Protocols
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -166,7 +204,7 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
         vc.name = firstNameField.text! + " " + lastNameField.text!
         vc.isPhone = isPhone
         if isPhone {
-            vc.phone = Phone(number: contactField.text!, kind: .other)
+            vc.phone = savedPhone!
         } else {
             vc.email = contactField.text!
         }

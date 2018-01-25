@@ -92,6 +92,11 @@ public class Utils {
         return leadingOne + areaCode + prefix + "-" + suffix
     }
     
+    /** Returns the user associated with this ID. If unavailable, returns nil. */
+    static func getUser(id: String) -> User? {
+        return nil // FIXME: implement with Firebase
+    }
+    
     /** The regex pattern for testing email validity. */
     static let EMAIL_REGEX = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}" // TODO: gotta test this bih
     
@@ -115,6 +120,11 @@ public class Utils {
     
     /** A constant denoting a huge offset for constraints. */
     static let hugeOffset = 40
+    
+    /** A separator for making a parseable string. */
+    static let separator = "~|~"
+    
+    static let nullField = "" + Utils.separator
     
     // reference images in assets as vars here (e.g. let chicken = "Assets/chicken.png")
 }

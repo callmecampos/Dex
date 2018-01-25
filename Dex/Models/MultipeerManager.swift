@@ -19,7 +19,7 @@ internal class MultipeerManager : NSObject, MCNearbyServiceAdvertiserDelegate, M
     
     // Service type must be a unique string, at most 15 characters long
     // and can contain only ASCII lowercase letters, numbers and hyphens.
-    private let PeerServiceType = "dex-identifier-420"
+    private let PeerServiceType = "dex-identifier"
     
     private let myPeerId = MCPeerID(displayName: UIDevice.current.name)
     
@@ -55,11 +55,11 @@ internal class MultipeerManager : NSObject, MCNearbyServiceAdvertiserDelegate, M
     // MARK: Methods
     
     func send(card : Card) {
-        NSLog("%@", "sentCard: \(card.decodeable()) to \(session.connectedPeers.count) peers")
+        NSLog("%@", "sentCard: \(card.encode()) to \(session.connectedPeers.count) peers")
         
         if session.connectedPeers.count > 0 {
             do {
-                try self.session.send(card.decodeable().data(using: .utf8)!, toPeers: session.connectedPeers, with: .reliable)
+                try self.session.send(card.encode().data(using: .utf8)!, toPeers: session.connectedPeers, with: .reliable)
             }
             catch let error {
                 NSLog("%@", "Error for sending: \(error)")
@@ -76,7 +76,6 @@ internal class MultipeerManager : NSObject, MCNearbyServiceAdvertiserDelegate, M
         // NOTE: This code accepts all incoming connections automatically. This would be like a public chat and you need to be very careful to check and sanitize any data you receive over the network as you cannot trust the peers.
         // TODO: To keep sessions private the user should be notified and asked to confirm incoming connections. This can be implemented using the MCAdvertiserAssistant classes.
     }
-    
     
     /** We did not advertise with a peer. */
     func advertiser(_ advertiser: MCNearbyServiceAdvertiser, didNotStartAdvertisingPeer error: Error) {

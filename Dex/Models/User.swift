@@ -10,7 +10,7 @@ import Foundation
 import CoreLocation
 
 /** A user class. */
-internal class User: Equatable, Comparable, Hashable {
+internal class User: Equatable, Comparable, Hashable, Codable {
     
     // MARK: Properties
     
@@ -19,6 +19,9 @@ internal class User: Equatable, Comparable, Hashable {
     
     /** The user's name. */
     private var _name: String
+    
+    /** The user's password. */
+    private var _password: String = ""
     
     /** The user's influence. */
     private var _influence: Double = 0.0
@@ -50,6 +53,11 @@ internal class User: Equatable, Comparable, Hashable {
     
     // MARK: Initialization
     
+    convenience init(name: String, inf: Double, password: String) {
+        self.init(name: name, influence: inf)
+        _password = password
+    }
+    
     convenience init(name: String, cards: [Card], inf: Double, initPos: CLLocation, connections: [Connection], interests: [Interest]) {
         self.init(name: name, inf: inf, initPos: initPos, connections: connections, interests: interests)
         for card in cards {
@@ -73,6 +81,16 @@ internal class User: Equatable, Comparable, Hashable {
         // TODO: other initializers, fetch from server or cache for most part
     }
     
+    convenience init(name: String, influence: Double, id: String) {
+        self.init(name: name, influence: influence)
+        _identifier = id
+    }
+    
+    init(name: String, influence: Double) {
+        _name = name
+        _influence = influence
+    }
+    
     init(name: String, interests: [Interest]) {
         _name = name
         for interest in interests {
@@ -80,10 +98,15 @@ internal class User: Equatable, Comparable, Hashable {
         }
     }
     
+    required init(from: Decoder) {
+        // TODO: implement
+        _name = ""
+    }
+    
     // MARK: - Methods
     
     /** Returns the user's unique ID. */
-    func id() -> String {
+    func identification() -> String {
         return _identifier
     }
     
@@ -99,6 +122,21 @@ internal class User: Equatable, Comparable, Hashable {
         let n = _name
         _name = name
         return n != name
+    }
+    
+    /** Returns whether this user has a password. */
+    func hasPassword() -> Bool {
+        return _password != ""
+    }
+    
+    /** Returns the user's password. */
+    func password() -> String {
+        return _password
+    }
+    
+    /** Sets the user's password. */
+    func setPassword(pass: String) {
+        _password = pass
     }
     
     /** Returns the user's influence. */
@@ -167,6 +205,10 @@ internal class User: Equatable, Comparable, Hashable {
     
     // MARK: Protocols
     
+    func encode(to encoder: Encoder) throws {
+        // TODO: implement
+    }
+    
     public static func ==(lhs: User, rhs: User) -> Bool {
         return lhs.influence() == rhs.influence() &&
             lhs.location() == rhs.location() &&
@@ -180,7 +222,7 @@ internal class User: Equatable, Comparable, Hashable {
     /** Combines the hash value of each property
      multiplied by a prime constant. */
     public var hashValue: Int {
-        var hash = location().hashValue ^ influence().hashValue ^ id().hashValue
+        var hash = location().hashValue ^ influence().hashValue ^ identification().hashValue
         for card in cards() {
             hash ^= card.hashValue
         }
