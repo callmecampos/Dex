@@ -9,6 +9,7 @@
 import UIKit
 import FirebaseAuth
 import FirebaseDatabase
+import FirebaseStorage
 
 class SecurityViewController: UIViewController, UITextFieldDelegate, SecurityViewDelegate {
     
@@ -18,6 +19,8 @@ class SecurityViewController: UIViewController, UITextFieldDelegate, SecurityVie
     @IBOutlet var finishingUpLabel: UILabel!
     var securityCardView: SecuritySetUpCardView!
     var card: Card!
+    
+    let storage = Storage.storage()
     
     // MARK: Initialization
 
@@ -80,18 +83,44 @@ class SecurityViewController: UIViewController, UITextFieldDelegate, SecurityVie
             if user != nil {
                 let u = self.card.user()
                 let userData = [
-                    "identifier" : u.identification(),
-                
                     "name" : u.name(),
                 
                     "influence" : String(u.influence()),
                 
-                    "cards" : String(self.card.hashValue),
-                
-                    "connections" : "",
+                    "connections" : ""
                 ]
                 let ref = Database.database().reference()
                 ref.child("users").child(user!.uid).setValue(userData)
+                
+                let cardData = [
+                    "occupation" : self.card.occupation(),
+                    
+                    "email" : self.card.email(),
+                    
+                    "phone" : self.card.primaryPhone().number(),
+                    
+                    "website" : self.card.website()
+                ]
+                ref.child("users").child(user!.uid).child("cards").setValue(cardData)
+                
+                let imageData = UIImagePNGRepresentation(self.card.profilePicture())!
+                let imageRef = self.storage.reference().child("\(user!.uid).jpg")
+                
+                let changeRequest = user!.createProfileChangeRequest()
+                
+                changeRequest.displayName = u.name()
+                
+                imageRef.putData(imageData, metadata: nil, completion: { (metadata, error) in
+                    if let err = error {
+                        print(err.localizedDescription)
+                    } else if let md = metadata {
+                        let downloadURL = md.downloadURL()!
+                        changeRequest.photoURL = downloadURL
+                    }
+                })
+                
+                changeRequest.commitChanges(completion: nil)
+                
                 self.performSegue(withIdentifier: "securityComplete", sender: self)
             } else {
                 if let err = error?.localizedDescription {
