@@ -220,6 +220,7 @@
                         <outlet property="logoView" destination="JJq-hL-H9t" id="b9z-8x-anY"/>
                         <outlet property="passwordField" destination="hok-dq-JKZ" id="j40-fH-5Ed"/>
                         <outlet property="passwordLabel" destination="SPz-0t-pEC" id="Opn-vX-ylF"/>
+                        <segue destination="BYZ-38-t0r" kind="presentation" identifier="loggedIn" modalTransitionStyle="flipHorizontal" id="F0O-0a-yix"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ct3-63-HO1" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -566,5 +567,6 @@
     <inferredMetricsTieBreakers>
         <segue reference="w8r-Nb-JFe"/>
         <segue reference="5zC-9y-QF0"/>
+        <segue reference="F0O-0a-yix"/>
     </inferredMetricsTieBreakers>
 </document>

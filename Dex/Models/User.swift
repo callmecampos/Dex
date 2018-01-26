@@ -7,10 +7,11 @@
 //
 
 import Foundation
+import UIKit
 import CoreLocation
 
 /** A user class. */
-internal class User: Equatable, Comparable, Hashable, Codable {
+internal class User: Equatable, Comparable, Hashable {
     
     // MARK: Properties
     
@@ -19,9 +20,6 @@ internal class User: Equatable, Comparable, Hashable, Codable {
     
     /** The user's name. */
     private var _name: String
-    
-    /** The user's password. */
-    private var _password: String = ""
     
     /** The user's influence. */
     private var _influence: Double = 0.0
@@ -35,7 +33,7 @@ internal class User: Equatable, Comparable, Hashable, Codable {
     /** The user's interests. */
     private var _interests: [Interest] = []
     
-    // FIXME:
+    /** The user's skills. */
     private var _skills: [Skill] = []
     
     /** The user's connections. */
@@ -52,11 +50,6 @@ internal class User: Equatable, Comparable, Hashable, Codable {
     }()
     
     // MARK: Initialization
-    
-    convenience init(name: String, inf: Double, password: String) {
-        self.init(name: name, influence: inf)
-        _password = password
-    }
     
     convenience init(name: String, cards: [Card], inf: Double, initPos: CLLocation, connections: [Connection], interests: [Interest]) {
         self.init(name: name, inf: inf, initPos: initPos, connections: connections, interests: interests)
@@ -98,12 +91,22 @@ internal class User: Equatable, Comparable, Hashable, Codable {
         }
     }
     
-    required init(from: Decoder) {
+    init(name: String, uid: String, metadata: String, email: String?, phone: String?, avi: UIImage?) {
         // TODO: implement
-        _name = ""
+        _name = name
+        _identifier = uid
+        parseMetadata(metadata: metadata)
     }
     
     // MARK: - Methods
+    
+    func makeCard(name: String, email: String?, phone: Phone?, avi: UIImage?) {
+        // TODO: implement
+    }
+    
+    func parseMetadata(metadata: String) {
+        // TODO: implement
+    }
     
     /** Returns the user's unique ID. */
     func identification() -> String {
@@ -122,21 +125,6 @@ internal class User: Equatable, Comparable, Hashable, Codable {
         let n = _name
         _name = name
         return n != name
-    }
-    
-    /** Returns whether this user has a password. */
-    func hasPassword() -> Bool {
-        return _password != ""
-    }
-    
-    /** Returns the user's password. */
-    func password() -> String {
-        return _password
-    }
-    
-    /** Sets the user's password. */
-    func setPassword(pass: String) {
-        _password = pass
     }
     
     /** Returns the user's influence. */
@@ -204,10 +192,6 @@ internal class User: Equatable, Comparable, Hashable, Codable {
     }
     
     // MARK: Protocols
-    
-    func encode(to encoder: Encoder) throws {
-        // TODO: implement
-    }
     
     public static func ==(lhs: User, rhs: User) -> Bool {
         return lhs.influence() == rhs.influence() &&

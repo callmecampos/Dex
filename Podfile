@@ -9,4 +9,5 @@ target 'Dex' do
   pod 'SnapKit', '~> 3.2.0'
   pod 'Firebase/Core'
   pod 'Firebase/Database'
+  pod 'Firebase/Auth'
 end

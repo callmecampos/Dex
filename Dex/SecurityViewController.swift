@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import FirebaseAuth
+import FirebaseDatabase
 
 class SecurityViewController: UIViewController, UITextFieldDelegate, SecurityViewDelegate {
     
@@ -15,7 +17,7 @@ class SecurityViewController: UIViewController, UITextFieldDelegate, SecurityVie
     @IBOutlet var dexLogo: UIImageView!
     @IBOutlet var finishingUpLabel: UILabel!
     var securityCardView: SecuritySetUpCardView!
-    var cards: [Card] = []
+    var card: Card!
     
     // MARK: Initialization
 
@@ -74,7 +76,33 @@ class SecurityViewController: UIViewController, UITextFieldDelegate, SecurityVie
     // MARK: Protocols
     
     func saveButtonTapped() {
-        self.performSegue(withIdentifier: "securityComplete", sender: self)
+        Auth.auth().createUser(withEmail: card.email(), password: securityCardView.password()) { (user, error) in
+            if user != nil {
+                let u = self.card.user()
+                let userData = [
+                    "identifier" : u.identification(),
+                
+                    "name" : u.name(),
+                
+                    "influence" : String(u.influence()),
+                
+                    "cards" : String(self.card.hashValue),
+                
+                    "connections" : "",
+                ]
+                let ref = Database.database().reference()
+                ref.child("users").child(user!.uid).setValue(userData)
+                self.performSegue(withIdentifier: "securityComplete", sender: self)
+            } else {
+                if let err = error?.localizedDescription {
+                    print(err)
+                } else {
+                    print("Undefined error.")
+                }
+            }
+        }
+        
+        
     }
     
     // MARK: - Navigation
@@ -84,7 +112,6 @@ class SecurityViewController: UIViewController, UITextFieldDelegate, SecurityVie
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
         let vc = segue.destination as! ViewController
-        cards[0].user().setPassword(pass: securityCardView.password())
-        vc.cards = cards
+        vc.cards = [card]
     }
 }

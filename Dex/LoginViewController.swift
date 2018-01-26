@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class LoginViewController: UIViewController, UITextFieldDelegate {
     
@@ -65,7 +66,22 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     @IBAction func loginPressed(_ sender: Any) {
         // FIXME: check user defaults for username and password and load corresponding data
-        
+        if isPhone {
+            // FIXME: implement
+        } else {
+            Auth.auth().signIn(withEmail: contactField.text!, password: passwordField.text!, completion: { (user, error) in
+                if user != nil {
+                    // TODO: sign in successful, implement segue
+                    self.performSegue(withIdentifier: "loggedIn", sender: self)
+                } else {
+                    if let err = error?.localizedDescription {
+                        print(err)
+                    } else {
+                        print("Undefined error.")
+                    }
+                }
+            })
+        }
     }
     
     // MARK: Methods

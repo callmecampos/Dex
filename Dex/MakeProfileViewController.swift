@@ -151,6 +151,6 @@ class MakeProfileViewController: UIViewController, UITextFieldDelegate, SetupDel
             }
         }
         
-        vc.cards = [card]
+        vc.card = card
     }
 }
