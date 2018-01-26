@@ -11,7 +11,6 @@
 // TODO: OR have options for transitions like sliding or whatever
 
 import UIKit
-import Shiny
 
 /** A notification card view class. */
 @IBDesignable
@@ -68,7 +67,6 @@ class NotificationCardView: UIView {
         _title = title
         _note = note
         _frame = frame
-        makeShiny()
     }
     
     required init(coder aDecoder: NSCoder) {
@@ -130,14 +128,6 @@ class NotificationCardView: UIView {
             make.left.equalToSuperview().offset(5 + _imageView!.frame.size.width + 5)
             make.bottom.equalToSuperview().offset(-5)
         }
-    }
-    
-    func makeShiny() {
-         let shinyView = ShinyView(frame: CGRect(x: 0, y: 0, width: 320, height: 200))
-         shinyView.colors = [UIColor.red, UIColor.green, UIColor.blue, UIColor.gray]
-         shinyView.locations = [0, 0.1, 0.2, 0.3, 1] // FIXME: test locations
-         shinyView.startUpdates() // necessary
-         self.addSubview(shinyView)
     }
 
     /*
