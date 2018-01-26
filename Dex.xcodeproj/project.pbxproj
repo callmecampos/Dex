@@ -86,13 +86,6 @@
 			path = Functionality;
 			sourceTree = "<group>";
 		};
-		1982F1C0201967400003AF29 /* Segues */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Segues;
-			sourceTree = "<group>";
-		};
 		198FF4741FF17A18001D3988 /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -155,7 +148,6 @@
 				198FF4741FF17A18001D3988 /* Models */,
 				198FF4751FF17A48001D3988 /* Views */,
 				1930CBD120182F290000DD45 /* Functionality */,
-				1982F1C0201967400003AF29 /* Segues */,
 			);
 			path = Dex;
 			sourceTree = "<group>";

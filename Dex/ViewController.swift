@@ -33,7 +33,7 @@ class ViewController: UIViewController, UIScrollViewDelegate, MultipeerManagerDe
     let multipeerService = MultipeerManager()
     
     // MARK: Initialization
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -65,7 +65,7 @@ class ViewController: UIViewController, UIScrollViewDelegate, MultipeerManagerDe
         
         makeView()
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -96,9 +96,9 @@ class ViewController: UIViewController, UIScrollViewDelegate, MultipeerManagerDe
     
     @IBAction func exchangeAction(_ sender: Any) {
         print("Hiding embedded views.")
-        UIView.animate(withDuration: 5.0, delay: 0.0, options: UIViewAnimationOptions.curveEaseInOut, animations: { () -> Void in
+        UIView.animate(withDuration: 0.5, delay: 1.0, options: UIViewAnimationOptions.curveEaseInOut, animations: { () -> Void in
             self.embeddedTableView.alpha = 0.0
-        }, completion: nil)
+        }, completion: nil) // FIXME: not working
         embeddedTableView.isHidden = true
         exchangeButton.isHidden = true
     }
@@ -147,7 +147,7 @@ class ViewController: UIViewController, UIScrollViewDelegate, MultipeerManagerDe
         rightButton.addTarget(self, action: #selector(self.rightButtonTapped(_:)), for: .touchUpInside)
         rightButton.snp.makeConstraints { (make) -> Void in
             make.centerY.equalTo(cardView.snp.centerY)
-            make.right.equalToSuperview().offset(5)
+            make.right.equalToSuperview().inset(5)
             make.left.greaterThanOrEqualTo(cardView.snp.right).offset(5)
         }
         
@@ -159,7 +159,7 @@ class ViewController: UIViewController, UIScrollViewDelegate, MultipeerManagerDe
         
         embeddedTableView.snp.makeConstraints { (make) in
             make.left.equalToSuperview().offset(Utils.mediumOffset)
-            make.right.equalToSuperview().offset(Utils.mediumOffset)
+            make.right.equalToSuperview().inset(Utils.mediumOffset)
             make.height.equalTo(self.view.snp.height).inset(150)
             make.top.equalTo(dexLogo.snp.bottom).offset(Utils.largeOffset)
         }
