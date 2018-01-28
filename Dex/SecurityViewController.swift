@@ -20,8 +20,8 @@ class SecurityViewController: UIViewController, UITextFieldDelegate, SecurityVie
     var securityCardView: SecuritySetUpCardView!
     var card: Card!
     
-    let storage = Storage.storage()
-    let database = Database.database()
+    let databaseRef = Database.database().reference()
+    let storageRef = Storage.storage().reference(forURL: "gs://dex-app-89824.appspot.com/")
     
     // MARK: Initialization
 
@@ -90,8 +90,7 @@ class SecurityViewController: UIViewController, UITextFieldDelegate, SecurityVie
                     
                     "cardCount" : String(u.cards().count)
                 ]
-                let ref = self.database.reference()
-                ref.child("users").child(user!.uid).setValue(userData)
+                self.databaseRef.child("users").child(user!.uid).setValue(userData)
                 
                 let cardData = [
                     "occupation" : self.card.occupation(),
@@ -102,25 +101,24 @@ class SecurityViewController: UIViewController, UITextFieldDelegate, SecurityVie
                     
                     "website" : self.card.website()
                 ]
-                ref.child("users").child(user!.uid).child("cards").child("0").setValue(cardData)
+                self.databaseRef.child("users").child(user!.uid).child("cards").child("0").setValue(cardData)
                 
                 let imageData = UIImagePNGRepresentation(self.card.profilePicture())!
-                let imageRef = self.storage.reference().child("\(user!.uid).jpg")
+                let imageRef = self.storageRef.child("userData").child("profilePictures").child("\(user!.uid).png")
                 
-                let changeRequest = user!.createProfileChangeRequest()
-                
-                changeRequest.displayName = u.name()
-                
+                var downloadURL: URL?
                 imageRef.putData(imageData, metadata: nil, completion: { (metadata, error) in
                     if let err = error {
                         print(err.localizedDescription)
                     } else if let md = metadata {
-                        let downloadURL = md.downloadURL()!
-                        changeRequest.photoURL = downloadURL
+                        downloadURL = md.downloadURL()
+                        let changeRequest = user!.createProfileChangeRequest()
+                        changeRequest.displayName = u.name()
+                        changeRequest.photoURL = downloadURL!
+                        changeRequest.commitChanges(completion: nil)
+                        print("Successful.")
                     }
                 })
-                
-                changeRequest.commitChanges(completion: nil)
                 
                 self.performSegue(withIdentifier: "securityComplete", sender: self)
             } else {
@@ -130,7 +128,36 @@ class SecurityViewController: UIViewController, UITextFieldDelegate, SecurityVie
                     print("Undefined error.")
                 }
                 
-                // TODO: show UIAlertController
+                let paragraphStyle = NSMutableParagraphStyle()
+                paragraphStyle.alignment = NSTextAlignment.left
+                let messageText = NSMutableAttributedString(
+                    string: "\nLooks like there was a problem with your sign up. Check that your email is valid and try again.",
+                    attributes: [
+                        NSParagraphStyleAttributeName: paragraphStyle,
+                        NSFontAttributeName : UIFont.preferredFont(forTextStyle: UIFontTextStyle.footnote),
+                        NSForegroundColorAttributeName : UIColor.black
+                    ]
+                )
+                let titleStyle = NSMutableParagraphStyle()
+                titleStyle.alignment = NSTextAlignment.center
+                let titleText = NSMutableAttributedString(
+                    string: "There was a problem signing you up.",
+                    attributes: [
+                        NSParagraphStyleAttributeName: titleStyle,
+                        NSFontAttributeName : UIFont.preferredFont(forTextStyle: UIFontTextStyle.headline),
+                        NSForegroundColorAttributeName : UIColor.black
+                    ]
+                )
+                let signUpAlert = UIAlertController()
+                signUpAlert.setValue(titleText, forKey: "attributedTitle")
+                signUpAlert.setValue(messageText, forKey: "attributedMessage")
+                
+                let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
+                
+                signUpAlert.addAction(okAction)
+                DispatchQueue.main.async {
+                    self.present(signUpAlert, animated: true, completion:  nil)
+                }
             }
         }
     }

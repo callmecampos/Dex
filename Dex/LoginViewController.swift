@@ -24,9 +24,12 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     var isPhone: Bool = false
     var savedPhone: Phone?
     var u: User?
+    var cards: [Card] = []
     
     let storage = Storage.storage()
+    let storageRef = Storage.storage().reference(forURL: "gs://dex-app-89824.appspot.com/")
     let database = Database.database()
+    let databaseRef = Database.database().reference()
     
     // MARK: Initialization
     
@@ -49,6 +52,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             contactLabel.text = "Email:"
             contactField.placeholder = "chris@dex.com"
             contactField.keyboardType = .emailAddress
+            contactField.autocapitalizationType = .none
         }
         
         makeView()
@@ -83,51 +87,81 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         } else {
             Auth.auth().signIn(withEmail: contactField.text!, password: passwordField.text!, completion: { (user, error) in
                 if user != nil {
-                    let ref = self.database.reference()
-                    
                     var image: UIImage?
                     self.storage.reference(forURL: user!.photoURL!.absoluteString).getData(maxSize: 25 * 1024 * 1024, completion: { (data, error) -> Void in
                         image = UIImage(data: data!)
-                    })
-                    
-                    var numCards: Int = 0
-                    ref.child("users").child(user!.uid).observeSingleEvent(of: .value, with: { (snap) in
-                        if !snap.exists() {
-                            return
-                        }
                         
-                        if let name = snap.value(forKey: "name") as? String {
-                            if let influence = snap.value(forKey: "influence") as? String {
-                                if let n = snap.value(forKey: "cardCount") as? String {
-                                    self.u = User(name: name, influence: Double(influence)!)
-                                    numCards = Int(n)!
-                                }
-                            }
-                        }
-                    })
-                    
-                    var cards: [Card] = []
-                    for i in 0..<numCards {
-                        ref.child("users").child(user!.uid).child("cards").child(String(i)).observeSingleEvent(of: .value, with: { (snap) in
+                        self.databaseRef.child("users").child(user!.uid).observeSingleEvent(of: .value, with: { (snap) in
                             if !snap.exists() {
+                                print("Data snapshot does not exist.")
                                 return
                             }
                             
-                            if let occupation = snap.value(forKey: "occupation") as? String {
-                                if let email = snap.value(forKey: "email") as? String {
-                                    if let number = snap.value(forKey: "phone") as? String {
-                                        if let website = snap.value(forKey: "website") as? String {
+                            if let shot = snap.value as? [String : AnyObject] {
+                                let name = shot["name"] as! String
+                                let inf = shot["influence"] as! String
+                                let numCards = Int(shot["cardCount"] as! String)!
+                                
+                                self.u = User(name: name, influence: Double(inf)!)
+                                
+                                for i in 0..<numCards {
+                                    self.databaseRef.child("users").child(user!.uid).child("cards").child(String(i)).observeSingleEvent(of: .value, with: { (snap) in
+                                        if !snap.exists() {
+                                            print("Data snapshot does not exist.")
+                                            return
+                                        }
+                                        
+                                        if let shot = snap.value as? [String : AnyObject] {
+                                            let occupation = shot["occupation"] as! String
+                                            let email = shot["email"] as! String
+                                            let number = shot["phone"] as! String
+                                            let website = shot["website"] as! String
+                                            
                                             let phone = Phone(number: number, kind: .other)
                                             let card = Card(user: self.u!, occupation: occupation, email: email, phones: [phone], web: website, avi: image!)
-                                            cards.append(card)
+                                            self.cards.append(card)
+                                            if i == numCards - 1 {
+                                                print("Signed in.")
+                                                self.performSegue(withIdentifier: "loggedIn", sender: self)
+                                            }
                                         }
-                                    }
+                                    })
                                 }
                             }
                         })
-                    }
-                    self.performSegue(withIdentifier: "loggedIn", sender: self)
+                    })
                 } else {
+                    let paragraphStyle = NSMutableParagraphStyle()
+                    paragraphStyle.alignment = NSTextAlignment.center
+                    let messageText = NSMutableAttributedString(
+                        string: "\nWhoops! Looks like your email or password are incorrect. Please try again.",
+                        attributes: [
+                            NSParagraphStyleAttributeName: paragraphStyle,
+                            NSFontAttributeName : UIFont.preferredFont(forTextStyle: UIFontTextStyle.footnote),
+                            NSForegroundColorAttributeName : UIColor.black
+                        ]
+                    )
+                    let titleStyle = NSMutableParagraphStyle()
+                    titleStyle.alignment = NSTextAlignment.center
+                    let titleText = NSMutableAttributedString(
+                        string: "Invalid Email or Password",
+                        attributes: [
+                            NSParagraphStyleAttributeName: titleStyle,
+                            NSFontAttributeName : UIFont.preferredFont(forTextStyle: UIFontTextStyle.headline),
+                            NSForegroundColorAttributeName : UIColor.black
+                        ]
+                    )
+                    let loginAlert = UIAlertController()
+                    loginAlert.setValue(titleText, forKey: "attributedTitle")
+                    loginAlert.setValue(messageText, forKey: "attributedMessage")
+                    
+                    let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
+                    
+                    loginAlert.addAction(okAction)
+                    DispatchQueue.main.async {
+                        self.present(loginAlert, animated: true, completion:  nil)
+                    }
+                    
                     if let err = error?.localizedDescription {
                         print(err)
                     } else {

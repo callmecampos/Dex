@@ -40,7 +40,7 @@ class SetupCardView: UIView, UITextFieldDelegate {
     
     private var validContactField: Bool = true
     
-    private var _saveButton: UIButton = UIButton(frame: CGRect(x: 0, y: 0, width: 100, height: 50))
+    private var _saveButton: UIButton = UIButton(type: .custom)
     
     weak var delegate: SetupDelegate?
     weak var textFieldDelegate: UITextFieldDelegate?
@@ -106,11 +106,10 @@ class SetupCardView: UIView, UITextFieldDelegate {
         
         _name.text = name
         _profilePicture = profilePic
+        
         self.addSubview(_name)
         
         _imageView.image = _profilePicture
-        _imageView.layer.cornerRadius = _imageView.frame.height / 2
-        _imageView.layer.masksToBounds = true
         self.addSubview(_imageView)
         
         _occupationFieldTitle.text = "Occupation (*)" // TODO: caps
@@ -122,9 +121,8 @@ class SetupCardView: UIView, UITextFieldDelegate {
         self.addSubview(_websiteFieldTitle)
         self.addSubview(_websiteField)
         
-        // TODO: aspect ratio?
-        _saveButton.setTitle("Save", for: .normal)
-        _saveButton.backgroundColor = .red
+        _saveButton.frame = CGRect(x: 0, y: 0, width: 100, height: 50)
+        _saveButton.setImage(UIImage(named: "save"), for: .normal)
         _saveButton.isHidden = true
         _saveButton.addTarget(self, action: #selector(self.saveTapped(_:)), for: .touchUpInside)
         self.addSubview(_saveButton)
@@ -172,7 +170,11 @@ class SetupCardView: UIView, UITextFieldDelegate {
     func emailFieldEdited(_ sender: UITextField) {
         // check if phone number is valid (regex) -> set text field color to red if invalid
         if hasEmail() && !Utils.regex(pattern: Utils.EMAIL_REGEX, object: _emailField!.text!) {
-            // FIXME:
+            validContactField = false
+            _emailField!.backgroundColor = .red
+        } else {
+            validContactField = true
+            _emailField!.backgroundColor = .white
         }
     }
     
@@ -271,6 +273,9 @@ class SetupCardView: UIView, UITextFieldDelegate {
             topConstraint = _emailLabel!.snp.bottom
             contactLabelHeight = _emailLabel!.font.lineHeight
         }
+        
+        _imageView.layer.cornerRadius = _imageView.frame.height / 2
+        _imageView.clipsToBounds = true
         
         _imageView.snp.makeConstraints { (make) -> Void in
             make.top.equalTo(self).offset(Utils.mediumOffset)

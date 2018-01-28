@@ -52,6 +52,7 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
         }
         
         profilePicView.layer.cornerRadius = profilePicView.frame.height / 2
+        profilePicView.layer.masksToBounds = true
         
         dexLogo.snp.makeConstraints { (make) in
             make.top.equalToSuperview().offset(Utils.largeOffset)
@@ -102,9 +103,12 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
                 self.picker.sourceType = .camera
                 self.present(self.picker, animated: true, completion: nil)
             })
+            
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         
             webAlert.addAction(plAction)
             webAlert.addAction(camAction)
+            webAlert.addAction(cancelAction)
         
             DispatchQueue.main.async {
                 self.present(webAlert, animated: true, completion: nil)

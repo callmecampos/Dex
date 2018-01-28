@@ -26,7 +26,7 @@ class SecuritySetUpCardView: UIView {
     private let countWarning = "Passwords must have more than 5 characters."
     private let matchWarning = "Passwords must match."
     
-    private var _saveButton: UIButton = UIButton(frame: CGRect(x: 0, y: 0, width: 100, height: 50))
+    private var _saveButton: UIButton = UIButton(type: .custom)
     
     weak var delegate: SecurityViewDelegate?
     weak var textFieldDelegate: UITextFieldDelegate?
@@ -69,8 +69,8 @@ class SecuritySetUpCardView: UIView {
         _passwordsMatchWarning.isHidden = true
         self.addSubview(_passwordsMatchWarning)
         
-        _saveButton.setTitle("Save", for: .normal)
-        _saveButton.backgroundColor = .red
+        _saveButton.frame = CGRect(x: 0, y: 0, width: 100, height: 50)
+        _saveButton.setImage(UIImage(named: "save"), for: .normal)
         _saveButton.isHidden = true
         _saveButton.addTarget(self, action: #selector(self.saveTapped(_:)), for: .touchUpInside)
         self.addSubview(_saveButton)

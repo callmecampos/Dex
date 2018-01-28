@@ -197,7 +197,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" secureTextEntry="YES" textContentType="password"/>
                                 <connections>
                                     <action selector="editedPassword:" destination="vEn-M0-Uhr" eventType="editingDidEnd" id="W1h-lr-2Ua"/>
                                 </connections>
@@ -217,7 +217,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no"/>
                                 <connections>
                                     <action selector="editedContact:" destination="vEn-M0-Uhr" eventType="editingDidEnd" id="0cI-TO-524"/>
                                 </connections>
@@ -593,6 +593,6 @@
     <inferredMetricsTieBreakers>
         <segue reference="w8r-Nb-JFe"/>
         <segue reference="5zC-9y-QF0"/>
-        <segue reference="hHl-U7-dmR"/>
+        <segue reference="F0O-0a-yix"/>
     </inferredMetricsTieBreakers>
 </document>
