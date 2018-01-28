@@ -23,6 +23,7 @@ class ViewController: UIViewController, UIScrollViewDelegate, MultipeerManagerDe
     @IBOutlet var exchangeButton: UIButton!
     @IBOutlet var dexLogo: UIImageView!
     
+    var ourUser: User!
     var cardView: CardView!
     var cards: [Card] = []
     var cardIndex = 0
@@ -37,10 +38,6 @@ class ViewController: UIViewController, UIScrollViewDelegate, MultipeerManagerDe
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        
-        if cards.count == 0 {
-            // FIXME: get cards from user defaults
-        }
         
         multipeerService.delegate = self
         
@@ -58,7 +55,6 @@ class ViewController: UIViewController, UIScrollViewDelegate, MultipeerManagerDe
             rightButton.isHidden = true
         }
         
-        // TODO: figure out data flow logic for users on whiteboard or notebook --> core data or NSUserDefaults?
         // TODO: display cards based on priority, binary search tree style?? (main in middle, cascade down on sides)
         
         // if no cards, display 'Add your first card here!'
@@ -101,6 +97,8 @@ class ViewController: UIViewController, UIScrollViewDelegate, MultipeerManagerDe
         }, completion: nil) // FIXME: not working
         embeddedTableView.isHidden = true
         exchangeButton.isHidden = true
+        
+        // multipeerService.send(card: currentCard())
     }
     
     // MARK: Methods
@@ -112,6 +110,10 @@ class ViewController: UIViewController, UIScrollViewDelegate, MultipeerManagerDe
     
     func editingViewCompletion(_ sender: UIButton) {
         // do whatever you want
+    }
+    
+    func currentCard() -> Card {
+        return cards[cardIndex]
     }
     
     func makeView() {

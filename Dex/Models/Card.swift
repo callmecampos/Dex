@@ -67,6 +67,8 @@ internal class Card: Equatable, Comparable, Hashable {
         for phone in phones {
             _phones.append(phone)
         }
+        
+        user.addCard(card: self)
     }
     
     // MARK: - Methods
@@ -78,7 +80,7 @@ internal class Card: Equatable, Comparable, Hashable {
         if let tmp = Utils.getUser(id: components[0]) {
             user = tmp
         } else {
-            user = User(name: components[1], influence: Double(components[2])!, id: components[0])
+            user = User(name: components[1], influence: Double(components[2])!)
         }
         let occupation = components[3]
         let location = components[4]
@@ -104,14 +106,19 @@ internal class Card: Equatable, Comparable, Hashable {
             card = Card(user: user, location: location, occupation: occupation, email: email, phones: phones, web: website, avi: img)
         }
         
+        user.addCard(card: card)
+        
+        print(user.hashValue == Int(components[0]))
+        
         return card
     }
     
     /** Returns a unique decodeable string for this card. */
     func encode() -> String {
         let sep = Utils.separator
-        var str = user().identification() + sep + user().name() + sep + String(user().influence()) + sep + occupation() + sep
-        
+        var str = String(user().hashValue) + sep
+        str += user().name() + sep
+        str += String(user().influence()) + sep + occupation() + sep
         if hasLocation() {
             str += location() + sep
         } else {

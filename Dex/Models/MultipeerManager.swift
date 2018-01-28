@@ -15,7 +15,7 @@ protocol MultipeerManagerDelegate {
     // func cardWasSent(manager: MultipeerManager, card: Card, successful: Bool)
 }
 
-internal class MultipeerManager : NSObject, MCNearbyServiceAdvertiserDelegate, MCNearbyServiceBrowserDelegate, MCSessionDelegate {
+internal class MultipeerManager : NSObject {
     
     // Service type must be a unique string, at most 15 characters long
     // and can contain only ASCII lowercase letters, numbers and hyphens.
@@ -23,7 +23,7 @@ internal class MultipeerManager : NSObject, MCNearbyServiceAdvertiserDelegate, M
     
     private let myPeerId = MCPeerID(displayName: UIDevice.current.name)
     
-    private let serviceAdvertiser : MCNearbyServiceAdvertiser
+    private let serviceAdvertiser: MCNearbyServiceAdvertiser
     private let serviceBrowser: MCNearbyServiceBrowser
     
     var delegate: MultipeerManagerDelegate?
@@ -54,21 +54,27 @@ internal class MultipeerManager : NSObject, MCNearbyServiceAdvertiserDelegate, M
     
     // MARK: Methods
     
-    func send(card : Card) {
+    func send(card : Card, peers: [MCPeerID]) {
         NSLog("%@", "sentCard: \(card.encode()) to \(session.connectedPeers.count) peers")
         
         if session.connectedPeers.count > 0 {
             do {
-                try self.session.send(card.encode().data(using: .utf8)!, toPeers: session.connectedPeers, with: .reliable)
+                var connectingPeers: [MCPeerID] = []
+                for peer in session.connectedPeers {
+                    if peers.contains(peer) {
+                        connectingPeers.append(peer)
+                    }
+                }
+                try self.session.send(card.encode().data(using: .utf8)!, toPeers: connectingPeers, with: .reliable)
             }
             catch let error {
                 NSLog("%@", "Error for sending: \(error)")
             }
         }
     }
-    
-    // MARK: Protocols
-    
+}
+
+extension MultipeerManager : MCNearbyServiceAdvertiserDelegate {
     /** We received an invitation from a peer. */
     func advertiser(_ advertiser: MCNearbyServiceAdvertiser, didReceiveInvitationFromPeer peerID: MCPeerID, withContext context: Data?, invitationHandler: @escaping (Bool, MCSession?) -> Void) {
         NSLog("%@", "didReceiveInvitationFromPeer \(peerID)")
@@ -81,13 +87,14 @@ internal class MultipeerManager : NSObject, MCNearbyServiceAdvertiserDelegate, M
     func advertiser(_ advertiser: MCNearbyServiceAdvertiser, didNotStartAdvertisingPeer error: Error) {
         NSLog("%@", "didNotStartAdvertisingPeer: \(error)")
     }
-    
+}
+
+extension MultipeerManager : MCNearbyServiceBrowserDelegate {
     /** We found the peer. */
     func browser(_ browser: MCNearbyServiceBrowser, foundPeer peerID: MCPeerID, withDiscoveryInfo info: [String : String]?) {
         NSLog("%@", "foundPeer: \(peerID)")
         NSLog("%@", "invitePeer: \(peerID)")
         browser.invitePeer(peerID, to: self.session, withContext: nil, timeout: 10)
-        
     }
     
     /** We lost the peer. */
@@ -99,7 +106,9 @@ internal class MultipeerManager : NSObject, MCNearbyServiceAdvertiserDelegate, M
     func browser(_ browser: MCNearbyServiceBrowser, didNotStartBrowsingForPeers error: Error) {
         NSLog("%@", "didNotStartBrowsingForPeers: \(error)")
     }
-    
+}
+
+extension MultipeerManager : MCSessionDelegate {
     func session(_ session: MCSession, peer peerID: MCPeerID, didChange state: MCSessionState) {
         NSLog("%@", "peer \(peerID) didChangeState: \(state)")
         self.delegate?.connectedDevicesChanged(manager: self, connectedDevices: session.connectedPeers.map{$0.displayName})
@@ -123,6 +132,4 @@ internal class MultipeerManager : NSObject, MCNearbyServiceAdvertiserDelegate, M
     func session(_ session: MCSession, didFinishReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, at localURL: URL?, withError error: Error?) {
         NSLog("%@", "didFinishReceivingResourceWithName")
     }
-    
-    // TODO: implement card sending delegates in ViewController.swift
 }

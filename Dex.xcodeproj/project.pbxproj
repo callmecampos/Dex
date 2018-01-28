@@ -11,6 +11,8 @@
 		1907499E1FF5AA0A005B52D3 /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1907499D1FF5AA0A005B52D3 /* Group.swift */; };
 		190749A01FF6A4E6005B52D3 /* MakeProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1907499F1FF6A4E6005B52D3 /* MakeProfileViewController.swift */; };
 		190749A21FF80B3A005B52D3 /* SetupCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 190749A11FF80B3A005B52D3 /* SetupCardView.swift */; };
+		19291E2A201DB94300A3500C /* PeerSelectTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19291E29201DB94300A3500C /* PeerSelectTableViewCell.swift */; };
+		19291E2C201E0C1F00A3500C /* EmbeddedPeerSelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19291E2B201E0C1F00A3500C /* EmbeddedPeerSelectViewController.swift */; };
 		1930CBD520182F990000DD45 /* MultipeerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1930CBD420182F990000DD45 /* MultipeerManager.swift */; };
 		196F23342006C39D000CB8ED /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 196F23332006C39D000CB8ED /* SignUpViewController.swift */; };
 		196F23362006C3C1000CB8ED /* InitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 196F23352006C3C1000CB8ED /* InitViewController.swift */; };
@@ -20,12 +22,12 @@
 		1982F1C62019E71B0003AF29 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1982F1C52019E71B0003AF29 /* LoginViewController.swift */; };
 		198FF4771FF1CD5B001D3988 /* Phone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 198FF4761FF1CD5B001D3988 /* Phone.swift */; };
 		198FF4791FF20124001D3988 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 198FF4781FF20124001D3988 /* Utils.swift */; };
+		199CC6C9201DA35B0053FE0E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 199CC6C8201DA35A0053FE0E /* GoogleService-Info.plist */; };
 		19C6EE871FE84F38001037DB /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C6EE861FE84F38001037DB /* Card.swift */; };
 		19C6EE8D1FE9B871001037DB /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C6EE8C1FE9B871001037DB /* User.swift */; };
 		19C6EE8F1FE9F992001037DB /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C6EE8E1FE9F992001037DB /* CardView.swift */; };
 		19C6EE911FEAF59E001037DB /* Connection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C6EE901FEAF59E001037DB /* Connection.swift */; };
 		19C6EE9B1FEF10E8001037DB /* Interest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C6EE9A1FEF10E8001037DB /* Interest.swift */; };
-		19F29CB020189F5B00A37D12 /* ConnectTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19F29CAF20189F5B00A37D12 /* ConnectTableViewController.swift */; };
 		19F5783B1F3A70EF00542E25 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19F5783A1F3A70EF00542E25 /* AppDelegate.swift */; };
 		19F5783D1F3A70EF00542E25 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19F5783C1F3A70EF00542E25 /* ViewController.swift */; };
 		19F578401F3A70EF00542E25 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 19F5783E1F3A70EF00542E25 /* Main.storyboard */; };
@@ -39,6 +41,8 @@
 		1907499D1FF5AA0A005B52D3 /* Group.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Group.swift; sourceTree = "<group>"; };
 		1907499F1FF6A4E6005B52D3 /* MakeProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeProfileViewController.swift; sourceTree = "<group>"; };
 		190749A11FF80B3A005B52D3 /* SetupCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupCardView.swift; sourceTree = "<group>"; };
+		19291E29201DB94300A3500C /* PeerSelectTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerSelectTableViewCell.swift; sourceTree = "<group>"; };
+		19291E2B201E0C1F00A3500C /* EmbeddedPeerSelectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmbeddedPeerSelectViewController.swift; sourceTree = "<group>"; };
 		1930CBD420182F990000DD45 /* MultipeerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipeerManager.swift; sourceTree = "<group>"; };
 		196F23332006C39D000CB8ED /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		196F23352006C3C1000CB8ED /* InitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitViewController.swift; sourceTree = "<group>"; };
@@ -49,12 +53,12 @@
 		1982F1C52019E71B0003AF29 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		198FF4761FF1CD5B001D3988 /* Phone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Phone.swift; sourceTree = "<group>"; };
 		198FF4781FF20124001D3988 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		199CC6C8201DA35A0053FE0E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
 		19C6EE861FE84F38001037DB /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
 		19C6EE8C1FE9B871001037DB /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		19C6EE8E1FE9F992001037DB /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		19C6EE901FEAF59E001037DB /* Connection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Connection.swift; sourceTree = "<group>"; };
 		19C6EE9A1FEF10E8001037DB /* Interest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interest.swift; sourceTree = "<group>"; };
-		19F29CAF20189F5B00A37D12 /* ConnectTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectTableViewController.swift; sourceTree = "<group>"; };
 		19F578371F3A70EF00542E25 /* Dex.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Dex.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		19F5783A1F3A70EF00542E25 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		19F5783C1F3A70EF00542E25 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -108,6 +112,7 @@
 				1907499B1FF496CC005B52D3 /* NotificationCardView.swift */,
 				190749A11FF80B3A005B52D3 /* SetupCardView.swift */,
 				1982F1C12019B4380003AF29 /* SecuritySetUpCardView.swift */,
+				19291E29201DB94300A3500C /* PeerSelectTableViewCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -140,11 +145,12 @@
 				1907499F1FF6A4E6005B52D3 /* MakeProfileViewController.swift */,
 				1982F1C32019C83F0003AF29 /* SecurityViewController.swift */,
 				19F5783C1F3A70EF00542E25 /* ViewController.swift */,
-				19F29CAF20189F5B00A37D12 /* ConnectTableViewController.swift */,
+				19291E2B201E0C1F00A3500C /* EmbeddedPeerSelectViewController.swift */,
 				19F5783E1F3A70EF00542E25 /* Main.storyboard */,
 				19F578411F3A70EF00542E25 /* Assets.xcassets */,
 				19F578431F3A70EF00542E25 /* LaunchScreen.storyboard */,
 				19F578461F3A70EF00542E25 /* Info.plist */,
+				199CC6C8201DA35A0053FE0E /* GoogleService-Info.plist */,
 				198FF4741FF17A18001D3988 /* Models */,
 				198FF4751FF17A48001D3988 /* Views */,
 				1930CBD120182F290000DD45 /* Functionality */,
@@ -233,6 +239,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				19F578451F3A70EF00542E25 /* LaunchScreen.storyboard in Resources */,
+				199CC6C9201DA35B0053FE0E /* GoogleService-Info.plist in Resources */,
 				19F578421F3A70EF00542E25 /* Assets.xcassets in Resources */,
 				19F578401F3A70EF00542E25 /* Main.storyboard in Resources */,
 			);
@@ -314,14 +321,15 @@
 				190749A21FF80B3A005B52D3 /* SetupCardView.swift in Sources */,
 				1930CBD520182F990000DD45 /* MultipeerManager.swift in Sources */,
 				19F5783D1F3A70EF00542E25 /* ViewController.swift in Sources */,
-				19F29CB020189F5B00A37D12 /* ConnectTableViewController.swift in Sources */,
 				196F233820082969000CB8ED /* Skill.swift in Sources */,
 				1982F1C22019B4380003AF29 /* SecuritySetUpCardView.swift in Sources */,
 				198FF4791FF20124001D3988 /* Utils.swift in Sources */,
 				190749A01FF6A4E6005B52D3 /* MakeProfileViewController.swift in Sources */,
 				19C6EE911FEAF59E001037DB /* Connection.swift in Sources */,
+				19291E2C201E0C1F00A3500C /* EmbeddedPeerSelectViewController.swift in Sources */,
 				19C6EE9B1FEF10E8001037DB /* Interest.swift in Sources */,
 				196F23342006C39D000CB8ED /* SignUpViewController.swift in Sources */,
+				19291E2A201DB94300A3500C /* PeerSelectTableViewCell.swift in Sources */,
 				1907499C1FF496CC005B52D3 /* NotificationCardView.swift in Sources */,
 				19C6EE871FE84F38001037DB /* Card.swift in Sources */,
 				19C6EE8D1FE9B871001037DB /* User.swift in Sources */,

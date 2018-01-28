@@ -24,6 +24,7 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
     var isPhone: Bool = true
     let picker = UIImagePickerController()
     var cameraAuthorized: Bool = false
+    var validContact: Bool = true
     
     // MARK: Initialization
 
@@ -49,6 +50,8 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
             contactField.placeholder = "chris@dex.com"
             contactField.keyboardType = .emailAddress
         }
+        
+        profilePicView.layer.cornerRadius = profilePicView.frame.height / 2
         
         dexLogo.snp.makeConstraints { (make) in
             make.top.equalToSuperview().offset(Utils.largeOffset)
@@ -113,7 +116,7 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
         if cameraAuthorized {
             if let image = info[UIImagePickerControllerEditedImage] as? UIImage {
                 self.profilePicView.image = image
-                if firstNameField.hasText && lastNameField.hasText && contactField.hasText {
+                if firstNameField.hasText && lastNameField.hasText && contactField.hasText && validContact {
                     nextButton.isEnabled = true
                 } else {
                     nextButton.isEnabled = false
@@ -140,6 +143,14 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
             if let formatted = Utils.format(phoneNumber: phoneNumber) {
                 contactField.text = formatted
             }
+        } else {
+            if contactField.hasText && !Utils.regex(pattern: Utils.EMAIL_REGEX, object: contactField.text!) {
+                validContact = false
+                contactField.backgroundColor = .red
+            } else {
+                validContact = true
+                contactField.backgroundColor = .white
+            }
         }
     }
     
@@ -154,7 +165,7 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
     // MARK: Methods
     
     func reviewNext() {
-        if firstNameField.hasText && lastNameField.hasText && contactField.hasText && profilePicView.image != nil {
+        if validContact && firstNameField.hasText && lastNameField.hasText && contactField.hasText && profilePicView.image != nil {
             nextButton.isEnabled = true
         } else {
             nextButton.isEnabled = false

@@ -8,6 +8,8 @@
 
 import UIKit
 import FirebaseAuth
+import FirebaseDatabase
+import FirebaseStorage
 
 class LoginViewController: UIViewController, UITextFieldDelegate {
     
@@ -21,6 +23,10 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet var loginButton: UIButton!
     var isPhone: Bool = false
     var savedPhone: Phone?
+    var u: User?
+    
+    let storage = Storage.storage()
+    let database = Database.database()
     
     // MARK: Initialization
     
@@ -44,9 +50,15 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             contactField.placeholder = "chris@dex.com"
             contactField.keyboardType = .emailAddress
         }
+        
+        makeView()
     }
     
     // MARK: Actions
+    
+    @IBAction func backButtonPressed(_ sender: Any) {
+        self.dismiss(animated: true, completion: nil)
+    }
     
     @IBAction func editedContact(_ sender: Any) {
         if isPhone {
@@ -71,7 +83,49 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         } else {
             Auth.auth().signIn(withEmail: contactField.text!, password: passwordField.text!, completion: { (user, error) in
                 if user != nil {
-                    // TODO: sign in successful, implement segue
+                    let ref = self.database.reference()
+                    
+                    var image: UIImage?
+                    self.storage.reference(forURL: user!.photoURL!.absoluteString).getData(maxSize: 25 * 1024 * 1024, completion: { (data, error) -> Void in
+                        image = UIImage(data: data!)
+                    })
+                    
+                    var numCards: Int = 0
+                    ref.child("users").child(user!.uid).observeSingleEvent(of: .value, with: { (snap) in
+                        if !snap.exists() {
+                            return
+                        }
+                        
+                        if let name = snap.value(forKey: "name") as? String {
+                            if let influence = snap.value(forKey: "influence") as? String {
+                                if let n = snap.value(forKey: "cardCount") as? String {
+                                    self.u = User(name: name, influence: Double(influence)!)
+                                    numCards = Int(n)!
+                                }
+                            }
+                        }
+                    })
+                    
+                    var cards: [Card] = []
+                    for i in 0..<numCards {
+                        ref.child("users").child(user!.uid).child("cards").child(String(i)).observeSingleEvent(of: .value, with: { (snap) in
+                            if !snap.exists() {
+                                return
+                            }
+                            
+                            if let occupation = snap.value(forKey: "occupation") as? String {
+                                if let email = snap.value(forKey: "email") as? String {
+                                    if let number = snap.value(forKey: "phone") as? String {
+                                        if let website = snap.value(forKey: "website") as? String {
+                                            let phone = Phone(number: number, kind: .other)
+                                            let card = Card(user: self.u!, occupation: occupation, email: email, phones: [phone], web: website, avi: image!)
+                                            cards.append(card)
+                                        }
+                                    }
+                                }
+                            }
+                        })
+                    }
                     self.performSegue(withIdentifier: "loggedIn", sender: self)
                 } else {
                     if let err = error?.localizedDescription {
@@ -113,7 +167,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             make.top.equalTo(contactLabel.snp.bottom).offset(Utils.smallOffset)
             make.left.equalToSuperview().offset(Utils.mediumOffset)
             make.right.equalToSuperview().inset(Utils.mediumOffset)
-            make.height.equalTo(contactField.font!.lineHeight)
+            make.height.equalTo(contactField.font!.lineHeight * 2)
         }
         
         passwordLabel.snp.makeConstraints { (make) in
@@ -127,12 +181,13 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             make.top.equalTo(passwordLabel.snp.bottom).offset(Utils.smallOffset)
             make.left.equalToSuperview().offset(Utils.mediumOffset)
             make.right.equalToSuperview().inset(Utils.mediumOffset)
-            make.height.equalTo(passwordField.font!.lineHeight)
+            make.height.equalTo(passwordField.font!.lineHeight * 2)
         }
         
         loginButton.snp.makeConstraints { (make) in
             make.centerX.equalToSuperview()
             make.width.equalTo(loginButton.snp.height).multipliedBy(19.0 / 15.0)
+            make.bottom.equalToSuperview().inset(Utils.mediumOffset)
         }
     }
     
@@ -143,7 +198,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
         let vc = segue.destination as! ViewController
-        vc.cards = [] // FIXME:
+        vc.ourUser = self.u!
+        vc.cards = self.u!.cards()
     }
 
 }

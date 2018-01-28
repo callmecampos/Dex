@@ -21,6 +21,7 @@ class SecurityViewController: UIViewController, UITextFieldDelegate, SecurityVie
     var card: Card!
     
     let storage = Storage.storage()
+    let database = Database.database()
     
     // MARK: Initialization
 
@@ -86,10 +87,10 @@ class SecurityViewController: UIViewController, UITextFieldDelegate, SecurityVie
                     "name" : u.name(),
                 
                     "influence" : String(u.influence()),
-                
-                    "connections" : ""
+                    
+                    "cardCount" : String(u.cards().count)
                 ]
-                let ref = Database.database().reference()
+                let ref = self.database.reference()
                 ref.child("users").child(user!.uid).setValue(userData)
                 
                 let cardData = [
@@ -101,7 +102,7 @@ class SecurityViewController: UIViewController, UITextFieldDelegate, SecurityVie
                     
                     "website" : self.card.website()
                 ]
-                ref.child("users").child(user!.uid).child("cards").setValue(cardData)
+                ref.child("users").child(user!.uid).child("cards").child("0").setValue(cardData)
                 
                 let imageData = UIImagePNGRepresentation(self.card.profilePicture())!
                 let imageRef = self.storage.reference().child("\(user!.uid).jpg")
@@ -128,10 +129,10 @@ class SecurityViewController: UIViewController, UITextFieldDelegate, SecurityVie
                 } else {
                     print("Undefined error.")
                 }
+                
+                // TODO: show UIAlertController
             }
         }
-        
-        
     }
     
     // MARK: - Navigation
@@ -141,6 +142,7 @@ class SecurityViewController: UIViewController, UITextFieldDelegate, SecurityVie
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
         let vc = segue.destination as! ViewController
+        vc.ourUser = card.user()
         vc.cards = [card]
     }
 }

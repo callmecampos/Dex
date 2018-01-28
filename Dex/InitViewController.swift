@@ -22,10 +22,23 @@ extension UIViewController {
 
 class InitViewController: UIViewController {
 
+    // MARK: Properties
+    
+    @IBOutlet var emailLoginButton: UIButton!
+    @IBOutlet var emailSignUpButton: UIButton!
+    @IBOutlet var phoneLoginButton: UIButton!
+    @IBOutlet var phoneSignUpButton: UIButton!
+    
+    // MARK: Initialization
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        phoneLoginButton.isEnabled = false
+        phoneSignUpButton.isEnabled = false
+        // phoneLoginButton.isUserInteractionEnabled = false
+        // phoneSignUpButton.isUserInteractionEnabled = false
     }
 
     override func didReceiveMemoryWarning() {

@@ -84,7 +84,7 @@ class CardView: UIView {
             _profilePicture = card.profilePicture()
             _imageView.image = _profilePicture!
         }
-        _imageView.layer.cornerRadius = _imageView.frame.size.width / 2
+        _imageView.layer.cornerRadius = _imageView.frame.height / 2
         _imageView.layer.masksToBounds = true
         self.addSubview(_imageView)
         

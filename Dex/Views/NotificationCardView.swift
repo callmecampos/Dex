@@ -98,7 +98,7 @@ class NotificationCardView: UIView {
         makeView(title: title, note: note, frame: frame)
         
         _imageView = UIImageView(image: img)
-        _imageView!.layer.cornerRadius = _imageView!.frame.size.width / 2
+        _imageView!.layer.cornerRadius = _imageView!.frame.height / 2
         _imageView!.layer.masksToBounds = true
         self.addSubview(_imageView!)
         

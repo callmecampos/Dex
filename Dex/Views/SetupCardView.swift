@@ -38,6 +38,8 @@ class SetupCardView: UIView, UITextFieldDelegate {
     private var _phoneField: UITextField?
     private var _savedPhone: Phone?
     
+    private var validContactField: Bool = true
+    
     private var _saveButton: UIButton = UIButton(frame: CGRect(x: 0, y: 0, width: 100, height: 50))
     
     weak var delegate: SetupDelegate?
@@ -107,7 +109,7 @@ class SetupCardView: UIView, UITextFieldDelegate {
         self.addSubview(_name)
         
         _imageView.image = _profilePicture
-        _imageView.layer.cornerRadius = _imageView.frame.size.width / 2
+        _imageView.layer.cornerRadius = _imageView.frame.height / 2
         _imageView.layer.masksToBounds = true
         self.addSubview(_imageView)
         
@@ -160,18 +162,17 @@ class SetupCardView: UIView, UITextFieldDelegate {
     }
     
     func occupationEdited(_ sender: UITextField) {
-        if hasOccupation() {
+        if hasOccupation() && validContactField {
             _saveButton.isHidden = false
         } else {
             _saveButton.isHidden = true
         }
     }
     
-    func contactFieldEdited(_ sender: UITextField) {
-        if _phoneGiven {
-            // check if email is valid (regex) -> set text field color to red if invalid
-        } else {
-            // check if phone number is valid (regex) -> set text field color to red if invalid
+    func emailFieldEdited(_ sender: UITextField) {
+        // check if phone number is valid (regex) -> set text field color to red if invalid
+        if hasEmail() && !Utils.regex(pattern: Utils.EMAIL_REGEX, object: _emailField!.text!) {
+            // FIXME:
         }
     }
     
@@ -352,7 +353,7 @@ class SetupCardView: UIView, UITextFieldDelegate {
     
     private func makeOccupationField(example: String) {
         _occupationField.placeholder = "e.g. \(example)"
-        _occupationField.autocapitalizationType = .sentences
+        _occupationField.autocapitalizationType = .words
         _occupationField.font = UIFont.systemFont(ofSize: 15)
         _occupationField.borderStyle = UITextBorderStyle.roundedRect
         _occupationField.autocorrectionType = UITextAutocorrectionType.no

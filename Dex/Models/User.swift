@@ -15,9 +15,6 @@ internal class User: Equatable, Comparable, Hashable {
     
     // MARK: Properties
     
-    /** The user's unique identifier. */
-    private var _identifier: String = ""
-    
     /** The user's name. */
     private var _name: String
     
@@ -74,11 +71,6 @@ internal class User: Equatable, Comparable, Hashable {
         // TODO: other initializers, fetch from server or cache for most part
     }
     
-    convenience init(name: String, influence: Double, id: String) {
-        self.init(name: name, influence: influence)
-        _identifier = id
-    }
-    
     init(name: String, influence: Double) {
         _name = name
         _influence = influence
@@ -91,10 +83,9 @@ internal class User: Equatable, Comparable, Hashable {
         }
     }
     
-    init(name: String, uid: String, metadata: String, email: String?, phone: String?, avi: UIImage?) {
+    init(name: String, metadata: String, email: String?, phone: String?, avi: UIImage?) {
         // TODO: implement
         _name = name
-        _identifier = uid
         parseMetadata(metadata: metadata)
     }
     
@@ -106,11 +97,6 @@ internal class User: Equatable, Comparable, Hashable {
     
     func parseMetadata(metadata: String) {
         // TODO: implement
-    }
-    
-    /** Returns the user's unique ID. */
-    func identification() -> String {
-        return _identifier
     }
     
     /** Returns the user's name. */
@@ -137,15 +123,18 @@ internal class User: Equatable, Comparable, Hashable {
         return _cards
     }
     
-    /** Adds CARD to the user's cards.
-     Returns whether the card was added successfully. */
-    func addCard(card: Card) -> Bool {
+    /** Returns the user's primary card. */
+    func primaryCard() -> Card {
+        return _cards[0]
+    }
+    
+    /** Adds CARD to the user's cards. */
+    func addCard(card: Card) {
         if _cards.contains(card) {
             print("Could not add card.")
-            return false
+            return
         }
         _cards.append(card)
-        return true
     }
     
     /** Removes CARD from the user's cards.
@@ -206,7 +195,7 @@ internal class User: Equatable, Comparable, Hashable {
     /** Combines the hash value of each property
      multiplied by a prime constant. */
     public var hashValue: Int {
-        var hash = location().hashValue ^ influence().hashValue ^ identification().hashValue
+        var hash = location().hashValue ^ influence().hashValue
         for card in cards() {
             hash ^= card.hashValue
         }
