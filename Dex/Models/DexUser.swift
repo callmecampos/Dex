@@ -1,5 +1,15 @@
 //
-//  User.swift
+//  DexUser.swift
+//  Dex
+//
+//  Created by Felipe Campos on 1/28/18.
+//  Copyright © 2018 Orange Inc. All rights reserved.
+//
+
+import Foundation
+
+//
+//  DexUser.swift
 //  Dex
 //
 //  Created by Felipe Campos on 12/19/17.
@@ -11,7 +21,7 @@ import UIKit
 import CoreLocation
 
 /** A user class. */
-internal class User: Equatable, Comparable, Hashable {
+internal class DexUser: Equatable, Comparable, Hashable {
     
     // MARK: Properties
     
@@ -37,8 +47,8 @@ internal class User: Equatable, Comparable, Hashable {
     private var _connections: [Connection] = []
     
     /** The user's connected users. */
-    private lazy var _connectedUsers: [User] = {
-        var result: [User] = []
+    private lazy var _connectedUsers: [DexUser] = {
+        var result: [DexUser] = []
         for connection in self.connections() {
             result.append(connection.getConnection(this: self)!)
         }
@@ -166,7 +176,7 @@ internal class User: Equatable, Comparable, Hashable {
         return _interests
     }
     
-    func connectWith(user: User) {
+    func connectWith(user: DexUser) {
         // FIXME: make connection
     }
     
@@ -176,19 +186,19 @@ internal class User: Equatable, Comparable, Hashable {
     }
     
     /** Returns the users connected to this user. */
-    func connectedUsers() -> [User] {
+    func connectedUsers() -> [DexUser] {
         return _connectedUsers
     }
     
     // MARK: Protocols
     
-    public static func ==(lhs: User, rhs: User) -> Bool {
+    public static func ==(lhs: DexUser, rhs: DexUser) -> Bool {
         return lhs.influence() == rhs.influence() &&
             lhs.location() == rhs.location() &&
             lhs.cards() == rhs.cards()
     }
     
-    public static func <(lhs: User, rhs: User) -> Bool {
+    public static func <(lhs: DexUser, rhs: DexUser) -> Bool {
         return lhs.influence() < rhs.influence()
     }
     

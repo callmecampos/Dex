@@ -127,7 +127,7 @@ class MakeProfileViewController: UIViewController, UITextFieldDelegate, SetupDel
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
         let vc = segue.destination as! SecurityViewController
-        let user = User(name: name, interests: [])
+        let user = DexUser(name: name, interests: [])
         var card: Card
         if isPhone {
             var setupEmail = ""

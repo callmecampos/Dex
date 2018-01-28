@@ -22,7 +22,7 @@ internal class Connection: Equatable, Comparable, Hashable {
     // MARK: Properties
     
     /** A dictionary of the users making up this connection. */
-    private var _users: [String : User] = [:]
+    private var _users: [String : DexUser] = [:]
     
     /** The connection's type. */
     private var _type: Form
@@ -41,7 +41,7 @@ internal class Connection: Equatable, Comparable, Hashable {
  
     // MARK: Initialization
     
-    init(user1: User, user2: User, location: CLLocation, form: Connection.Form) {
+    init(user1: DexUser, user2: DexUser, location: CLLocation, form: Connection.Form) {
         _users.updateValue(user1, forKey: Connection.first)
         _users.updateValue(user2, forKey: Connection.second)
         
@@ -69,7 +69,7 @@ internal class Connection: Equatable, Comparable, Hashable {
     
     /** Gets the user associated with this connection
      that is not THIS user. */
-    func getConnection(this: User) -> User? {
+    func getConnection(this: DexUser) -> DexUser? {
         if !_users.values.contains(this) {
             return nil
         }
@@ -83,12 +83,12 @@ internal class Connection: Equatable, Comparable, Hashable {
     }
     
     /** Returns the users associated with this connection. */
-    func users() -> [User] {
+    func users() -> [DexUser] {
         return [_users[Connection.first]!, _users[Connection.second]!]
     }
     
     /** Returns the user given by ID. */
-    private func getUser(id: String) -> User? {
+    private func getUser(id: String) -> DexUser? {
         return _users[id]
     }
     

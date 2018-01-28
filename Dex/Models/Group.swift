@@ -12,12 +12,12 @@ internal class Group: Equatable, Comparable, Hashable {
     
     // MARK: Properties
     
-    private var _members: [User] = []
+    private var _members: [DexUser] = []
     private var _totalInfluence: Double = 0.0 // TODO: connectivity field??
     
     // MARK: Initialization
     
-    init(members: User...) {
+    init(members: DexUser...) {
         for member in members {
             _members.append(member)
             _totalInfluence += member.influence()
@@ -26,11 +26,11 @@ internal class Group: Equatable, Comparable, Hashable {
     
     // MARK: - Methods
     
-    func members() -> [User] {
+    func members() -> [DexUser] {
         return _members
     }
     
-    func hasMember(user: User) -> Bool {
+    func hasMember(user: DexUser) -> Bool {
         return _members.contains(user)
     }
     

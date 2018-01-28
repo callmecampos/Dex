@@ -15,7 +15,7 @@ internal class Card: Equatable, Comparable, Hashable {
     // MARK: Properties
     
     /** The card's user. */
-    private var _user: User
+    private var _user: DexUser
     
     /** The card's location. */
     private var _location: String?
@@ -40,25 +40,25 @@ internal class Card: Equatable, Comparable, Hashable {
     
     // MARK: Initialization
     
-    convenience init(user: User, location: String, occupation: String,
+    convenience init(user: DexUser, location: String, occupation: String,
                      email: String, phones: [Phone], web: String, avi: UIImage) {
         self.init(user: user, occupation: occupation,
                   email: email, phones: phones, web: web, avi: avi)
         _location = location
     }
     
-    convenience init(user: User, location: String, occupation: String,
+    convenience init(user: DexUser, location: String, occupation: String,
                      email: String, phones: [Phone], avi: UIImage) {
         self.init(user: user, occupation: occupation, email: email, phones: phones, avi: avi)
         _location = location
     }
     
-    convenience init(user: User, occupation: String, email: String, phones: [Phone], web: String, avi: UIImage) {
+    convenience init(user: DexUser, occupation: String, email: String, phones: [Phone], web: String, avi: UIImage) {
         self.init(user: user, occupation: occupation, email: email, phones: phones, avi: avi)
         _website = web
     }
     
-    init(user: User, occupation: String, email: String, phones: [Phone], avi: UIImage) {
+    init(user: DexUser, occupation: String, email: String, phones: [Phone], avi: UIImage) {
         _user = user
         _occupation = occupation
         _email = email
@@ -76,11 +76,11 @@ internal class Card: Equatable, Comparable, Hashable {
     /** Returns the decoded card from DECODEABLE. Returns nil if unparseable. */
     static func decode(decodeable: String) -> Card? {
         let components = decodeable.components(separatedBy: Utils.separator)
-        var user: User
+        var user: DexUser
         if let tmp = Utils.getUser(id: components[0]) {
             user = tmp
         } else {
-            user = User(name: components[1], influence: Double(components[2])!)
+            user = DexUser(name: components[1], influence: Double(components[2])!)
         }
         let occupation = components[3]
         let location = components[4]
@@ -156,7 +156,7 @@ internal class Card: Equatable, Comparable, Hashable {
     }
     
     /** Returns the user associated with this card. */
-    func user() -> User {
+    func user() -> DexUser {
         return _user
     }
     

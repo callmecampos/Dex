@@ -120,6 +120,7 @@ class SecurityViewController: UIViewController, UITextFieldDelegate, SecurityVie
                     }
                 })
                 
+                UserDefaults.standard.set(true, forKey: defaultKeys.loggedIn)
                 self.performSegue(withIdentifier: "securityComplete", sender: self)
             } else {
                 if let err = error?.localizedDescription {

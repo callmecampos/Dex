@@ -8,6 +8,12 @@
 
 import Foundation
 import UIKit
+import Firebase
+
+public struct defaultKeys {
+    static let loggedIn = "logginInBool"
+    static let userTokens = "loginTokens"
+}
 
 extension String {
     /// This method makes it easier extract a substring by character index where a character is viewed as a human-readable character (grapheme cluster).
@@ -92,8 +98,12 @@ public class Utils {
         return leadingOne + areaCode + prefix + "-" + suffix
     }
     
+    static func isLoggedIn() -> Bool {
+        return UserDefaults.standard.bool(forKey: defaultKeys.loggedIn)
+    }
+    
     /** Returns the user associated with this ID. If unavailable, returns nil. */
-    static func getUser(id: String) -> User? {
+    static func getUser(id: String) -> DexUser? {
         return nil // FIXME: implement with Firebase
     }
     

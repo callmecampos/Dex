@@ -7,6 +7,9 @@
 //
 
 import UIKit
+import FirebaseAuth
+import FirebaseDatabase
+import FirebaseStorage
 
 extension UIViewController {
     func hideKeyboardWhenTappedAround() {
@@ -28,6 +31,8 @@ class InitViewController: UIViewController {
     @IBOutlet var emailSignUpButton: UIButton!
     @IBOutlet var phoneLoginButton: UIButton!
     @IBOutlet var phoneSignUpButton: UIButton!
+    var u: DexUser?
+    var cards: [Card] = []
     
     // MARK: Initialization
     
@@ -54,10 +59,7 @@ class InitViewController: UIViewController {
         // Pass the selected object to the new view controller.
         let id = segue.identifier
         if id != nil {
-            if id == "loggedIn" {
-                let vc = segue.destination as! ViewController
-                vc.cards = [] // FIXME:
-            } else if id == "loginEmail" {
+            if id == "loginEmail" {
                 let vc = segue.destination as! LoginViewController
                 vc.isPhone = false
             } else if id == "loginPhone" {

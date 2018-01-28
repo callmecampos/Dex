@@ -14,7 +14,7 @@
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Dex" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="viewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="BYZ-38-t0r" customClass="ViewController" customModule="Dex" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -66,8 +66,23 @@
                                     <segue destination="kl0-YR-wad" kind="embed" id="TII-Cd-zQu"/>
                                 </connections>
                             </containerView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MXL-Ty-ixk">
+                                <rect key="frame" x="299" y="20" width="60" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="wKj-ZO-nHE"/>
+                                    <constraint firstAttribute="width" constant="60" id="yCG-ST-5po"/>
+                                </constraints>
+                                <state key="normal" title="Sign Out"/>
+                                <connections>
+                                    <action selector="signOut:" destination="BYZ-38-t0r" eventType="touchUpInside" id="PoH-8g-shg"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.054901960784313725" green="0.22352941176470587" blue="0.32549019607843138" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="MXL-Ty-ixk" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="5yo-9x-OZr"/>
+                            <constraint firstItem="MXL-Ty-ixk" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="cJn-mp-hys"/>
+                        </constraints>
                     </view>
                     <connections>
                         <outlet property="dexLogo" destination="wuF-B3-Y0s" id="sDw-hl-z4o"/>
@@ -77,6 +92,7 @@
                         <outlet property="rightButton" destination="Z1p-Un-4J9" id="PDh-1a-SaX"/>
                         <outlet property="swipeLabel" destination="Gvi-Il-Urm" id="dWw-RR-ZPY"/>
                         <outlet property="welcomeLabel" destination="QUb-59-esy" id="9FI-vW-x5H"/>
+                        <segue destination="Kbu-7m-Xtb" kind="presentation" identifier="signOutSegue" modalTransitionStyle="flipHorizontal" id="4Vx-Vj-uhJ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -156,6 +172,7 @@
                         <outlet property="emailSignUpButton" destination="lMh-tD-xSu" id="Fpy-RQ-bop"/>
                         <outlet property="phoneLoginButton" destination="qn3-w5-eqk" id="1Ah-aT-6ep"/>
                         <outlet property="phoneSignUpButton" destination="kZm-eA-8bq" id="Caw-9g-8g5"/>
+                        <segue destination="BYZ-38-t0r" kind="presentation" identifier="alreadyLoggedIn" modalTransitionStyle="crossDissolve" id="Zya-tN-PXx"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vRl-BN-aeP" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -593,6 +610,6 @@
     <inferredMetricsTieBreakers>
         <segue reference="w8r-Nb-JFe"/>
         <segue reference="5zC-9y-QF0"/>
-        <segue reference="F0O-0a-yix"/>
+        <segue reference="Zya-tN-PXx"/>
     </inferredMetricsTieBreakers>
 </document>

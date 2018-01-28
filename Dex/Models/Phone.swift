@@ -50,6 +50,16 @@ internal class Phone: Equatable, Hashable {
         return _number
     }
     
+    /** Returns a potentially formatted version of the phone's number. */
+    func formatted() -> String {
+        let format = Utils.format(phoneNumber: _number)
+        if format != nil {
+            return format!
+        }
+        
+        return _number
+    }
+    
     /** Returns the phone type (home, mobile, etc.). */
     func type() -> Phone.Kind {
         return _type

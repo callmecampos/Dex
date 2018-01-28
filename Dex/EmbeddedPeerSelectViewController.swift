@@ -14,7 +14,7 @@ class EmbeddedPeerSelectViewController: UIViewController, UITableViewDelegate, U
     // MARK: Properties
     
     @IBOutlet var tableView: UITableView!
-    var users: [User] = []
+    var users: [DexUser] = []
     var ids: [MCPeerID] = []
     
     // MARK: Initialization

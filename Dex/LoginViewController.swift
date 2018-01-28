@@ -23,7 +23,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet var loginButton: UIButton!
     var isPhone: Bool = false
     var savedPhone: Phone?
-    var u: User?
+    var u: DexUser?
     var cards: [Card] = []
     
     let storage = Storage.storage()
@@ -102,7 +102,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                                 let inf = shot["influence"] as! String
                                 let numCards = Int(shot["cardCount"] as! String)!
                                 
-                                self.u = User(name: name, influence: Double(inf)!)
+                                self.u = DexUser(name: name, influence: Double(inf)!)
                                 
                                 for i in 0..<numCards {
                                     self.databaseRef.child("users").child(user!.uid).child("cards").child(String(i)).observeSingleEvent(of: .value, with: { (snap) in
@@ -121,6 +121,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                                             let card = Card(user: self.u!, occupation: occupation, email: email, phones: [phone], web: website, avi: image!)
                                             self.cards.append(card)
                                             if i == numCards - 1 {
+                                                UserDefaults.standard.set(true, forKey: defaultKeys.loggedIn)
                                                 print("Signed in.")
                                                 self.performSegue(withIdentifier: "loggedIn", sender: self)
                                             }
@@ -131,29 +132,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                         })
                     })
                 } else {
-                    let paragraphStyle = NSMutableParagraphStyle()
-                    paragraphStyle.alignment = NSTextAlignment.center
-                    let messageText = NSMutableAttributedString(
-                        string: "\nWhoops! Looks like your email or password are incorrect. Please try again.",
-                        attributes: [
-                            NSParagraphStyleAttributeName: paragraphStyle,
-                            NSFontAttributeName : UIFont.preferredFont(forTextStyle: UIFontTextStyle.footnote),
-                            NSForegroundColorAttributeName : UIColor.black
-                        ]
-                    )
-                    let titleStyle = NSMutableParagraphStyle()
-                    titleStyle.alignment = NSTextAlignment.center
-                    let titleText = NSMutableAttributedString(
-                        string: "Invalid Email or Password",
-                        attributes: [
-                            NSParagraphStyleAttributeName: titleStyle,
-                            NSFontAttributeName : UIFont.preferredFont(forTextStyle: UIFontTextStyle.headline),
-                            NSForegroundColorAttributeName : UIColor.black
-                        ]
-                    )
-                    let loginAlert = UIAlertController()
-                    loginAlert.setValue(titleText, forKey: "attributedTitle")
-                    loginAlert.setValue(messageText, forKey: "attributedMessage")
+                    let loginAlert = UIAlertController(title: "Invalid Email or Password", message: "Whoops! Looks like your email or password are incorrect. Please try again.", preferredStyle: .alert)
                     
                     let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
                     

@@ -10,11 +10,6 @@ import UIKit
 import Firebase
 import Contacts
 
-public struct defaultKeys {
-    static let loggedIn = "logginInBool"
-    static let userTokens = "loginTokens"
-}
-
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
@@ -27,6 +22,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         
         FirebaseApp.configure()
+        
+        if Utils.isLoggedIn() {
+            print("Already logged in.")
+            self.window = UIWindow(frame: UIScreen.main.bounds)
+            let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "viewController") as! ViewController
+            self.window?.rootViewController = vc
+            self.window?.makeKeyAndVisible()
+        }
         
         return true
     }

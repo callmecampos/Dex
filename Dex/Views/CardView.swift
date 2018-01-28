@@ -64,7 +64,7 @@ class CardView: UIView {
         
         if card.hasPhoneNumbers() {
             _phone = UILabel()
-            _phone!.text = card.primaryPhone().number()
+            _phone!.text = card.primaryPhone().formatted()
             self.addSubview(_phone!)
         }
         

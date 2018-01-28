@@ -10,6 +10,7 @@ import UIKit
 import SnapKit
 import Contacts
 import CoreLocation
+import Firebase
 
 class ViewController: UIViewController, UIScrollViewDelegate, MultipeerManagerDelegate, CardViewDelegate {
     
@@ -23,13 +24,18 @@ class ViewController: UIViewController, UIScrollViewDelegate, MultipeerManagerDe
     @IBOutlet var exchangeButton: UIButton!
     @IBOutlet var dexLogo: UIImageView!
     
-    var ourUser: User!
+    var ourUser: DexUser!
     var cardView: CardView!
     var cards: [Card] = []
     var cardIndex = 0
     // TODO: scroll vs send switch!!
     // TODO: have some sort of mini page controller for cards
     // TODO: implement swipe upward to constrast sideways mechanism (maybe lock card?) idk
+    
+    let storage = Storage.storage()
+    let storageRef = Storage.storage().reference(forURL: "gs://dex-app-89824.appspot.com/")
+    let database = Database.database()
+    let databaseRef = Database.database().reference()
     
     let multipeerService = MultipeerManager()
     
@@ -44,9 +50,6 @@ class ViewController: UIViewController, UIScrollViewDelegate, MultipeerManagerDe
         embeddedTableView.isHidden = true
         exchangeButton.isHidden = true
         embeddedTableView.alpha = 0
-        
-        cardView = CardView(card: cards[cardIndex])
-        self.view.addSubview(cardView)
         
         let cornerRadius: CGFloat = 8
         let shadowOffsetWidth: Int = 3
@@ -64,18 +67,21 @@ class ViewController: UIViewController, UIScrollViewDelegate, MultipeerManagerDe
         self.embeddedTableView.layer.shadowPath = shadowPath.cgPath
         self.embeddedTableView.layer.masksToBounds = true
         
-        cardView.delegate = self
+        if cards.count > 0 {
+            cardView = CardView(card: cards[cardIndex])
+            self.view.addSubview(cardView)
+            
+            cardView.delegate = self
         
-        leftButton.isHidden = true
-        if cards.count == 1 {
-            rightButton.isHidden = true
+            leftButton.isHidden = true
+            if cards.count == 1 {
+                rightButton.isHidden = true
+            }
+        
+            makeView()
+        } else {
+            handleLogin(user: Auth.auth().currentUser)
         }
-        
-        // TODO: display cards based on priority, binary search tree style?? (main in middle, cascade down on sides)
-        
-        // if no cards, display 'Add your first card here!'
-        
-        makeView()
     }
     
     override func didReceiveMemoryWarning() {
@@ -105,6 +111,22 @@ class ViewController: UIViewController, UIScrollViewDelegate, MultipeerManagerDe
         cardView.setCard(card: cards[cardIndex])
     }
     
+    @IBAction func signOut(_ sender: Any) {
+        do {
+            try Auth.auth().signOut()
+            UserDefaults.standard.set(false, forKey: defaultKeys.loggedIn)
+            self.performSegue(withIdentifier: "signOutSegue", sender: self)
+        } catch _ {
+            let loginAlert = UIAlertController(title: "Sign Out Failed", message: "There was a problem signing you out, please try again.", preferredStyle: UIAlertControllerStyle.alert)
+            
+            let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
+            loginAlert.addAction(okAction)
+            
+            DispatchQueue.main.async {
+                self.present(loginAlert, animated: true, completion:  nil)
+            }
+        }
+    }
     
     @IBAction func exchangeAction(_ sender: Any) {
         print("Hiding embedded views.")
@@ -118,6 +140,62 @@ class ViewController: UIViewController, UIScrollViewDelegate, MultipeerManagerDe
     }
     
     // MARK: Methods
+    
+    private func handleLogin(user: User?) {
+        var image: UIImage?
+        self.storage.reference(forURL: user!.photoURL!.absoluteString).getData(maxSize: 25 * 1024 * 1024, completion: { (data, error) -> Void in
+            image = UIImage(data: data!)
+            
+            self.databaseRef.child("users").child(user!.uid).observeSingleEvent(of: .value, with: { (snap) in
+                if !snap.exists() {
+                    print("Data snapshot does not exist.")
+                    return
+                }
+                
+                if let shot = snap.value as? [String : AnyObject] {
+                    let name = shot["name"] as! String
+                    let inf = shot["influence"] as! String
+                    let numCards = Int(shot["cardCount"] as! String)!
+                    
+                    self.ourUser = DexUser(name: name, influence: Double(inf)!)
+                    
+                    for i in 0..<numCards {
+                        self.databaseRef.child("users").child(user!.uid).child("cards").child(String(i)).observeSingleEvent(of: .value, with: { (snap) in
+                            if !snap.exists() {
+                                print("Data snapshot does not exist.")
+                                return
+                            }
+                            
+                            if let shot = snap.value as? [String : AnyObject] {
+                                let occupation = shot["occupation"] as! String
+                                let email = shot["email"] as! String
+                                let number = shot["phone"] as! String
+                                let website = shot["website"] as! String
+                                
+                                let phone = Phone(number: number, kind: .other)
+                                let card = Card(user: self.ourUser, occupation: occupation, email: email, phones: [phone], web: website, avi: image!)
+                                self.cards.append(card)
+                                
+                                if i == numCards - 1 {
+                                    self.cardView = CardView(card: self.cards[self.cardIndex])
+                                    self.view.addSubview(self.cardView)
+                                    
+                                    self.cardView.delegate = self
+                                    
+                                    self.leftButton.isHidden = true
+                                    if self.cards.count == 1 {
+                                        self.rightButton.isHidden = true
+                                    }
+                                    
+                                    self.makeView()
+                                }
+                            }
+                        })
+                    }
+                }
+            })
+        })
+    }
     
     func sendViewCompletion(_ sender: UIButton) {
         // do whatever you want
@@ -200,8 +278,10 @@ class ViewController: UIViewController, UIScrollViewDelegate, MultipeerManagerDe
     }
     
     func sendCard(card: Card) {
-        // FIXME: implement
         print("Showing embedded views.")
+        
+        
+        
         self.view.bringSubview(toFront: embeddedTableView)
         self.view.bringSubview(toFront: exchangeButton)
         embeddedTableView.isHidden = false
