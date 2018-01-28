@@ -10,6 +10,11 @@ import UIKit
 import Firebase
 import Contacts
 
+public struct defaultKeys {
+    static let loggedIn = "logginInBool"
+    static let userTokens = "loginTokens"
+}
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     

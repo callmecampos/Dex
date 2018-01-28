@@ -48,6 +48,22 @@ class ViewController: UIViewController, UIScrollViewDelegate, MultipeerManagerDe
         cardView = CardView(card: cards[cardIndex])
         self.view.addSubview(cardView)
         
+        let cornerRadius: CGFloat = 8
+        let shadowOffsetWidth: Int = 3
+        let shadowOffsetHeight: Int = 5
+        let shadowColor: UIColor? = UIColor.black
+        let shadowOpacity: Float = 0.5
+        
+        self.embeddedTableView.layer.cornerRadius = cornerRadius
+        let shadowPath = UIBezierPath(roundedRect: self.embeddedTableView.bounds, cornerRadius: cornerRadius)
+        
+        self.embeddedTableView.layer.masksToBounds = false
+        self.embeddedTableView.layer.shadowColor = shadowColor?.cgColor
+        self.embeddedTableView.layer.shadowOffset = CGSize(width: shadowOffsetWidth, height: shadowOffsetHeight)
+        self.embeddedTableView.layer.shadowOpacity = shadowOpacity
+        self.embeddedTableView.layer.shadowPath = shadowPath.cgPath
+        self.embeddedTableView.layer.masksToBounds = true
+        
         cardView.delegate = self
         
         leftButton.isHidden = true

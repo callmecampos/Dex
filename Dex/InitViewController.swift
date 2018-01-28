@@ -54,7 +54,10 @@ class InitViewController: UIViewController {
         // Pass the selected object to the new view controller.
         let id = segue.identifier
         if id != nil {
-            if id == "loginEmail" {
+            if id == "loggedIn" {
+                let vc = segue.destination as! ViewController
+                vc.cards = [] // FIXME:
+            } else if id == "loginEmail" {
                 let vc = segue.destination as! LoginViewController
                 vc.isPhone = false
             } else if id == "loginPhone" {
