@@ -187,23 +187,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <searchBar contentMode="redraw" searchBarStyle="minimal" translatesAutoresizingMaskIntoConstraints="NO" id="Yb2-P5-gYw">
-                                <rect key="frame" x="0.0" y="20" width="329" height="56"/>
-                                <color key="barTintColor" red="0.054901960780000002" green="0.22352941179999999" blue="0.32549019610000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <textInputTraits key="textInputTraits"/>
-                                <connections>
-                                    <outlet property="delegate" destination="Oa5-x3-pqf" id="k0x-un-8vC"/>
-                                </connections>
-                            </searchBar>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Ir-rn-sAJ">
-                                <rect key="frame" x="329" y="20" width="46" height="56"/>
-                                <state key="normal" title="Button"/>
-                            </button>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="hru-wR-RkM">
                                 <rect key="frame" x="0.0" y="76" width="375" height="542"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="75" id="Gzo-cd-Osu">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="addCategoryCell" rowHeight="75" id="Gzo-cd-Osu">
                                         <rect key="frame" x="0.0" y="28" width="375" height="75"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Gzo-cd-Osu" id="48e-ip-vhI">
@@ -225,39 +213,52 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
+                            <searchBar userInteractionEnabled="NO" contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="edh-em-oE6">
+                                <rect key="frame" x="0.0" y="20" width="313" height="56"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="edh-em-oE6" secondAttribute="height" multiplier="313:56" id="VBJ-5W-0r5"/>
+                                </constraints>
+                                <color key="barTintColor" red="0.054901960780000002" green="0.22352941179999999" blue="0.32549019610000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="Oa5-x3-pqf" id="qMe-E2-PPX"/>
+                                </connections>
+                            </searchBar>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Ir-rn-sAJ">
+                                <rect key="frame" x="321" y="33" width="46" height="30"/>
+                                <state key="normal" title="Button"/>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.054901960780000002" green="0.22352941179999999" blue="0.32549019610000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="8Ir-rn-sAJ" firstAttribute="top" secondItem="ey4-fW-Dkn" secondAttribute="bottom" id="2kX-WM-yIT"/>
-                            <constraint firstItem="Tdj-69-JLg" firstAttribute="top" secondItem="hru-wR-RkM" secondAttribute="bottom" id="CvF-Si-5lo"/>
-                            <constraint firstAttribute="trailing" secondItem="8Ir-rn-sAJ" secondAttribute="trailing" id="Hjx-uq-K4D"/>
-                            <constraint firstItem="hru-wR-RkM" firstAttribute="top" secondItem="Yb2-P5-gYw" secondAttribute="bottom" id="Pjp-Xb-sBD"/>
-                            <constraint firstAttribute="trailing" secondItem="hru-wR-RkM" secondAttribute="trailing" id="Uyg-cj-7GS"/>
-                            <constraint firstItem="8Ir-rn-sAJ" firstAttribute="leading" secondItem="Yb2-P5-gYw" secondAttribute="trailing" id="eoQ-ph-eXA"/>
-                            <constraint firstItem="hru-wR-RkM" firstAttribute="top" secondItem="Yb2-P5-gYw" secondAttribute="bottom" id="hgQ-JT-OvD"/>
-                            <constraint firstItem="hru-wR-RkM" firstAttribute="top" secondItem="8Ir-rn-sAJ" secondAttribute="bottom" id="lh4-EH-XdO"/>
-                            <constraint firstItem="8Ir-rn-sAJ" firstAttribute="leading" secondItem="Yb2-P5-gYw" secondAttribute="trailing" id="npm-gK-2lS"/>
-                            <constraint firstItem="Yb2-P5-gYw" firstAttribute="top" secondItem="ey4-fW-Dkn" secondAttribute="bottom" id="ouj-bS-65F"/>
-                            <constraint firstItem="Yb2-P5-gYw" firstAttribute="leading" secondItem="1Nf-gB-WeO" secondAttribute="leading" id="ron-5T-ZbB"/>
-                            <constraint firstItem="hru-wR-RkM" firstAttribute="leading" secondItem="1Nf-gB-WeO" secondAttribute="leading" id="uCG-TG-Kwt"/>
+                            <constraint firstAttribute="trailing" secondItem="8Ir-rn-sAJ" secondAttribute="trailing" constant="8" id="6wB-Md-jOY"/>
+                            <constraint firstAttribute="trailing" secondItem="hru-wR-RkM" secondAttribute="trailing" id="A5j-xo-FXJ"/>
+                            <constraint firstItem="hru-wR-RkM" firstAttribute="top" secondItem="edh-em-oE6" secondAttribute="bottom" id="Cww-UC-KcT"/>
+                            <constraint firstItem="8Ir-rn-sAJ" firstAttribute="leading" secondItem="edh-em-oE6" secondAttribute="trailing" constant="8" id="Efy-Yg-fD8"/>
+                            <constraint firstItem="8Ir-rn-sAJ" firstAttribute="leading" secondItem="edh-em-oE6" secondAttribute="trailing" constant="8" id="J7H-VX-6Gk"/>
+                            <constraint firstItem="hru-wR-RkM" firstAttribute="top" secondItem="8Ir-rn-sAJ" secondAttribute="bottom" constant="13" id="YdY-Ry-2V1"/>
+                            <constraint firstItem="hru-wR-RkM" firstAttribute="leading" secondItem="1Nf-gB-WeO" secondAttribute="leading" id="ZOa-lT-piG"/>
+                            <constraint firstItem="hru-wR-RkM" firstAttribute="top" secondItem="edh-em-oE6" secondAttribute="bottom" id="eIo-ie-5Vh"/>
+                            <constraint firstItem="edh-em-oE6" firstAttribute="top" secondItem="ey4-fW-Dkn" secondAttribute="bottom" id="ejk-qn-FLd"/>
+                            <constraint firstItem="edh-em-oE6" firstAttribute="leading" secondItem="1Nf-gB-WeO" secondAttribute="leading" id="lL2-kc-CQw"/>
+                            <constraint firstItem="8Ir-rn-sAJ" firstAttribute="top" secondItem="ey4-fW-Dkn" secondAttribute="bottom" constant="13" id="xir-k6-vAk"/>
+                            <constraint firstItem="Tdj-69-JLg" firstAttribute="top" secondItem="hru-wR-RkM" secondAttribute="bottom" id="zgo-gf-Wsb"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Your Dex" id="32Y-K1-cuV"/>
                     <connections>
-                        <outlet property="searchBar" destination="Yb2-P5-gYw" id="HMC-nD-sDG"/>
-                        <outlet property="searchDisplayController" destination="kVK-Y9-fzD" id="u5t-GI-geI"/>
+                        <outlet property="searchDisplayController" destination="jye-BI-hdd" id="U7S-nq-EhL"/>
                         <outlet property="tableView" destination="hru-wR-RkM" id="SLC-IF-D7s"/>
                         <outlet property="utilsButton" destination="8Ir-rn-sAJ" id="OBr-bN-maj"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Vir-c9-7Xh" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <searchDisplayController id="kVK-Y9-fzD">
+                <searchDisplayController id="jye-BI-hdd">
                     <connections>
-                        <outlet property="delegate" destination="Oa5-x3-pqf" id="wRy-Qq-UNi"/>
-                        <outlet property="searchBar" destination="Yb2-P5-gYw" id="ofG-Mg-zPw"/>
-                        <outlet property="searchContentsController" destination="Oa5-x3-pqf" id="cE3-lb-ap2"/>
-                        <outlet property="searchResultsDataSource" destination="Oa5-x3-pqf" id="eX6-f8-Wei"/>
-                        <outlet property="searchResultsDelegate" destination="Oa5-x3-pqf" id="Htv-Yu-vZQ"/>
+                        <outlet property="delegate" destination="Oa5-x3-pqf" id="6v7-2v-XEo"/>
+                        <outlet property="searchContentsController" destination="Oa5-x3-pqf" id="R3M-4N-wTS"/>
+                        <outlet property="searchResultsDataSource" destination="Oa5-x3-pqf" id="Ce7-pg-f7J"/>
+                        <outlet property="searchResultsDelegate" destination="Oa5-x3-pqf" id="tbz-tF-L21"/>
                     </connections>
                 </searchDisplayController>
             </objects>
@@ -701,6 +702,10 @@
         <scene sceneID="h51-lx-YOs">
             <objects>
                 <viewController id="kl0-YR-wad" customClass="EmbeddedPeerSelectViewController" customModule="Dex" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="KUc-9Z-FXS"/>
+                        <viewControllerLayoutGuide type="bottom" id="rUL-S8-jOE"/>
+                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="X6N-MI-wb8">
                         <rect key="frame" x="0.0" y="0.0" width="295" height="355"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

@@ -151,6 +151,7 @@
 				19F5783C1F3A70EF00542E25 /* ViewController.swift */,
 				19291E2B201E0C1F00A3500C /* EmbeddedPeerSelectViewController.swift */,
 				19291E33201E841D00A3500C /* SettingsViewController.swift */,
+				19291E35201EBDDA00A3500C /* ConnectionsViewController.swift */,
 				19F5783E1F3A70EF00542E25 /* Main.storyboard */,
 				19F578411F3A70EF00542E25 /* Assets.xcassets */,
 				19F578431F3A70EF00542E25 /* LaunchScreen.storyboard */,
@@ -159,7 +160,6 @@
 				198FF4741FF17A18001D3988 /* Models */,
 				198FF4751FF17A48001D3988 /* Views */,
 				1930CBD120182F290000DD45 /* Functionality */,
-				19291E35201EBDDA00A3500C /* ConnectionsViewController.swift */,
 			);
 			path = Dex;
 			sourceTree = "<group>";

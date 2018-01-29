@@ -51,6 +51,9 @@ class ViewController: UIViewController, UIScrollViewDelegate, MultipeerManagerDe
         exchangeButton.isHidden = true
         embeddedTableView.alpha = 0
         
+        leftButton.isHidden = true
+        rightButton.isHidden = true
+        
         let cornerRadius: CGFloat = 8
         let shadowOffsetWidth: Int = 3
         let shadowOffsetHeight: Int = 5
@@ -72,10 +75,9 @@ class ViewController: UIViewController, UIScrollViewDelegate, MultipeerManagerDe
             self.view.addSubview(cardView)
             
             cardView.delegate = self
-        
-            leftButton.isHidden = true
-            if cards.count == 1 {
-                rightButton.isHidden = true
+            
+            if cards.count > 1 {
+                rightButton.isHidden = false
             }
         
             makeView()
@@ -173,8 +175,8 @@ class ViewController: UIViewController, UIScrollViewDelegate, MultipeerManagerDe
                                         self.cardView.setCard(card: card)
                                     
                                         self.leftButton.isHidden = true
-                                        if self.cards.count == 1 {
-                                            self.rightButton.isHidden = true
+                                        if self.cards.count > 1 {
+                                            self.rightButton.isHidden = false
                                         }
                                     }
                                 }
@@ -226,7 +228,7 @@ class ViewController: UIViewController, UIScrollViewDelegate, MultipeerManagerDe
         leftButton.snp.makeConstraints { (make) -> Void in
             make.centerY.equalTo(cardView.snp.centerY)
             make.left.equalToSuperview().offset(5)
-            make.right.lessThanOrEqualTo(cardView.snp.left).offset(5)
+            make.right.lessThanOrEqualTo(cardView.snp.left).inset(5)
         }
         
         rightButton.addTarget(self, action: #selector(self.rightButtonTapped(_:)), for: .touchUpInside)
