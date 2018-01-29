@@ -26,7 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if Utils.isLoggedIn() {
             print("Already logged in.")
             self.window = UIWindow(frame: UIScreen.main.bounds)
-            let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "viewController") as! ViewController
+            let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "tabBarController") as! UITabBarController
             self.window?.rootViewController = vc
             self.window?.makeKeyAndVisible()
         }

@@ -121,6 +121,8 @@ class SecurityViewController: UIViewController, UITextFieldDelegate, SecurityVie
                 })
                 
                 UserDefaults.standard.set(true, forKey: defaultKeys.loggedIn)
+                UserDefaults.standard.set(u.name(), forKey: defaultKeys.displayName)
+                UserDefaults.standard.set(u.primaryCard().occupation(), forKey: defaultKeys.displayOccupation)
                 self.performSegue(withIdentifier: "securityComplete", sender: self)
             } else {
                 if let err = error?.localizedDescription {
@@ -169,7 +171,8 @@ class SecurityViewController: UIViewController, UITextFieldDelegate, SecurityVie
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
-        let vc = segue.destination as! ViewController
+        let tb = segue.destination as! UITabBarController
+        let vc = tb.viewControllers![0] as! ViewController
         vc.ourUser = card.user()
         vc.cards = [card]
     }

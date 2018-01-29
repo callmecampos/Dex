@@ -149,6 +149,39 @@ class CardView: UIView {
     /** Sets the view's card to CARD and remakes the view. */
     func setCard(card: Card) {
         _card = card
+        
+        _name.text = card.user().name()
+        self.addSubview(_name)
+        
+        _occupation.text = card.occupation()
+        self.addSubview(_occupation)
+        
+        if card.hasPhoneNumbers() {
+            _phone = UILabel()
+            _phone!.text = card.primaryPhone().formatted()
+            self.addSubview(_phone!)
+        }
+        
+        if card.hasEmail() {
+            _email = UILabel()
+            _email!.text = card.email()
+            self.addSubview(_email!)
+        }
+        
+        if card.hasWebsite() {
+            _website = UILabel()
+            _website!.text = card.website()
+            self.addSubview(_website!)
+        }
+        
+        if card.hasProfilePicture() {
+            _profilePicture = card.profilePicture()
+            _imageView.image = _profilePicture!
+        }
+        _imageView.layer.cornerRadius = _imageView.frame.height / 2
+        _imageView.layer.masksToBounds = true
+        self.addSubview(_imageView)
+        
         makeView(card: card)
     }
     

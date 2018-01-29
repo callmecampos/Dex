@@ -14,6 +14,8 @@
 		19291E2A201DB94300A3500C /* PeerSelectTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19291E29201DB94300A3500C /* PeerSelectTableViewCell.swift */; };
 		19291E2C201E0C1F00A3500C /* EmbeddedPeerSelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19291E2B201E0C1F00A3500C /* EmbeddedPeerSelectViewController.swift */; };
 		19291E2E201E596300A3500C /* DexUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19291E2D201E596300A3500C /* DexUser.swift */; };
+		19291E34201E841D00A3500C /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19291E33201E841D00A3500C /* SettingsViewController.swift */; };
+		19291E36201EBDDA00A3500C /* ConnectionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19291E35201EBDDA00A3500C /* ConnectionsViewController.swift */; };
 		1930CBD520182F990000DD45 /* MultipeerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1930CBD420182F990000DD45 /* MultipeerManager.swift */; };
 		196F23342006C39D000CB8ED /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 196F23332006C39D000CB8ED /* SignUpViewController.swift */; };
 		196F23362006C3C1000CB8ED /* InitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 196F23352006C3C1000CB8ED /* InitViewController.swift */; };
@@ -44,6 +46,8 @@
 		19291E29201DB94300A3500C /* PeerSelectTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerSelectTableViewCell.swift; sourceTree = "<group>"; };
 		19291E2B201E0C1F00A3500C /* EmbeddedPeerSelectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmbeddedPeerSelectViewController.swift; sourceTree = "<group>"; };
 		19291E2D201E596300A3500C /* DexUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DexUser.swift; sourceTree = "<group>"; };
+		19291E33201E841D00A3500C /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		19291E35201EBDDA00A3500C /* ConnectionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionsViewController.swift; sourceTree = "<group>"; };
 		1930CBD420182F990000DD45 /* MultipeerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipeerManager.swift; sourceTree = "<group>"; };
 		196F23332006C39D000CB8ED /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		196F23352006C3C1000CB8ED /* InitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitViewController.swift; sourceTree = "<group>"; };
@@ -146,6 +150,7 @@
 				1982F1C32019C83F0003AF29 /* SecurityViewController.swift */,
 				19F5783C1F3A70EF00542E25 /* ViewController.swift */,
 				19291E2B201E0C1F00A3500C /* EmbeddedPeerSelectViewController.swift */,
+				19291E33201E841D00A3500C /* SettingsViewController.swift */,
 				19F5783E1F3A70EF00542E25 /* Main.storyboard */,
 				19F578411F3A70EF00542E25 /* Assets.xcassets */,
 				19F578431F3A70EF00542E25 /* LaunchScreen.storyboard */,
@@ -154,6 +159,7 @@
 				198FF4741FF17A18001D3988 /* Models */,
 				198FF4751FF17A48001D3988 /* Views */,
 				1930CBD120182F290000DD45 /* Functionality */,
+				19291E35201EBDDA00A3500C /* ConnectionsViewController.swift */,
 			);
 			path = Dex;
 			sourceTree = "<group>";
@@ -329,10 +335,12 @@
 				19291E2E201E596300A3500C /* DexUser.swift in Sources */,
 				19291E2C201E0C1F00A3500C /* EmbeddedPeerSelectViewController.swift in Sources */,
 				19C6EE9B1FEF10E8001037DB /* Interest.swift in Sources */,
+				19291E34201E841D00A3500C /* SettingsViewController.swift in Sources */,
 				196F23342006C39D000CB8ED /* SignUpViewController.swift in Sources */,
 				19291E2A201DB94300A3500C /* PeerSelectTableViewCell.swift in Sources */,
 				1907499C1FF496CC005B52D3 /* NotificationCardView.swift in Sources */,
 				19C6EE871FE84F38001037DB /* Card.swift in Sources */,
+				19291E36201EBDDA00A3500C /* ConnectionsViewController.swift in Sources */,
 				19F5783B1F3A70EF00542E25 /* AppDelegate.swift in Sources */,
 				1982F1C42019C83F0003AF29 /* SecurityViewController.swift in Sources */,
 				19C6EE8F1FE9F992001037DB /* CardView.swift in Sources */,

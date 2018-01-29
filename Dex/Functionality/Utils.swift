@@ -11,7 +11,9 @@ import UIKit
 import Firebase
 
 public struct defaultKeys {
-    static let loggedIn = "logginInBool"
+    static let loggedIn = "loggedInBool"
+    static let displayName = "userDefaultName"
+    static let displayOccupation = "userDefaultOccupation"
     static let userTokens = "loginTokens"
 }
 

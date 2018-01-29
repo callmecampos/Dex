@@ -71,6 +71,13 @@ internal class Card: Equatable, Comparable, Hashable {
         user.addCard(card: self)
     }
     
+    init(name: String, occupation: String) {
+        _user = DexUser(name: name, influence: 0.0)
+        _occupation = occupation
+        
+        _avi = Utils.defaultImage
+    }
+    
     // MARK: - Methods
     
     /** Returns the decoded card from DECODEABLE. Returns nil if unparseable. */

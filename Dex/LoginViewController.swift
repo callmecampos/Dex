@@ -122,6 +122,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                                             self.cards.append(card)
                                             if i == numCards - 1 {
                                                 UserDefaults.standard.set(true, forKey: defaultKeys.loggedIn)
+                                                UserDefaults.standard.set(self.u!.name(), forKey: defaultKeys.displayName)
+                                                UserDefaults.standard.set(self.u!.primaryCard().occupation(), forKey: defaultKeys.displayOccupation)
                                                 print("Signed in.")
                                                 self.performSegue(withIdentifier: "loggedIn", sender: self)
                                             }
@@ -210,7 +212,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
-        let vc = segue.destination as! ViewController
+        let tb = segue.destination as! UITabBarController
+        let vc = tb.viewControllers![0] as! ViewController
         vc.ourUser = self.u!
         vc.cards = self.u!.cards()
     }

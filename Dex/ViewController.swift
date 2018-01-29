@@ -80,6 +80,15 @@ class ViewController: UIViewController, UIScrollViewDelegate, MultipeerManagerDe
         
             makeView()
         } else {
+            let defaultName = UserDefaults.standard.value(forKey: defaultKeys.displayName) as! String
+            let defaultOcc = UserDefaults.standard.value(forKey: defaultKeys.displayOccupation) as! String
+            cardView = CardView(card: Card(name: defaultName, occupation: defaultOcc))
+            self.view.addSubview(cardView)
+            
+            cardView.delegate = self
+            
+            makeView()
+            
             handleLogin(user: Auth.auth().currentUser)
         }
     }
@@ -109,23 +118,6 @@ class ViewController: UIViewController, UIScrollViewDelegate, MultipeerManagerDe
         }
         
         cardView.setCard(card: cards[cardIndex])
-    }
-    
-    @IBAction func signOut(_ sender: Any) {
-        do {
-            try Auth.auth().signOut()
-            UserDefaults.standard.set(false, forKey: defaultKeys.loggedIn)
-            self.performSegue(withIdentifier: "signOutSegue", sender: self)
-        } catch _ {
-            let loginAlert = UIAlertController(title: "Sign Out Failed", message: "There was a problem signing you out, please try again.", preferredStyle: UIAlertControllerStyle.alert)
-            
-            let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
-            loginAlert.addAction(okAction)
-            
-            DispatchQueue.main.async {
-                self.present(loginAlert, animated: true, completion:  nil)
-            }
-        }
     }
     
     @IBAction func exchangeAction(_ sender: Any) {
@@ -177,17 +169,14 @@ class ViewController: UIViewController, UIScrollViewDelegate, MultipeerManagerDe
                                 self.cards.append(card)
                                 
                                 if i == numCards - 1 {
-                                    self.cardView = CardView(card: self.cards[self.cardIndex])
-                                    self.view.addSubview(self.cardView)
+                                    DispatchQueue.main.async {
+                                        self.cardView.setCard(card: card)
                                     
-                                    self.cardView.delegate = self
-                                    
-                                    self.leftButton.isHidden = true
-                                    if self.cards.count == 1 {
-                                        self.rightButton.isHidden = true
+                                        self.leftButton.isHidden = true
+                                        if self.cards.count == 1 {
+                                            self.rightButton.isHidden = true
+                                        }
                                     }
-                                    
-                                    self.makeView()
                                 }
                             }
                         })
@@ -279,8 +268,6 @@ class ViewController: UIViewController, UIScrollViewDelegate, MultipeerManagerDe
     
     func sendCard(card: Card) {
         print("Showing embedded views.")
-        
-        
         
         self.view.bringSubview(toFront: embeddedTableView)
         self.view.bringSubview(toFront: exchangeButton)
