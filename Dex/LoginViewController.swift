@@ -10,6 +10,7 @@ import UIKit
 import FirebaseAuth
 import FirebaseDatabase
 import FirebaseStorage
+import SwiftSpinner
 
 class LoginViewController: UIViewController, UITextFieldDelegate {
     
@@ -81,7 +82,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func loginPressed(_ sender: Any) {
-        // FIXME: check user defaults for username and password and load corresponding data
+        SwiftSpinner.show("Fetching your data...")
         if isPhone {
             // FIXME: implement
         } else {
@@ -121,11 +122,15 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                                             let card = Card(user: self.u!, occupation: occupation, email: email, phones: [phone], web: website, avi: image!)
                                             self.cards.append(card)
                                             if i == numCards - 1 {
-                                                UserDefaults.standard.set(true, forKey: defaultKeys.loggedIn)
-                                                UserDefaults.standard.set(self.u!.name(), forKey: defaultKeys.displayName)
-                                                UserDefaults.standard.set(self.u!.primaryCard().occupation(), forKey: defaultKeys.displayOccupation)
-                                                print("Signed in.")
-                                                self.performSegue(withIdentifier: "loggedIn", sender: self)
+                                                DispatchQueue.main.async {
+                                                    UserDefaults.standard.set(true, forKey: defaultKeys.loggedIn)
+                                                    UserDefaults.standard.set(self.u!.name(), forKey: defaultKeys.displayName)
+                                                    UserDefaults.standard.set(self.u!.primaryCard().occupation(), forKey: defaultKeys.displayOccupation)
+                                                    print("Signed in.")
+                                                    SwiftSpinner.hide({
+                                                        self.performSegue(withIdentifier: "loggedIn", sender: self)
+                                                    })
+                                                }
                                             }
                                         }
                                     })
@@ -140,7 +145,9 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                     
                     loginAlert.addAction(okAction)
                     DispatchQueue.main.async {
-                        self.present(loginAlert, animated: true, completion:  nil)
+                        SwiftSpinner.hide({
+                            self.present(loginAlert, animated: true, completion:  nil)
+                        })
                     }
                     
                     if let err = error?.localizedDescription {

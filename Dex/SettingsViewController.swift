@@ -34,9 +34,9 @@ class SettingsViewController: UIViewController {
     
     @IBAction func logOut(_ sender: Any) {
         do {
-            try Auth.auth().signOut()
             UserDefaults.standard.set(false, forKey: defaultKeys.loggedIn)
             self.performSegue(withIdentifier: "signOutSegue", sender: self)
+            try Auth.auth().signOut()
         } catch _ {
             let loginAlert = UIAlertController(title: "Sign Out Failed", message: "There was a problem signing you out, please try again.", preferredStyle: UIAlertControllerStyle.alert)
             

@@ -11,6 +11,7 @@ import SnapKit
 import Contacts
 import CoreLocation
 import Firebase
+import SwiftSpinner
 
 class ViewController: UIViewController, UIScrollViewDelegate, MultipeerManagerDelegate, CardViewDelegate {
     

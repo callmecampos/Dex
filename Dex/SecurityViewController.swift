@@ -10,6 +10,7 @@ import UIKit
 import FirebaseAuth
 import FirebaseDatabase
 import FirebaseStorage
+import SwiftSpinner
 
 class SecurityViewController: UIViewController, UITextFieldDelegate, SecurityViewDelegate {
     
@@ -80,6 +81,7 @@ class SecurityViewController: UIViewController, UITextFieldDelegate, SecurityVie
     // MARK: Protocols
     
     func saveButtonTapped() {
+        SwiftSpinner.show("Creating your profile...")
         Auth.auth().createUser(withEmail: card.email(), password: securityCardView.password()) { (user, error) in
             if user != nil {
                 let u = self.card.user()
@@ -123,7 +125,10 @@ class SecurityViewController: UIViewController, UITextFieldDelegate, SecurityVie
                 UserDefaults.standard.set(true, forKey: defaultKeys.loggedIn)
                 UserDefaults.standard.set(u.name(), forKey: defaultKeys.displayName)
                 UserDefaults.standard.set(u.primaryCard().occupation(), forKey: defaultKeys.displayOccupation)
-                self.performSegue(withIdentifier: "securityComplete", sender: self)
+                
+                SwiftSpinner.hide({
+                    self.performSegue(withIdentifier: "securityComplete", sender: self)
+                })
             } else {
                 if let err = error?.localizedDescription {
                     print(err)
@@ -159,7 +164,9 @@ class SecurityViewController: UIViewController, UITextFieldDelegate, SecurityVie
                 
                 signUpAlert.addAction(okAction)
                 DispatchQueue.main.async {
-                    self.present(signUpAlert, animated: true, completion:  nil)
+                    SwiftSpinner.hide({
+                        self.present(signUpAlert, animated: true, completion:  nil)
+                    })
                 }
             }
         }
